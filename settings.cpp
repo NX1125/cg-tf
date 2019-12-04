@@ -24,7 +24,9 @@ app_settings::app_settings(const char* filename) {
     FILE* f = fopen(filename, "r");
 
     if (f == NULL) {
-        throw IOException("Could not open file");
+        string msg = "Could not open file: ";
+        msg += filename;
+        throw IOException(msg);
     }
     try {
         TiXmlDocument doc;
