@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>filepath.h</itemPath>
       <itemPath>settings.h</itemPath>
+      <itemPath>shapes.h</itemPath>
       <itemPath>simplesvg.h</itemPath>
       <itemPath>stopwatch.h</itemPath>
       <itemPath>textrendering.h</itemPath>
@@ -22,8 +23,10 @@
                    projectFiles="true">
       <itemPath>circle.cpp</itemPath>
       <itemPath>filepath.cpp</itemPath>
+      <itemPath>lines.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>settings.cpp</itemPath>
+      <itemPath>shapes.cpp</itemPath>
       <itemPath>simplesvg.cpp</itemPath>
       <itemPath>stopwatch.cpp</itemPath>
       <itemPath>textrendering.cpp</itemPath>
@@ -32,6 +35,17 @@
       <itemPath>tinyxml/tinyxmlerror.cpp</itemPath>
       <itemPath>tinyxml/tinyxmlparser.cpp</itemPath>
       <itemPath>xmlutils.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -71,11 +85,17 @@
       </item>
       <item path="filepath.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="lines.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="settings.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="settings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="shapes.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="shapes.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="simplesvg.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -138,11 +158,17 @@
       </item>
       <item path="filepath.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="lines.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="settings.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="settings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="shapes.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="shapes.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="simplesvg.cpp" ex="false" tool="1" flavor2="0">
       </item>

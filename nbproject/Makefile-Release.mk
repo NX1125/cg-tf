@@ -37,8 +37,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/circle.o \
 	${OBJECTDIR}/filepath.o \
+	${OBJECTDIR}/lines.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/settings.o \
+	${OBJECTDIR}/shapes.o \
 	${OBJECTDIR}/simplesvg.o \
 	${OBJECTDIR}/stopwatch.o \
 	${OBJECTDIR}/textrendering.o \
@@ -83,6 +85,11 @@ ${OBJECTDIR}/filepath.o: filepath.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/filepath.o filepath.cpp
 
+${OBJECTDIR}/lines.o: lines.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lines.o lines.cpp
+
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -92,6 +99,11 @@ ${OBJECTDIR}/settings.o: settings.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/settings.o settings.cpp
+
+${OBJECTDIR}/shapes.o: shapes.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/shapes.o shapes.cpp
 
 ${OBJECTDIR}/simplesvg.o: simplesvg.cpp
 	${MKDIR} -p ${OBJECTDIR}
