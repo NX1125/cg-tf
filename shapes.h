@@ -101,16 +101,25 @@ struct vector2d {
 struct vector3f {
     float x;
     float y;
+    float z;
+
+    vector3f() {
+    }
+
+    vector3f(float x, float y, float z) :
+    x(x), y(y), z(z) {
+    }
 
     float normalize() {
         float length = sqrt(lengthSqr());
         x /= length;
         y /= length;
+        z /= length;
         return length;
     }
 
-    float lengthSqr() {
-        return x * x + y * y;
+    float lengthSqr() const {
+        return x * x + y * y + z * z;
     }
 
     vector3f operator/(const float& right) const {
@@ -122,11 +131,12 @@ struct vector3f {
     vector3f& operator/=(const float& right) {
         x /= right;
         y /= right;
+        z /= right;
         return *this;
     }
 
     float operator*(const vector3f& right) const {
-        return x * right.x + y * right.y;
+        return x * right.x + y * right.y + z * right.z;
     }
 
     vector3f operator*(const float& right) const {
@@ -138,6 +148,7 @@ struct vector3f {
     vector3f& operator*=(float right) {
         x *= right;
         y *= right;
+        z *= right;
         return *this;
     }
 
@@ -150,6 +161,7 @@ struct vector3f {
     vector3f& operator+=(const vector3f& right) {
         x += right.x;
         y += right.y;
+        z += right.z;
         return *this;
     }
 
@@ -162,22 +174,21 @@ struct vector3f {
     vector3f& operator-=(const vector3f& right) {
         x -= right.x;
         y -= right.y;
+        z -= right.z;
         return *this;
     }
 
     vector3f operator-() const {
-        vector3f result = {x, y}; // Make a copy of myself.
+        vector3f result = {x, y, z}; // Make a copy of myself.
         return result;
     }
-
-    float angle() const {
-        return atan2(y, x);
+    
+    static float angle(const vector3f& a, const vector3f& b) {
+        return acosf((a * b) / (a.length() * b.length()));
     }
-
-    void swap() {
-        float z = x;
-        x = y;
-        y = z;
+    
+    float length() const {
+        return sqrt(lengthSqr());
     }
 };
 
@@ -229,21 +240,22 @@ struct point3f {
     
     float x;
     float y;
+    float z;
 
     point3f() {
     }
 
-    point3f(float x, float y) :
-    x(x), y(y) {
+    point3f(float x, float y, float z) :
+    x(x), y(y), z(z) {
     }
 
-    vector2d operator-(const point3f& right) const {
-        vector2d v = {x - right.x, y - right.y};
+    vector3f operator-(const point3f& right) const {
+        vector3f v = {x - right.x, y - right.y, z - right.z};
         return v;
     }
 
     point3f operator-(const vector3f& right) const {
-        point3f v = {x - right.x, y - right.y};
+        point3f v = {x - right.x, y - right.y, z - right.z};
         return v;
     }
 
@@ -256,12 +268,14 @@ struct point3f {
     point3f& operator+=(const vector3f& right) {
         x += right.x;
         y += right.y;
+        z += right.z;
         return *this;
     }
 
     point3f& operator-=(const vector3f& right) {
         x -= right.x;
         y -= right.y;
+        z -= right.z;
         return *this;
     }
 
