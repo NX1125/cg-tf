@@ -13,6 +13,7 @@
 #include "xmlutils.h"
 #include "simplesvg.h"
 #include "stopwatch.h"
+#include "thirdpersonfollower.h"
 
 using namespace std;
 
@@ -34,6 +35,9 @@ public:
 
     static int sWidth;
     static int sHeight;
+    
+    static third_person_follower_t* sFollower;
+    static point3f sTarget;
 
     static void init() {
         glClearColor(0, 0, 0, 0);
@@ -45,6 +49,8 @@ public:
         vertices[1][2] = vertices[2][2] = vertices[5][2] = vertices[6][2] = -1;
         
         glEnable(GL_DEPTH_TEST);
+        
+        sFollower = new third_person_follower_t(&sTarget, 0.5f);
     }
 
     // Extracted from:
@@ -75,8 +81,12 @@ public:
     static void display() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glOrtho(-1, 1, -1, 1, 1, -1);
+        
+        sFollower->lookAt();
+        
+        glOrtho(-2, 2, -2, 2, 2, -2);
 
         // Draw a cube for reference to the camera
         // glColor3f(1, 0, 0);
@@ -85,6 +95,21 @@ public:
         drawBox();
 
         glutSwapBuffers();
+    }
+    
+    static void mousePressed(){
+        
+    }
+    
+    
+    static void mouseMoved(int x, int y){
+        sFollower->mouseDragged(x, y);
+        glutPostRedisplay();
+    }
+    
+    
+    static void mouseReleased(){
+        
     }
 
     static void reshape(int width, int height) {
@@ -97,7 +122,6 @@ public:
     }
 
     static void idle() {
-        glutPostRedisplay();
     }
 };
 
@@ -130,6 +154,9 @@ GLfloat Main::color[6][3] = {
     {1,0,1},
 };
 
+third_person_follower_t* Main::sFollower = NULL;
+point3f Main::sTarget ;
+
 
 // As stated in spec, the size of the window is initially 500x500.
 int Main::sWidth = 500;
@@ -149,14 +176,14 @@ int main(int argc, char** argv) {
 
         app_settings* settings = loadSettings(argv[1]);
 
-        Main::init();
-
         // TODO create game context (objects, GLUT, etc)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
         std::string title("TF - Guilherme, Ricardo");
 
         glutCreateWindow(title.c_str());
+
+        Main::init();
 
         glutReshapeFunc(Main::reshape);
         glutDisplayFunc(Main::display);
@@ -165,7 +192,7 @@ int main(int argc, char** argv) {
         // glutKeyboardUpFunc(keyUp);
 
         // glutMouseFunc(mouseButton);
-        // glutPassiveMotionFunc(passiveMotion);
+        glutPassiveMotionFunc(Main::mouseMoved);
 
         glutIdleFunc(Main::idle);
 
