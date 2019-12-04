@@ -44,6 +44,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/simplesvg.o \
 	${OBJECTDIR}/stopwatch.o \
 	${OBJECTDIR}/textrendering.o \
+	${OBJECTDIR}/thirdpersonfollower.o \
 	${OBJECTDIR}/tinyxml/tinystr.o \
 	${OBJECTDIR}/tinyxml/tinyxml.o \
 	${OBJECTDIR}/tinyxml/tinyxmlerror.o \
@@ -119,6 +120,11 @@ ${OBJECTDIR}/textrendering.o: textrendering.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/textrendering.o textrendering.cpp
+
+${OBJECTDIR}/thirdpersonfollower.o: thirdpersonfollower.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/thirdpersonfollower.o thirdpersonfollower.cpp
 
 ${OBJECTDIR}/tinyxml/tinystr.o: tinyxml/tinystr.cpp
 	${MKDIR} -p ${OBJECTDIR}/tinyxml
