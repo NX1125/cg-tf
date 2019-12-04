@@ -15,8 +15,6 @@
 
 using namespace std;
 
-#define TF_VERSION "0.1.2"
-
 app_settings* loadSettings(char* configFile) {
     file_path path(configFile);
 
@@ -84,8 +82,7 @@ int main(int argc, char** argv) {
         // TODO create game context (objects, GLUT, etc)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
-        std::string title("TC4 - Guilherme, Ricardo, ");
-        title += TF_VERSION;
+        std::string title("TF - Guilherme, Ricardo");
 
         glutCreateWindow(title.c_str());
 
