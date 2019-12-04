@@ -54,7 +54,11 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <commandLine>-lGL -lGLU -lglut</commandLine>
+        </cTool>
         <ccTool>
+          <standard>8</standard>
           <commandLine>-lGL -lGLU -lglut</commandLine>
         </ccTool>
         <linkerTool>
@@ -111,9 +115,12 @@
       <compileType>
         <cTool>
           <developmentMode>5</developmentMode>
+          <commandLine>-lGL -lGLU -lglut</commandLine>
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <standard>8</standard>
+          <commandLine>-lGL -lGLU -lglut</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -121,6 +128,9 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <commandLine>-lGL -lGLU -lglut</commandLine>
+        </linkerTool>
       </compileType>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>

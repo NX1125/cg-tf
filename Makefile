@@ -91,6 +91,7 @@ all: .all-post
 # Add your pre 'all' code here...
 
 .all-post: .all-impl
+	cp ${CND_ARTIFACT_PATH_${CONF}} ${execname}
 # Add your post 'all' code here...
 
 

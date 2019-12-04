@@ -43,6 +43,8 @@ public:
         vertices[2][1] = vertices[3][1] = vertices[6][1] = vertices[7][1] = 1;
         vertices[0][2] = vertices[3][2] = vertices[4][2] = vertices[7][2] = 1;
         vertices[1][2] = vertices[2][2] = vertices[5][2] = vertices[6][2] = -1;
+        
+        glEnable(GL_DEPTH_TEST);
     }
 
     // Extracted from:
@@ -53,11 +55,13 @@ public:
     static GLfloat normals[6][3];
     static GLint faces[6][4];
     static GLfloat vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
+    static GLfloat color[6][3];
 
     static void drawBox(void) {
         int i;
 
         for (i = 0; i < 6; i++) {
+            glColor3f(color[i][0], color[i][1], color[i][2]);
             glBegin(GL_QUADS);
             glNormal3fv(&normals[i][0]);
             glVertex3fv(&vertices[faces[i][0]][0]);
@@ -69,15 +73,15 @@ public:
     }
 
     static void display() {
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glLoadIdentity();
         glOrtho(-1, 1, -1, 1, 1, -1);
 
         // Draw a cube for reference to the camera
-        glColor3f(1, 0, 0);
+        // glColor3f(1, 0, 0);
         glScaled(0.5f, 0.5f, 0.5f);
-        glRotated(180 * stopwatch_t::currentTimeMillis() / 1000.0f, 0, 1, 1);
+        // glRotated(180 * stopwatch_t::currentTimeMillis() / 1000.0f, 0, 1, 1);
         drawBox();
 
         glutSwapBuffers();
@@ -117,6 +121,14 @@ GLint Main::faces[6][4] = {/* Vertex indices for the 6 faces of a cube. */
     {7, 4, 0, 3}
 };
 GLfloat Main::vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
+GLfloat Main::color[6][3] = {
+    {1,0,0},
+    {0,1,0},
+    {0,0,1},
+    {1,1,0},
+    {0,1,1},
+    {1,0,1},
+};
 
 
 // As stated in spec, the size of the window is initially 500x500.
@@ -127,8 +139,6 @@ int Main::sHeight = 500;
  * 
  */
 int main(int argc, char** argv) {
-    printf("myself: %s\n", argv[0]);
-
     glutInit(&argc, argv);
 
     try {
@@ -142,7 +152,7 @@ int main(int argc, char** argv) {
         Main::init();
 
         // TODO create game context (objects, GLUT, etc)
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
         std::string title("TF - Guilherme, Ricardo");
 

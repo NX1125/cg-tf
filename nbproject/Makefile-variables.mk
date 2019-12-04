@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=tf
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/tf
+CND_ARTIFACT_NAME_Debug=cg-tf
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/cg-tf
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
-CND_PACKAGE_NAME_Debug=tf.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/tf.tar
+CND_PACKAGE_NAME_Debug=cg-tf.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/cg-tf.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
-CND_ARTIFACT_NAME_Release=tf
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/tf
+CND_ARTIFACT_NAME_Release=cg-tf
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/cg-tf
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
-CND_PACKAGE_NAME_Release=tf.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/tf.tar
+CND_PACKAGE_NAME_Release=cg-tf.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/cg-tf.tar
 #
 # include compiler specific variables
 #
