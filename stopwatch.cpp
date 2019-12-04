@@ -9,10 +9,10 @@
 
 #include "stopwatch.h"
 
-stopwatch::~stopwatch() {
+stopwatch_t::~stopwatch_t() {
 }
 
-int stopwatch::currentTimeMillis() {
+int stopwatch_t::currentTimeMillis() {
     return glutGet(GLUT_ELAPSED_TIME);
 }
 
