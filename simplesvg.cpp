@@ -1,5 +1,6 @@
 
 #include <complex>
+#include <GL/gl.h>
 
 #include "simplesvg.h"
 // #include "config/defs.h"
