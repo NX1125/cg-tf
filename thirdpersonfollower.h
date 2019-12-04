@@ -8,6 +8,9 @@
 #ifndef THIRD_PERSON_FOLLOWER_T_H
 #define THIRD_PERSON_FOLLOWER_T_H
 
+#include <GL/glu.h>
+#include <cstdio>
+
 #include "shapes.h"
 
 
@@ -17,20 +20,30 @@
  */
 class third_person_follower_t {
 private:
-    point3f* target;
+    point3f* target = NULL;
     point3f camera;
     
-    float normalDistance;
+    float normalDistance = 1;
     float followFactor = 0.5;
-    
-    float mouseFactor;
     
     int previousMousePositionX;
     int previousMousePositionY;
     
-    float horizontalFactor = 1;
-    float verticalFactor = 1;
+    float horizontalFactor = 0.01f;
+    float verticalFactor = 0.01f;
 public:
+
+    third_person_follower_t(point3f* target, float normalDistance) :
+    target(target), normalDistance(normalDistance) {
+        camera = *target;
+        camera.x += normalDistance;
+    }
+    
+    void lookAt() {
+        gluLookAt(camera.x, camera.y, camera.z,
+                target->x, target->y, target->z,
+                0,0,1);
+    }
 
     void setMousePressingPosition(int x, int y) {
         previousMousePositionX = x;
@@ -53,39 +66,7 @@ public:
     
 private:
     
-    void move(float dx, float dy) {
-        vector3f v = *target - camera;
-        
-        float distance = v.normalize();
-        
-        float horizontal = atan2(v.y, v.x) + dx * horizontalFactor;
-        float vertical = vector3f::angle(v, vector3f(v.x, v.y, 0.0f)) + dy * verticalFactor;
-        
-        horizontal = fmodf(horizontal, M_PI * 2);
-        
-        // clamp the vertical angle to -60° and 60°
-        const float maxVerticalAngle = 60 * M_PI / 180.0f;
-        if (vertical < -maxVerticalAngle) {
-            vertical = -maxVerticalAngle;
-        } else if (vertical > maxVerticalAngle) {
-            vertical = maxVerticalAngle;
-        }
-        
-        // rotate <1,0,0> by vertical around the y axis
-        float x = cosf(vertical);
-        float z = sinf(vertical);
-        
-        // rotate <x, 0, z> by horizontal around the z axis
-        // The z axis continues to be the same.
-        
-        // g is from Ground
-        float g = x;
-        x = cosf(horizontal) * g;
-        float y = sinf(horizontal) * g;
-        
-        // <x, y, z> is the vector of the camera
-        camera = *target + vector3f(x, y, z) * distance;
-    }
+    void move(float dx, float dy);
 };
 
 #endif /* THIRD_PERSON_FOLLOWER_T_H */
