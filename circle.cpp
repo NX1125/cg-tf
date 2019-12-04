@@ -4,6 +4,7 @@
 #include <math.h>
 #include <cstring>
 #include <cstdio>
+#include <GL/gl.h>
 
 #include "shapes.h"
 
@@ -19,7 +20,7 @@ circle_blueprint((unsigned int) ceil((M_TWOPI * radius) / maxArcLength)) {
 }
 
 circle_blueprint::circle_blueprint(unsigned int n) : numOfPoints(n) {
-    points = new vector2d[n];
+    points = (vector2d*) malloc(n * sizeof(vector2d));
 
     double angle = M_TWOPI / n;
 
@@ -58,12 +59,14 @@ void circle_blueprint::draw(bool opaque) {
 
 circle_blueprint::~circle_blueprint() {
     if (points != NULL) {
-        delete points;
+        free(points);
     }
 }
 
 circle::~circle() {
-    delete blueprint;
+    if (blueprint) {
+        delete blueprint;
+    }
 }
 
 void circle::draw(bool opaque) {
