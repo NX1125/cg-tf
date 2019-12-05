@@ -35,6 +35,7 @@
       <itemPath>shapes.cpp</itemPath>
       <itemPath>simplesvg.cpp</itemPath>
       <itemPath>stopwatch.cpp</itemPath>
+      <itemPath>takeoff.cpp</itemPath>
       <itemPath>textrendering.cpp</itemPath>
       <itemPath>thirdpersonfollower.cpp</itemPath>
       <itemPath>tinyxml/tinystr.cpp</itemPath>
@@ -118,6 +119,8 @@
       <item path="stopwatch.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="takeoff.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="takeoff.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -207,6 +210,8 @@
       <item path="stopwatch.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="takeoff.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="takeoff.h" ex="false" tool="3" flavor2="0">
       </item>

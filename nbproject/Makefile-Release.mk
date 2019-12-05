@@ -45,6 +45,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/shapes.o \
 	${OBJECTDIR}/simplesvg.o \
 	${OBJECTDIR}/stopwatch.o \
+	${OBJECTDIR}/takeoff.o \
 	${OBJECTDIR}/textrendering.o \
 	${OBJECTDIR}/thirdpersonfollower.o \
 	${OBJECTDIR}/tinyxml/tinystr.o \
@@ -128,6 +129,11 @@ ${OBJECTDIR}/stopwatch.o: stopwatch.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/stopwatch.o stopwatch.cpp
+
+${OBJECTDIR}/takeoff.o: takeoff.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/takeoff.o takeoff.cpp
 
 ${OBJECTDIR}/textrendering.o: textrendering.cpp
 	${MKDIR} -p ${OBJECTDIR}
