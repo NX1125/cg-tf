@@ -84,3 +84,7 @@ void file_path::debug() {
         cout << "component: " << s << endl;
     }
 }
+
+void file_path::removeLast() {
+    components.pop_back();
+}

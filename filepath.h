@@ -24,12 +24,14 @@ public:
     void debug();
 
     void append(const char* component);
-    
+
     void append(const std::string& component) {
         append(component.c_str());
     }
 
     const char* toString();
+
+    void removeLast();
 
 private:
     void add(const char* path);
