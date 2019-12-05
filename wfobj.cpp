@@ -126,13 +126,13 @@ void WFObjectLoader::loadOBJ(char* line) {
             sscanf(indices[0], "%d", &v);
 
             if (sscanf(indices[1], "%d", &vt)) {
-                put(glTexCoord3fv, vt);
+                put(glTexCoord3fv, textures, vt);
             }
             if (sscanf(indices[2], "%d", &vn)) {
-                put(glNormal3fv, vn);
+                put(glNormal3fv, normals, vn);
             }
 
-            put(glVertex4fv, v);
+            put(glVertex4fv, vertices, v);
         }
     } else if (strcmp(name, "newmtl")) {
         char name[256];

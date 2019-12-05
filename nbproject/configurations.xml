@@ -4,11 +4,13 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>airplane_movement_t.h</itemPath>
       <itemPath>filepath.h</itemPath>
       <itemPath>settings.h</itemPath>
       <itemPath>shapes.h</itemPath>
       <itemPath>simplesvg.h</itemPath>
       <itemPath>stopwatch.h</itemPath>
+      <itemPath>takeoff.h</itemPath>
       <itemPath>textrendering.h</itemPath>
       <itemPath>thirdpersonfollower.h</itemPath>
       <itemPath>tinyxml/tinystr.h</itemPath>
@@ -23,8 +25,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>airplanemovement.cpp</itemPath>
       <itemPath>circle.cpp</itemPath>
       <itemPath>filepath.cpp</itemPath>
+      <itemPath>game.cpp</itemPath>
       <itemPath>lines.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>settings.cpp</itemPath>
@@ -83,11 +87,17 @@
           <commandLine>-lGL -lGLU -lglut</commandLine>
         </linkerTool>
       </compileType>
+      <item path="airplane_movement_t.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="airplanemovement.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filepath.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filepath.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -108,6 +118,8 @@
       <item path="stopwatch.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="takeoff.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="textrendering.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -164,11 +176,17 @@
           <commandLine>-lGL -lGLU -lglut</commandLine>
         </linkerTool>
       </compileType>
+      <item path="airplane_movement_t.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="airplanemovement.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filepath.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filepath.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -189,6 +207,8 @@
       <item path="stopwatch.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="takeoff.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="textrendering.cpp" ex="false" tool="1" flavor2="0">
       </item>
