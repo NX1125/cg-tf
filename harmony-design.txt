@@ -350,6 +350,9 @@ position
 horizontal: angle
 vertical: angle
 ------------------------------
+left, right, up, down: float
+k: factor
+------------------------------
 keyPress(key)
 	SWITCH key
 		CASE a
@@ -385,6 +388,11 @@ updateVelocityDirection()
 ------------------------------
 setVelocity(v): void
 getVelocity(): velocity
+------------------------------
+getHorizontalAngle()
+	return getVelocityMagnitude() * horizontal * angle factor
+getVerticalAngle()
+	return getVelocityMagnitude() * vertical * angle factor
 ------------------------------
 move(time): void
 	save current position
@@ -427,6 +435,10 @@ ThirdPersonCamera
 ------------------------------
 target: center of the player to look
 camera: a point
+constant distance
+follow factor
+------------------------------
+previous mouse position
 ------------------------------
 setTarget(position)
 ------------------------------
@@ -438,45 +450,6 @@ run(time)
 	// k is a factor between 0 and 1
 	distance = current distance * (1 - k) + constant distance * k
 	camera = target + distance * normalized previous difference
-// called when the user moves the mouse. When he moves it, there are two rotations to handle that is the
-// horizontal and vertical rotations. These two depends of both axis of the mouse, but only the movement,
-// not the current position. Also, the camera always points to the center of the target and the camera
-// itself is a point, since it is used to follow the target when it moves.
-// Given two angles, horizontal h and vertical v, and a distance from the target as s, the camera position
-// is Rz(h) * Ry(v) * <s, 0, 0>, where <x, y, z> is a vector, Ry and Rz are the rotation matrices in the 
-// y and z axis respectively. 
-mouseDragged(point)
-	move(previous point - current point)
-move(dx, dy)
-	distance = distance from target to the camera
-	convert target position to angles
-		// a vector from the target to the camera
-		v = target - camera
-		horizontal = angle between <1,0,0> and v.xy // with up as <0,0,1>
-		IF y < 0 THEN
-			invert sign of horizontal
-		vertical = angle between v and v.xy, where the angle also matters
-		IF v.z < 0 THEN
-			invert sign of vertical since it is below and thus its angle is inverted
-	horizontal += dx * a horizontal factor
-	vertical += dy * a vertical factor
-	cap vertical to -60° to +60°
-	horizontal = horizontal % 360
-	update camera position with angles
-		create vector at (1,0,0)
-		rotate around y by vertical
-		rotate around z by horizontal
-		scale it by the distance
-		translate by the target position
-		set it as the camera position
-	look at the target
-// Angle between two vectors a and b, descosidering orientation
-angle(a, b)
-	// We know that a . b = |a||b|cos(t)
-	// We know that (a . b) / |a||b| = cos(t)
-	// We know that t = acos((a . b) / |a||b|)
-	// vector
-	return acos((a * b) / a.length * b.length)
 ==============================
 
 

@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/airplanemovement.o \
 	${OBJECTDIR}/circle.o \
 	${OBJECTDIR}/filepath.o \
 	${OBJECTDIR}/lines.o \
@@ -43,6 +44,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/shapes.o \
 	${OBJECTDIR}/simplesvg.o \
 	${OBJECTDIR}/stopwatch.o \
+	${OBJECTDIR}/takeoff.o \
 	${OBJECTDIR}/textrendering.o \
 	${OBJECTDIR}/thirdpersonfollower.o \
 	${OBJECTDIR}/tinyxml/tinystr.o \
@@ -76,6 +78,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cg-tf: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cg-tf ${OBJECTFILES} ${LDLIBSOPTIONS} -lGL -lGLU -lglut
+
+${OBJECTDIR}/airplanemovement.o: airplanemovement.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/airplanemovement.o airplanemovement.cpp
 
 ${OBJECTDIR}/circle.o: circle.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -116,6 +123,11 @@ ${OBJECTDIR}/stopwatch.o: stopwatch.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/stopwatch.o stopwatch.cpp
+
+${OBJECTDIR}/takeoff.o: takeoff.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/takeoff.o takeoff.cpp
 
 ${OBJECTDIR}/textrendering.o: textrendering.cpp
 	${MKDIR} -p ${OBJECTDIR}
