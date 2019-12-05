@@ -10,24 +10,24 @@ void WFObject::draw() {
 }
 
 WFObject* WFObjectLoader::build() {
-    WFCommand* cs = (WFCommand*) malloc(commands.size() * sizeof(WFCommand));
-    float* args = (float*) malloc(arguments.size() * sizeof(float));
-    
+    WFCommand* cs = (WFCommand*) malloc(commands.size() * sizeof (WFCommand));
+    float* args = (float*) malloc(arguments.size() * sizeof (float));
+
     for (int i = 0; i < commands.size(); i++) {
         cs[i] = commands[i];
     }
     for (int i = 0; i < arguments.size(); i++) {
         args[i] = arguments[i];
     }
-    
+
     printf("%ld commands loaded\n", commands.size());
-    
+
     return new WFObject(cs, args, commands.size());
 }
 
 WFObject* WFObjectLoader::load(const char* objFilename) {
     forEachLine(objFilename, loadOBJ);
-    
+
     return build();
 }
 
@@ -87,13 +87,11 @@ void WFObjectLoader::loadMTL(char* line) {
     memcpy(currentMaterial.arguments + i, args, sizeof (args));
 }
 
-char* findSlash(char* line, int& n, char** indices) {
+char* findSlash(char* line, int n, char** indices) {
     while (*line) {
         if (*line == '/') {
-            // remove the slash and put a '\0'. That creates a substring.
-            *line = '\0';
-            indices[n++] = line + 1;
-            break;
+            indices[n] = line + 1;
+            return line + 1;
         }
         line++;
     }
@@ -102,66 +100,37 @@ char* findSlash(char* line, int& n, char** indices) {
 
 void WFObjectLoader::loadOBJ(char* line) {
     char name[20];
-    if (sscanf(line,  "%s", name) < 1) {
+    if (sscanf(line, "%s", name) < 1) {
         return;
     }
+    // printf("line: %s", line);
     // printf("name \"%s\"\n", name);
     if (strcmp(name, "v") == 0) {
         float x, y, z, w = 1;
         // v <x> <y> <z> [w]
         sscanf(line, "%*s%f%f%f%f", &x, &y, &z, &w);
-        arguments.push_back(x);
-        arguments.push_back(y);
-        arguments.push_back(z);
-        arguments.push_back(w);
-        commands.push_back(glVertex4fv);
+        vertices.push_back(x);
+        vertices.push_back(y);
+        vertices.push_back(z);
+        vertices.push_back(w);
     } else if (strcmp(name, "vt") == 0) {
         float u, v = 0, w = 0;
         // v <x> <y> <z> [w]
         sscanf(line, "%*s%f%f%f", &u, &v, &w);
-        arguments.push_back(u);
-        arguments.push_back(v);
-        arguments.push_back(w);
-        arguments.push_back(0);
-        commands.push_back(glTexCoord3fv);
+        textures.push_back(u);
+        textures.push_back(v);
+        textures.push_back(w);
+        textures.push_back(0);
     } else if (strcmp(name, "vn") == 0) {
         float x, y, z;
         // v <x> <y> <z> [w]
         sscanf(line, "%*s%f%f%f", &x, &y, &z);
-        arguments.push_back(x);
-        arguments.push_back(y);
-        arguments.push_back(z);
-        arguments.push_back(0);
-        commands.push_back(glNormal3fv);
+        normals.push_back(x);
+        normals.push_back(y);
+        normals.push_back(z);
+        normals.push_back(0);
     } else if (strcmp(name, "f") == 0) {
-        line++;
-        put(WFObject::begin);
-        while (*line != '\0' && *line != '\n') {
-            // f <v>/[vt]/[vn]
-            int v, vt, vn;
-
-            // split by '/'
-            char* indices[3];
-
-            int n = 0;
-
-            indices[n++] = line;
-
-            line = findSlash(line, n, indices);
-            line = findSlash(line, n, indices);
-
-            sscanf(indices[0], "%d", &v);
-
-            if (sscanf(indices[1], "%d", &vt)) {
-                put(glTexCoord3fv, textures, vt);
-            }
-            if (sscanf(indices[2], "%d", &vn)) {
-                put(glNormal3fv, normals, vn);
-            }
-
-            put(glVertex4fv, vertices, v);
-        }
-        put(WFObject::end);
+        parseFace(line);
     } else if (strcmp(name, "newmtl") == 0) {
         char name[256];
         sscanf(line, "%*s%s", name);
@@ -173,12 +142,149 @@ void WFObjectLoader::loadOBJ(char* line) {
     }
 }
 
+void WFObjectLoader::parseFace(char* line) {
+    char* source = line;
+
+    enum wf_token_type_t {
+        INDEX, SLASH
+    };
+
+    struct wf_token_t {
+        wf_token_type_t type;
+        int index;
+    };
+
+    line++; // skip 'f'
+
+    // token analysis
+    vector<wf_token_t> tokens;
+
+    while (*line) {
+        char c = *line;
+        // check if it is a digit or the sign of an index
+        if (c == '-' || '0' <= c && c <= '9') {
+            wf_token_t token;
+            token.type = wf_token_type_t::INDEX;
+            sscanf(line, "%d", &token.index);
+            // line++; // consume char
+            do {
+                line++;
+                // continue to consume the char while it is a digit
+            } while ('0' <= *line && *line <= '9');
+            tokens.push_back(token);
+            continue;
+        } else if (c == '/') {
+            // SLASH!
+            wf_token_t token;
+            token.type = wf_token_type_t::SLASH;
+            tokens.push_back(token);
+        } else if (c == '\n') {
+            break;
+        }
+        line++;
+    }
+
+    //printf("begin\n");
+    //for (int i = 0; i < tokens.size(); i++) {
+    //    switch (tokens[i].type) {
+    //        case wf_token_type_t::INDEX:
+    //            printf("index = %d\n", tokens[i].index);
+    //            break;
+    //        case wf_token_type_t::SLASH:
+    //            printf("slash\n");
+    //            break;
+    //    }
+    //}
+
+    // syntax analysis
+
+    // This class represents one of the v/vt/vn sequence.
+
+    struct wf_face_vertex_t {
+        int vertex;
+        int texture;
+        int normal;
+    };
+
+    vector<wf_face_vertex_t> faceVertices;
+
+    for (int i = 0; i < tokens.size(); i++) {
+        if (tokens[i].type == wf_token_type_t::INDEX) {
+            struct wf_face_vertex_t vertex = {tokens[i].index, 0, 0};
+            if (i + 1 < tokens.size() &&
+                    tokens[i + 1].type == wf_token_type_t::SLASH) {
+                i++;
+                if (tokens[i + 1].type == wf_token_type_t::INDEX) {
+                    i++;
+                    vertex.texture = tokens[i].index;
+                }
+            }
+            if (i + 1 < tokens.size() &&
+                    tokens[i + 1].type == wf_token_type_t::SLASH) {
+                i++;
+                if (tokens[i + 1].type == wf_token_type_t::INDEX) {
+                    i++;
+                    vertex.normal = tokens[i].index;
+                }
+            }
+
+            faceVertices.push_back(vertex);
+        }
+    }
+
+    // If we parsed correctly, we are capable of generating a formatted version
+    // of the source. Considering that the source is also formatted, the code
+    // below should be equal to the source.
+    string build = "f";
+    for (int i = 0; i < faceVertices.size(); i++) {
+        wf_face_vertex_t v = faceVertices[i];
+
+        build += " ";
+        build += to_string(v.vertex);
+        if (v.texture != 0) {
+            build += "/";
+            build += to_string(v.texture);
+        }
+        if (v.normal != 0) {
+            if (v.texture == 0) {
+                build += "/";
+            }
+            build += "/";
+            build += to_string(v.normal);
+        }
+    }
+    build += "\n";
+
+    if (strcmp(build.c_str(), source) != 0) {
+        printf("DIFFERENT: \"%s\" != \"%s\"", build.c_str(), source);
+    }
+
+    // semantic analysis
+
+    put(WFObject::begin);
+
+    for (int i = 0; i < faceVertices.size(); i++) {
+        wf_face_vertex_t vertex = faceVertices[i];
+
+        if (vertex.texture != 0) {
+            put(glTexCoord3fv, textures, vertex.texture);
+        }
+        if (vertex.normal != 0) {
+            put(glNormal3fv, normals, vertex.normal);
+        }
+        put(glVertex4fv, vertices, vertex.vertex);
+    }
+
+    put(WFObject::end);
+}
+
 void WFObjectLoader::put(WFCommand c, vector<float>& v, int index) {
     if (index < 0) {
         index += v.size();
     }
     index *= 4;
     commands.push_back(c);
+    // printf("%f %f %f %f\n", v[0], v[1], v[2], v[3]);
     for (int i = 0; i < 4; i++) {
         arguments.push_back(v[index++]);
     }

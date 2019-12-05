@@ -20,6 +20,25 @@ typedef void (*WFCommand)(const GLfloat*);
 
 class WFObjectLoader;
 
+struct WFMaterial {
+private:
+    friend WFObjectLoader;
+
+    string name;
+
+    WFCommand commands[5];
+    float arguments[5 * 4];
+    int n = 0;
+};
+
+class WFObject;
+
+class wf_command_t {
+public:
+    
+    virtual void apply(WFObject& obj) = 0;
+};
+
 /**
  * An object model that is parsed from a .obj file.
  */
@@ -35,6 +54,9 @@ private:
     }
 
 public:
+
+    WFObject(const char* filename) {
+    }
 
     ~WFObject() {
         delete commands;
@@ -72,17 +94,6 @@ private:
     }
 };
 
-struct WFMaterial {
-private:
-    friend WFObjectLoader;
-
-    string name;
-
-    WFCommand commands[5];
-    float arguments[5 * 4];
-    int n;
-};
-
 /**
  * A class that loads an object per time. 
  */
@@ -115,6 +126,8 @@ private:
     void put(WFCommand c, vector<float>& v, int index);
 
     void put(WFCommand c);
+
+    void parseFace(char* line);
 
     static void loadMTL(char* line, WFObjectLoader& obj) {
         obj.loadMTL(line);
