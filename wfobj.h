@@ -13,6 +13,7 @@
 
 #include "xmlutils.h"
 #include "shapes.h"
+#include "filepath.h"
 
 using namespace std;
 
@@ -71,29 +72,17 @@ private:
     // commands
     friend wf_object_loader_t;
 
-    static void ambient(const GLfloat* coords) {
-        //        glMaterialfv(GL_FRONT, GL_AMBIENT, coords);
-    }
+    static void ambient(const GLfloat* coords);
 
-    static void diffuse(const GLfloat* coords) {
-        //        glMaterialfv(GL_FRONT, GL_DIFFUSE, coords);
-    }
+    static void diffuse(const GLfloat* coords);
 
-    static void specular(const GLfloat* coords) {
-        //        glMaterialfv(GL_FRONT, GL_SPECULAR, coords);
-    }
+    static void specular(const GLfloat* coords);
 
-    static void shininess(const GLfloat* coords) {
-        //        glMaterialfv(GL_FRONT, GL_SHININESS, coords);
-    }
+    static void shininess(const GLfloat* coords);
 
-    static void begin(const GLfloat* ignore) {
-        glBegin(GL_POLYGON);
-    }
+    static void begin(const GLfloat* ignore);
 
-    static void end(const GLfloat* ignore) {
-        glEnd();
-    }
+    static void end(const GLfloat* ignore);
 };
 
 /**
@@ -112,12 +101,14 @@ private:
 
     wf_material_t currentMaterial;
 
+    file_path* filepath = NULL;
+
 public:
-    wf_object_t* load(const char* objFilename);
+    wf_object_t* load(const char* filename);
 
 private:
 
-    void loadMaterial(const char* mtlFilename);
+    void loadMaterial(const char* filename);
 
     void loadMTL(char*);
 

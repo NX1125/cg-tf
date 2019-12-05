@@ -9,6 +9,15 @@ void wf_object_t::draw() {
     }
 }
 
+wf_object_t* wf_object_loader_t::load(const char* filename) {
+    file_path fp(filename);
+    filepath = &fp;
+    forEachLine(filename, loadOBJ);
+    filepath = NULL;
+
+    return build();
+}
+
 wf_object_t* wf_object_loader_t::build() {
     WFCommand* cs = (WFCommand*) malloc(commands.size() * sizeof (WFCommand));
     float* args = (float*) malloc(arguments.size() * sizeof (float));
@@ -25,15 +34,14 @@ wf_object_t* wf_object_loader_t::build() {
     return new wf_object_t(cs, args, commands.size());
 }
 
-wf_object_t* wf_object_loader_t::load(const char* objFilename) {
-    forEachLine(objFilename, loadOBJ);
-
-    return build();
-}
-
-void wf_object_loader_t::loadMaterial(const char* mtlFilename) {
-    forEachLine(mtlFilename, loadMTL);
+void wf_object_loader_t::loadMaterial(const char* filename) {
+    printf("Opening %s material file\n", filename);
+    filepath->removeLast();
+    filepath->append(filename);
+    forEachLine(filepath->toString(), loadMTL);
     materials[currentMaterial.name] = currentMaterial;
+
+    printf("There are %ld materials in %s\n", materials.size(), filename);
 }
 
 void wf_object_loader_t::loadMTL(char* line) {
@@ -77,29 +85,22 @@ void wf_object_loader_t::loadMTL(char* line) {
             c.name = "shininess";
             break;
         case 'n':
-            materials[currentMaterial.name] = currentMaterial;
+            if (!currentMaterial.name.empty()) {
+                materials[currentMaterial.name] = currentMaterial;
+            }
             currentMaterial.n = 0;
 
             char name[256];
             sscanf(line, "%*s%s", name);
             currentMaterial.name = string(name);
+
+            printf("Loaded material %s\n", name);
         default:
             return;
     }
-    currentMaterial.commands[currentMaterial.n] = c;
+    currentMaterial.commands[currentMaterial.n++] = c;
     int i = currentMaterial.n * 4;
     memcpy(currentMaterial.arguments + i, args, sizeof (args));
-}
-
-char* findSlash(char* line, int n, char** indices) {
-    while (*line) {
-        if (*line == '/') {
-            indices[n] = line + 1;
-            return line + 1;
-        }
-        line++;
-    }
-    return line;
 }
 
 void wf_object_loader_t::loadOBJ(char* line) {
@@ -135,7 +136,7 @@ void wf_object_loader_t::loadOBJ(char* line) {
         normals.push_back(0);
     } else if (strcmp(name, "f") == 0) {
         parseFace(line);
-    } else if (strcmp(name, "newmtl") == 0) {
+    } else if (strcmp(name, "mtllib") == 0) {
         char name[256];
         sscanf(line, "%*s%s", name);
         loadMaterial(name);
@@ -144,6 +145,17 @@ void wf_object_loader_t::loadOBJ(char* line) {
         sscanf(line, "%*s%s", name);
         useMaterial(name);
     }
+}
+
+char* findSlash(char* line, int n, char** indices) {
+    while (*line) {
+        if (*line == '/') {
+            indices[n] = line + 1;
+            return line + 1;
+        }
+        line++;
+    }
+    return line;
 }
 
 void wf_object_loader_t::parseFace(char* line) {
@@ -332,4 +344,28 @@ void wf_object_loader_t::forEachLine(const char* filename, void (*c)(char*, wf_o
         c(line, *this);
     }
     fclose(file);
+}
+
+void wf_object_t::ambient(const GLfloat* coords) {
+    glMaterialfv(GL_FRONT, GL_AMBIENT, coords);
+}
+
+void wf_object_t::diffuse(const GLfloat* coords) {
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, coords);
+}
+
+void wf_object_t::specular(const GLfloat* coords) {
+    glMaterialfv(GL_FRONT, GL_SPECULAR, coords);
+}
+
+void wf_object_t::shininess(const GLfloat* coords) {
+    glMaterialfv(GL_FRONT, GL_SHININESS, coords);
+}
+
+void wf_object_t::begin(const GLfloat* ignore) {
+    glBegin(GL_POLYGON);
+}
+
+void wf_object_t::end(const GLfloat* ignore) {
+    glEnd();
 }
