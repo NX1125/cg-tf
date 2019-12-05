@@ -40,140 +40,43 @@ public:
     
     static wf_object_t* sHouseModel;
 
-    static void init(app_settings* settings) {
-        glClearColor(0, 0, 0, 0);
-        vertices[0][0] = vertices[1][0] = vertices[2][0] = vertices[3][0] = -1;
-        vertices[4][0] = vertices[5][0] = vertices[6][0] = vertices[7][0] = 1;
-        vertices[0][1] = vertices[1][1] = vertices[4][1] = vertices[5][1] = -1;
-        vertices[2][1] = vertices[3][1] = vertices[6][1] = vertices[7][1] = 1;
-        vertices[0][2] = vertices[3][2] = vertices[4][2] = vertices[7][2] = 1;
-        vertices[1][2] = vertices[2][2] = vertices[5][2] = vertices[6][2] = -1;
+    static void init(app_settings* settings);
 
-        glEnable(GL_DEPTH_TEST);
-
-        sFollower = new third_person_follower_t(&sTarget, 0.5f);
-
-        loadModels();
-    }
-
-    static void loadModels() {
-        wf_object_loader_t loader;
-
-        printf("Loading house model from \"casa.obj\"\n");
-        sHouseModel = loader.load("./models/casa.obj");
-    }
+    static void loadModels();
 
     // Extracted from:
     // https://www.opengl.org/archives/resources/code/samples/glut_examples/examples/cube.c
     // Will delete after the third-person-camera is done
-    static GLfloat light_diffuse[];
-    static GLfloat light_position[];
+    static GLfloat sLightDiffuse[];
+    static GLfloat sLightPosition[];
     static GLfloat normals[6][3];
     static GLint faces[6][4];
     static GLfloat vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
     static GLfloat color[6][3];
 
-    static void drawBox(void) {
-        int i;
+    static void drawBox(void);
 
-        for (i = 0; i < 6; i++) {
-            glColor3f(color[i][0], color[i][1], color[i][2]);
-            glBegin(GL_QUADS);
-            glNormal3fv(&normals[i][0]);
-            glVertex3fv(&vertices[faces[i][0]][0]);
-            glVertex3fv(&vertices[faces[i][1]][0]);
-            glVertex3fv(&vertices[faces[i][2]][0]);
-            glVertex3fv(&vertices[faces[i][3]][0]);
-            glEnd();
-        }
-    }
+    static void display();
 
-    static void display() {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    static void mouseDragged(int x, int y);
 
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+    static void mouseMoved(int x, int y);
 
-        sFollower->lookAt();
+    static void mouseButtonEvent(int button, int state, int x, int y);
 
-        glOrtho(-2, 2, -2, 2, 2, -2);
+    static void mousePressed(int button, int x, int y);
 
-        // Draw a cube for reference to the camera
-        glColor3f(1, 0, 0);
-        glScaled(0.5f, 0.5f, 0.5f);
-        // glRotated(180 * stopwatch_t::currentTimeMillis() / 1000.0f, 0, 1, 1);
-        // drawBox();
-        sHouseModel->draw();
+    static void mouseReleased(int button, int x, int y);
 
-        glutSwapBuffers();
-    }
+    static void reshape(int width, int height);
+    
+    static void idle();
 
-    static void mouseDragged(int x, int y) {
-        if (sFollowerMouseEnabled) {
-            sFollower->mouseDragged(x, y);
-            glutPostRedisplay();
-        }
-    }
+    static void keyPress(unsigned char key, int x, int y);
 
-    static void mouseMoved(int x, int y) {
-        // TODO Move cannon of player
-    }
+    static void reset();
 
-    static void mouseButtonEvent(int button, int state, int x, int y) {
-        switch (state) {
-            case GLUT_DOWN:
-                mousePressed(button, x, y);
-                break;
-            case GLUT_UP:
-                mouseReleased(button, x, y);
-                break;
-        }
-    }
-
-    static void mousePressed(int button, int x, int y) {
-        if (button == GLUT_RIGHT_BUTTON && sBehaviour == Behaviour::ON_GROUND) {
-            sFollower->setMousePressingPosition(x, y);
-            sFollowerMouseEnabled = true;
-        }
-    }
-
-    static void mouseReleased(int button, int x, int y) {
-        sFollowerMouseEnabled = false;
-    }
-
-    static void reshape(int width, int height) {
-        sWidth = width;
-        sHeight = height;
-
-        glViewport(0, 0, width, height);
-
-        printf("Reshape: (%d, %d)\n", width, height);
-    }
-
-    static void idle() {
-    }
-
-    static void keyPress(unsigned char key, int x, int y) {
-        switch (key) {
-            case 'r':
-                reset();
-                break;
-            case 'u':
-                break;
-            default:
-                break;
-        }
-    }
-
-    static void reset() {
-        for (reset_listener_t* l : sResetListeners) {
-            l->reset();
-        }
-    }
-
-    static void addResetListener(reset_listener_t* l) {
-        sResetListeners.push_back(l);
-    }
+    static void addResetListener(reset_listener_t* l);
 };
 
 
