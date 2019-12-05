@@ -29,20 +29,25 @@ struct app_settings {
      * of the airstrip.
      */
     double vel;
-    
+
     double bulletVel;
-    
+
     double eBulletVel;
     double eBulletF;
     double eVel;
-    
-    simple_svg* svg;
+
+    simple_svg* svg = NULL;
+
+    simple_svg_line* airstrip = NULL;
+
+    simple_svg_circle* arena = NULL;
+    simple_svg_circle* player = NULL;
+
+    vector<simple_svg_circle*> flyingEnemies;
+    vector<simple_svg_circle*> groundEnemies;
 
     app_settings(const char* filename);
 
-    app_settings() {
-    }
-    
     ~app_settings();
 
 private:
@@ -72,12 +77,14 @@ private:
      * @param root The {@code <arquivoDaArena>} element.
      */
     void readSVG(const TiXmlElement* root);
-    
+
     void readEnemy(const TiXmlElement* root);
-    
+
     void debugFields();
-    
+
     void parseSVG();
+    
+    void findElements();
 };
 
 #endif /* SETTINGS_H */

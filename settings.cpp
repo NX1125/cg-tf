@@ -34,9 +34,11 @@ app_settings::app_settings(const char* filename) {
         if (doc.LoadFile(f)) {
             read(wrapMissingElementException(&doc, "aplicacao"));
 
-            debugFields();
-
             parseSVG();
+
+            findElements();
+            
+            debugFields();
         } else {
             throw IOException(doc.ErrorDesc());
         }
@@ -49,6 +51,37 @@ app_settings::app_settings(const char* filename) {
 
         throw;
     }
+}
+void app_settings::findElements() {
+    for (unsigned int i = 0; i < svg->circles.size(); i++) {
+        simple_svg_circle* c = &svg->circles[i];
+        const string& fill = c->fillName;
+        if (fill == "blue") {
+            // arena
+            arena = c;
+        } else if (fill == "green") {
+            // player
+            player = c;
+        } else if (fill == "red") {
+            // flying enemy
+            flyingEnemies.push_back(c);
+        } else if (fill == "orange") {
+            // ground enemy
+            groundEnemies.push_back(c);
+        } else {
+            printf("[WARNING] Ignoring circle with color \"%s\"\n", fill.c_str());
+        }
+    }
+    
+    switch (svg->lines.size()) {
+            case 0:
+                throw MissingSVGShapeException("line");
+            default:
+                printf("[WARNING] There are too many lines in SVG. Only the first will be used.");
+            case 1:
+                airstrip = &svg->lines[0];
+                break;
+        }
 }
 
 void app_settings::debugFields() {
@@ -67,6 +100,14 @@ void app_settings::debugFields() {
     printf("enemy bullet velocity factor = %f\n", eBulletVel);
     printf("bullet frequency (bullets/s) = %f\n", eBulletF);
 
+    // SVG
+    printf("Arena: %p\n", arena);
+    printf("Player: %p\n", player);
+    printf("Airstrip: %p\n", airstrip);
+    
+    printf("Count of ground enemies: %ld\n", groundEnemies.size());
+    printf("Count of flying enemies: %ld\n", flyingEnemies.size());
+    
     printf(" ***\n");
 }
 
