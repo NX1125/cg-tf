@@ -4,6 +4,7 @@
 #include <math.h>
 #include <cstring>
 #include <cstdio>
+#include <cstdlib>
 #include <GL/gl.h>
 
 #include "shapes.h"
