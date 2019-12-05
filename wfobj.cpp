@@ -19,6 +19,8 @@ WFObject* WFObjectLoader::build() {
         args[i] = arguments[i];
     }
     
+    printf("%ld commands loaded\n", commands.size());
+    
     return new WFObject(cs, args, commands.size());
 }
 
