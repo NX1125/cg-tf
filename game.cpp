@@ -38,7 +38,7 @@ Behaviour Game::sBehaviour = Behaviour::ON_GROUND;
 bool Game::sFollowerMouseEnabled = false;
 vector<reset_listener_t*> Game::sResetListeners ;
 
-WFObject* Game::sHouseModel = NULL;
+wf_object_t* Game::sHouseModel = NULL;
 
 
 // As stated in spec, the size of the window is initially 500x500.

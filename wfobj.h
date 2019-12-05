@@ -16,13 +16,18 @@
 
 using namespace std;
 
-typedef void (*WFCommand)(const GLfloat*);
+typedef void (*WFFunction)(const GLfloat*);
 
-class WFObjectLoader;
+struct WFCommand {
+    WFFunction apply;
+    const char* name;
+};
 
-struct WFMaterial {
+class wf_object_loader_t;
+
+struct wf_material_t {
 private:
-    friend WFObjectLoader;
+    friend wf_object_loader_t;
 
     string name;
 
@@ -31,43 +36,40 @@ private:
     int n = 0;
 };
 
-class WFObject;
+class wf_object_t;
 
 class wf_command_t {
 public:
-    
-    virtual void apply(WFObject& obj) = 0;
+
+    virtual void apply(wf_object_t& obj) = 0;
 };
 
 /**
  * An object model that is parsed from a .obj file.
  */
-class WFObject {
+class wf_object_t {
 private:
     WFCommand* commands;
     float* arguments;
 
     int n;
 
-    WFObject(WFCommand* commands, float* arguments, int n) :
+    wf_object_t(WFCommand* commands, float* arguments, int n) :
     commands(commands), arguments(arguments), n(n) {
     }
 
 public:
 
-    WFObject(const char* filename) {
-    }
-
-    ~WFObject() {
-        delete commands;
-        delete arguments;
+    ~wf_object_t() {
+        free(commands);
+        free(arguments);
     }
 
     void draw();
 
 private:
     // commands
-    friend WFObjectLoader;
+    friend wf_object_loader_t;
 
     static void ambient(const GLfloat* coords) {
         //        glMaterialfv(GL_FRONT, GL_AMBIENT, coords);
@@ -97,9 +99,9 @@ private:
 /**
  * A class that loads an object per time. 
  */
-class WFObjectLoader {
+class wf_object_loader_t {
 private:
-    map<string, WFMaterial> materials;
+    map<string, wf_material_t> materials;
 
     vector<float> vertices;
     vector<float> normals;
@@ -108,10 +110,10 @@ private:
     vector<WFCommand> commands;
     vector<float> arguments;
 
-    WFMaterial currentMaterial;
+    wf_material_t currentMaterial;
 
 public:
-    WFObject* load(const char* objFilename);
+    wf_object_t* load(const char* objFilename);
 
 private:
 
@@ -123,23 +125,23 @@ private:
 
     void useMaterial(const char*);
 
-    void put(WFCommand c, vector<float>& v, int index);
+    void put(WFFunction c, const char* name, vector<float>& v, int index);
 
-    void put(WFCommand c);
+    void put(WFFunction c, const char* name);
 
     void parseFace(char* line);
 
-    static void loadMTL(char* line, WFObjectLoader& obj) {
+    static void loadMTL(char* line, wf_object_loader_t& obj) {
         obj.loadMTL(line);
     }
 
-    static void loadOBJ(char* line, WFObjectLoader& l) {
+    static void loadOBJ(char* line, wf_object_loader_t& l) {
         l.loadOBJ(line);
     }
 
-    void forEachLine(const char* filename, void (*)(char*, WFObjectLoader&));
+    void forEachLine(const char* filename, void (*)(char*, wf_object_loader_t&));
 
-    WFObject* build();
+    wf_object_t* build();
 };
 
 #endif /* WFOBJ_H */

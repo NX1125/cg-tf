@@ -38,7 +38,7 @@ public:
 
     static vector<reset_listener_t*> sResetListeners;
     
-    static WFObject* sHouseModel;
+    static wf_object_t* sHouseModel;
 
     static void init(app_settings* settings) {
         glClearColor(0, 0, 0, 0);
@@ -57,7 +57,7 @@ public:
     }
 
     static void loadModels() {
-        WFObjectLoader loader;
+        wf_object_loader_t loader;
 
         printf("Loading house model from \"casa.obj\"\n");
         sHouseModel = loader.load("./models/casa.obj");

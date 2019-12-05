@@ -1,15 +1,15 @@
 
 #include "wfobj.h"
 
-void WFObject::draw() {
+void wf_object_t::draw() {
     float* k = arguments;
     for (int i = 0; i < n; i++, k += 4) {
         // printf("c(%f, %f, %f, %f)\n", k[0], k[1], k[2], k[3]);
-        commands[i](k);
+        commands[i].apply(k);
     }
 }
 
-WFObject* WFObjectLoader::build() {
+wf_object_t* wf_object_loader_t::build() {
     WFCommand* cs = (WFCommand*) malloc(commands.size() * sizeof (WFCommand));
     float* args = (float*) malloc(arguments.size() * sizeof (float));
 
@@ -22,21 +22,21 @@ WFObject* WFObjectLoader::build() {
 
     printf("%ld commands loaded\n", commands.size());
 
-    return new WFObject(cs, args, commands.size());
+    return new wf_object_t(cs, args, commands.size());
 }
 
-WFObject* WFObjectLoader::load(const char* objFilename) {
+wf_object_t* wf_object_loader_t::load(const char* objFilename) {
     forEachLine(objFilename, loadOBJ);
 
     return build();
 }
 
-void WFObjectLoader::loadMaterial(const char* mtlFilename) {
+void wf_object_loader_t::loadMaterial(const char* mtlFilename) {
     forEachLine(mtlFilename, loadMTL);
     materials[currentMaterial.name] = currentMaterial;
 }
 
-void WFObjectLoader::loadMTL(char* line) {
+void wf_object_loader_t::loadMTL(char* line) {
     // newmtl <name>
     // Ka <r> <g> <b>
     // Kd <r> <g> <b>
@@ -51,17 +51,20 @@ void WFObjectLoader::loadMTL(char* line) {
 
     switch (name[0]) {
         case 'K':
-            sscanf(line, "%*s %f%f%f", args, args + 1, args + 2);
+            sscanf(line, "%*s%f%f%f", args, args + 1, args + 2);
             args[3] = 1.0f;
             switch (name[1]) {
                 case 'a':
-                    c = WFObject::ambient;
+                    c.apply = wf_object_t::ambient;
+                    c.name = "ambient";
                     break;
                 case 'd':
-                    c = WFObject::diffuse;
+                    c.apply = wf_object_t::diffuse;
+                    c.name = "diffuse";
                     break;
                 case 's':
-                    c = WFObject::specular;
+                    c.apply = wf_object_t::specular;
+                    c.name = "specular";
                     break;
             }
             break;
@@ -70,7 +73,8 @@ void WFObjectLoader::loadMTL(char* line) {
             args[1] = 0;
             args[2] = 0;
             args[3] = 0;
-            c = WFObject::shininess;
+            c.apply = wf_object_t::shininess;
+            c.name = "shininess";
             break;
         case 'n':
             materials[currentMaterial.name] = currentMaterial;
@@ -98,7 +102,7 @@ char* findSlash(char* line, int n, char** indices) {
     return line;
 }
 
-void WFObjectLoader::loadOBJ(char* line) {
+void wf_object_loader_t::loadOBJ(char* line) {
     char name[20];
     if (sscanf(line, "%s", name) < 1) {
         return;
@@ -142,7 +146,7 @@ void WFObjectLoader::loadOBJ(char* line) {
     }
 }
 
-void WFObjectLoader::parseFace(char* line) {
+void wf_object_loader_t::parseFace(char* line) {
     char* source = line;
 
     enum wf_token_type_t {
@@ -261,46 +265,51 @@ void WFObjectLoader::parseFace(char* line) {
 
     // semantic analysis
 
-    put(WFObject::begin);
+    put(wf_object_t::begin, "begin");
 
     for (int i = 0; i < faceVertices.size(); i++) {
         wf_face_vertex_t vertex = faceVertices[i];
 
         if (vertex.texture != 0) {
-            put(glTexCoord3fv, textures, vertex.texture);
+            put(glTexCoord3fv, "texture", textures, vertex.texture);
         }
         if (vertex.normal != 0) {
-            put(glNormal3fv, normals, vertex.normal);
+            put(glNormal3fv, "normal", normals, vertex.normal);
         }
-        put(glVertex4fv, vertices, vertex.vertex);
+        put(glVertex4fv, "vertex", vertices, vertex.vertex);
     }
 
-    put(WFObject::end);
+    put(wf_object_t::end, "end");
 }
 
-void WFObjectLoader::put(WFCommand c, vector<float>& v, int index) {
+void wf_object_loader_t::put(WFFunction c, const char* name,
+        vector<float>& v, int index) {
+    WFCommand f = {c, name};
     if (index < 0) {
         index += v.size();
+    } else {
+        index--;
     }
     index *= 4;
-    commands.push_back(c);
+    commands.push_back(f);
     // printf("%f %f %f %f\n", v[0], v[1], v[2], v[3]);
     for (int i = 0; i < 4; i++) {
         arguments.push_back(v[index++]);
     }
 }
 
-void WFObjectLoader::put(WFCommand c) {
-    commands.push_back(c);
+void wf_object_loader_t::put(WFFunction c, const char* name) {
+    WFCommand f = {c, name};
+    commands.push_back(f);
     for (int i = 0; i < 4; i++) {
         arguments.push_back(0);
     }
 }
 
-void WFObjectLoader::useMaterial(const char* name) {
+void wf_object_loader_t::useMaterial(const char* name) {
     string s(name);
 
-    WFMaterial& m = materials[s];
+    wf_material_t& m = materials[s];
 
     for (int i = 0, k = 0; i < m.n; i++) {
         commands.push_back(m.commands[i]);
@@ -311,7 +320,7 @@ void WFObjectLoader::useMaterial(const char* name) {
     }
 }
 
-void WFObjectLoader::forEachLine(const char* filename, void (*c)(char*, WFObjectLoader&)) {
+void wf_object_loader_t::forEachLine(const char* filename, void (*c)(char*, wf_object_loader_t&)) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
         string msg = "Could not open: ";
