@@ -34,3 +34,8 @@ struct point2d closestPointFromLineToPoint(
     return closest;
 }
 
+float point3f::distanceSqr(const point3f& p1, const point3f& p2) {
+    vector3f v = p1 - p2;
+    return v.lengthSqr();
+}
+

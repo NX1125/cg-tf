@@ -12,6 +12,8 @@
 #include "settings.h"
 #include "xmlutils.h"
 #include "simplesvg.h"
+#include "stopwatch.h"
+#include "thirdpersonfollower.h"
 
 using namespace std;
 
@@ -33,15 +35,81 @@ public:
 
     static int sWidth;
     static int sHeight;
+    
+    static third_person_follower_t* sFollower;
+    static point3f sTarget;
 
     static void init() {
         glClearColor(0, 0, 0, 0);
+        vertices[0][0] = vertices[1][0] = vertices[2][0] = vertices[3][0] = -1;
+        vertices[4][0] = vertices[5][0] = vertices[6][0] = vertices[7][0] = 1;
+        vertices[0][1] = vertices[1][1] = vertices[4][1] = vertices[5][1] = -1;
+        vertices[2][1] = vertices[3][1] = vertices[6][1] = vertices[7][1] = 1;
+        vertices[0][2] = vertices[3][2] = vertices[4][2] = vertices[7][2] = 1;
+        vertices[1][2] = vertices[2][2] = vertices[5][2] = vertices[6][2] = -1;
+        
+        glEnable(GL_DEPTH_TEST);
+        
+        sFollower = new third_person_follower_t(&sTarget, 0.5f);
+    }
+
+    // Extracted from:
+    // https://www.opengl.org/archives/resources/code/samples/glut_examples/examples/cube.c
+    // Will delete after the third-person-camera is done
+    static GLfloat light_diffuse[];
+    static GLfloat light_position[];
+    static GLfloat normals[6][3];
+    static GLint faces[6][4];
+    static GLfloat vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
+    static GLfloat color[6][3];
+
+    static void drawBox(void) {
+        int i;
+
+        for (i = 0; i < 6; i++) {
+            glColor3f(color[i][0], color[i][1], color[i][2]);
+            glBegin(GL_QUADS);
+            glNormal3fv(&normals[i][0]);
+            glVertex3fv(&vertices[faces[i][0]][0]);
+            glVertex3fv(&vertices[faces[i][1]][0]);
+            glVertex3fv(&vertices[faces[i][2]][0]);
+            glVertex3fv(&vertices[faces[i][3]][0]);
+            glEnd();
+        }
     }
 
     static void display() {
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
         
+        sFollower->lookAt();
+        
+        glOrtho(-2, 2, -2, 2, 2, -2);
+
+        // Draw a cube for reference to the camera
+        // glColor3f(1, 0, 0);
+        glScaled(0.5f, 0.5f, 0.5f);
+        // glRotated(180 * stopwatch_t::currentTimeMillis() / 1000.0f, 0, 1, 1);
+        drawBox();
+
         glutSwapBuffers();
+    }
+    
+    static void mousePressed(){
+        
+    }
+    
+    
+    static void mouseMoved(int x, int y){
+        sFollower->mouseDragged(x, y);
+        glutPostRedisplay();
+    }
+    
+    
+    static void mouseReleased(){
+        
     }
 
     static void reshape(int width, int height) {
@@ -57,6 +125,39 @@ public:
     }
 };
 
+
+GLfloat Main::light_diffuse[] = {1.0, 0.0, 0.0, 1.0}; /* Red diffuse light. */
+GLfloat Main::light_position[] = {1.0, 1.0, 1.0, 0.0}; /* Infinite light location. */
+GLfloat Main::normals[6][3] = {/* Normals for the 6 faces of a cube. */
+    {-1.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0},
+    {1.0, 0.0, 0.0},
+    {0.0, -1.0, 0.0},
+    {0.0, 0.0, 1.0},
+    {0.0, 0.0, -1.0}
+};
+GLint Main::faces[6][4] = {/* Vertex indices for the 6 faces of a cube. */
+    {0, 1, 2, 3},
+    {3, 2, 6, 7},
+    {7, 6, 5, 4},
+    {4, 5, 1, 0},
+    {5, 6, 2, 1},
+    {7, 4, 0, 3}
+};
+GLfloat Main::vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
+GLfloat Main::color[6][3] = {
+    {1,0,0},
+    {0,1,0},
+    {0,0,1},
+    {1,1,0},
+    {0,1,1},
+    {1,0,1},
+};
+
+third_person_follower_t* Main::sFollower = NULL;
+point3f Main::sTarget ;
+
+
 // As stated in spec, the size of the window is initially 500x500.
 int Main::sWidth = 500;
 int Main::sHeight = 500;
@@ -65,8 +166,6 @@ int Main::sHeight = 500;
  * 
  */
 int main(int argc, char** argv) {
-    printf("myself: %s\n", argv[0]);
-
     glutInit(&argc, argv);
 
     try {
@@ -77,14 +176,14 @@ int main(int argc, char** argv) {
 
         app_settings* settings = loadSettings(argv[1]);
 
-        Main::init();
-
         // TODO create game context (objects, GLUT, etc)
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
         std::string title("TF - Guilherme, Ricardo");
 
         glutCreateWindow(title.c_str());
+
+        Main::init();
 
         glutReshapeFunc(Main::reshape);
         glutDisplayFunc(Main::display);
@@ -93,7 +192,7 @@ int main(int argc, char** argv) {
         // glutKeyboardUpFunc(keyUp);
 
         // glutMouseFunc(mouseButton);
-        // glutPassiveMotionFunc(passiveMotion);
+        glutPassiveMotionFunc(Main::mouseMoved);
 
         glutIdleFunc(Main::idle);
 

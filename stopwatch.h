@@ -8,7 +8,7 @@
 #ifndef STOPWATCH_H
 #define STOPWATCH_H
 
-class stopwatch {
+class stopwatch_t {
 private:
     /**
      * When the stopwatch started measuring the time from.
@@ -25,11 +25,11 @@ public:
     /**
      * Creates a new stopwatch with the current time being the initial offset.
      */
-    stopwatch() {
+    stopwatch_t() {
         reset();
     }
 
-    ~stopwatch();
+    ~stopwatch_t();
 
     /**
      * Restarts this stopwatch at the current time.
@@ -59,7 +59,7 @@ public:
         offset = marked;
     }
 
-private:
+public:
 
     /**
      * Returns the number of milliseconds since glutInit was called.

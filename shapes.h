@@ -14,6 +14,7 @@
 
 #include <GL/gl.h>
 
+// Deprecated
 struct vector2d {
     double x;
     double y;
@@ -97,6 +98,100 @@ struct vector2d {
     }
 };
 
+struct vector3f {
+    float x;
+    float y;
+    float z;
+
+    vector3f() {
+    }
+
+    vector3f(float x, float y, float z) :
+    x(x), y(y), z(z) {
+    }
+
+    float normalize() {
+        float length = sqrt(lengthSqr());
+        x /= length;
+        y /= length;
+        z /= length;
+        return length;
+    }
+
+    float lengthSqr() const {
+        return x * x + y * y + z * z;
+    }
+
+    vector3f operator/(const float& right) const {
+        vector3f result(*this); // Make a copy of myself.
+        result /= right; // Reuse compound assignment
+        return result;
+    }
+
+    vector3f& operator/=(const float& right) {
+        x /= right;
+        y /= right;
+        z /= right;
+        return *this;
+    }
+
+    float operator*(const vector3f& right) const {
+        return x * right.x + y * right.y + z * right.z;
+    }
+
+    vector3f operator*(const float& right) const {
+        vector3f result(*this); // Make a copy of myself.
+        result *= right; // Reuse compound assignment
+        return result;
+    }
+
+    vector3f& operator*=(float right) {
+        x *= right;
+        y *= right;
+        z *= right;
+        return *this;
+    }
+
+    vector3f operator+(const vector3f& right) const {
+        vector3f result(*this); // Make a copy of myself.
+        result += right; // Reuse compound assignment
+        return result;
+    }
+
+    vector3f& operator+=(const vector3f& right) {
+        x += right.x;
+        y += right.y;
+        z += right.z;
+        return *this;
+    }
+
+    vector3f operator-(const vector3f& right) const {
+        vector3f result(*this); // Make a copy of myself.
+        result -= right; // Reuse compound assignment
+        return result;
+    }
+
+    vector3f& operator-=(const vector3f& right) {
+        x -= right.x;
+        y -= right.y;
+        z -= right.z;
+        return *this;
+    }
+
+    vector3f operator-() const {
+        vector3f result = {x, y, z}; // Make a copy of myself.
+        return result;
+    }
+    
+    static float angle(const vector3f& a, const vector3f& b) {
+        return acosf((a * b) / (a.length() * b.length()));
+    }
+    
+    float length() const {
+        return sqrt(lengthSqr());
+    }
+};
+
 vector2d make_unitVector(double a);
 
 struct point2d {
@@ -139,6 +234,54 @@ struct point2d {
     }
 
     void add(vector2d& v, double s);
+};
+
+struct point3f {
+    
+    float x;
+    float y;
+    float z;
+
+    point3f() {
+    }
+
+    point3f(float x, float y, float z) :
+    x(x), y(y), z(z) {
+    }
+
+    vector3f operator-(const point3f& right) const {
+        vector3f v = {x - right.x, y - right.y, z - right.z};
+        return v;
+    }
+
+    point3f operator-(const vector3f& right) const {
+        point3f v = {x - right.x, y - right.y, z - right.z};
+        return v;
+    }
+
+    point3f operator+(const vector3f& right) const {
+        point3f result(*this); // Make a copy of myself.
+        result += right; // Reuse compound assignment
+        return result;
+    }
+
+    point3f& operator+=(const vector3f& right) {
+        x += right.x;
+        y += right.y;
+        z += right.z;
+        return *this;
+    }
+
+    point3f& operator-=(const vector3f& right) {
+        x -= right.x;
+        y -= right.y;
+        z -= right.z;
+        return *this;
+    }
+
+    void add(vector3f& v, float s);
+    
+    static float distanceSqr(const point3f& p1, const point3f& p2);
 };
 
 double distanceSqr(const point2d& p1, const point2d& p2);
