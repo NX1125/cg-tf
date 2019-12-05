@@ -40,6 +40,7 @@ vector<reset_listener_t*> Game::sResetListeners;
 
 wf_object_t* Game::sHouseModel = NULL;
 
+arena_t* Game::sArena = NULL;
 
 // As stated in spec, the size of the window is initially 500x500.
 int Game::sWidth = 500;
@@ -59,12 +60,16 @@ void Game::init(app_settings* settings) {
     glLightfv(GL_LIGHT0, GL_POSITION, sLightPosition);
 
     glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHTING);
 
     glEnable(GL_DEPTH_TEST);
 
     sFollower = new third_person_follower_t(&sTarget, 0.5f);
+    // as stated in the spec, the height of the arena is 8 times the player's
+    // diameter. We have the radius, that's why 2 * 8
+    sArena = new arena_t(settings->player->radius * 2 * 8, settings->arena->radius);
 
+    sFollower->setAngle(0, 20 * M_PI / 180.0);
+    
     loadModels();
 }
 
@@ -100,12 +105,24 @@ void Game::display() {
 
     glOrtho(-2, 2, -2, 2, 2, -2);
 
+    glEnable(GL_LIGHTING);
+
     // Draw a cube for reference to the camera
     glColor3f(1, 0, 0);
     glScaled(0.5f, 0.5f, 0.5f);
     // glRotated(180 * stopwatch_t::currentTimeMillis() / 1000.0f, 0, 1, 1);
     // drawBox();
     sHouseModel->draw();
+
+    glDisable(GL_LIGHTING);
+
+    // TODO Update camera depending of the current type
+    // TODO Draw arena
+    sArena->draw();
+    // TODO Draw player
+    // TODO Draw each flying enemy
+    // TODO Draw each base
+    // TODO Draw projectiles (bombs and bullets)
 
     glutSwapBuffers();
 }

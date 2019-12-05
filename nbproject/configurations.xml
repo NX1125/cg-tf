@@ -4,7 +4,9 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>airplane.h</itemPath>
       <itemPath>airplanemovement.h</itemPath>
+      <itemPath>arena.h</itemPath>
       <itemPath>filepath.h</itemPath>
       <itemPath>game.h</itemPath>
       <itemPath>resetlistener.h</itemPath>
@@ -27,7 +29,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>airplane.cpp</itemPath>
       <itemPath>airplanemovement.cpp</itemPath>
+      <itemPath>arena.cpp</itemPath>
       <itemPath>circle.cpp</itemPath>
       <itemPath>filepath.cpp</itemPath>
       <itemPath>game.cpp</itemPath>
@@ -90,9 +94,17 @@
           <commandLine>-lGL -lGLU -lglut</commandLine>
         </linkerTool>
       </compileType>
+      <item path="airplane.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="airplane.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="airplanemovement.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="airplanemovement.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="arena.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="arena.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -185,9 +197,17 @@
           <commandLine>-lGL -lGLU -lglut</commandLine>
         </linkerTool>
       </compileType>
+      <item path="airplane.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="airplane.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="airplanemovement.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="airplanemovement.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="arena.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="arena.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -15,6 +15,7 @@
 #include "settings.h"
 #include "resetlistener.h"
 #include "wfobj.h"
+#include "arena.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
@@ -39,6 +40,8 @@ public:
     static vector<reset_listener_t*> sResetListeners;
     
     static wf_object_t* sHouseModel;
+    
+    static arena_t* sArena;
 
     static void init(app_settings* settings);
 

@@ -35,7 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/airplane.o \
 	${OBJECTDIR}/airplanemovement.o \
+	${OBJECTDIR}/arena.o \
 	${OBJECTDIR}/circle.o \
 	${OBJECTDIR}/filepath.o \
 	${OBJECTDIR}/game.o \
@@ -80,10 +82,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cg-tf: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cg-tf ${OBJECTFILES} ${LDLIBSOPTIONS} -lGL -lGLU -lglut
 
+${OBJECTDIR}/airplane.o: airplane.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/airplane.o airplane.cpp
+
 ${OBJECTDIR}/airplanemovement.o: airplanemovement.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/airplanemovement.o airplanemovement.cpp
+
+${OBJECTDIR}/arena.o: arena.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/arena.o arena.cpp
 
 ${OBJECTDIR}/circle.o: circle.cpp
 	${MKDIR} -p ${OBJECTDIR}
