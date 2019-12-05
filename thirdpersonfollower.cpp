@@ -22,15 +22,18 @@ void third_person_follower_t::move(float dx, float dy) {
     float distance = v.normalize();
 
     float horizontal = M_PI + atan2(v.y, v.x) + dx * horizontalFactor;
-    float vertical = vector3f::angle(v, vector3f(v.x, v.y, 0.0f));
-
-    if (v.z > 0) {
-        vertical = -vertical;
-    }
-
-    vertical -= dy * verticalFactor;
+    float vertical = atan2(-v.z, vector3f(v.x, v.y, 0).length());
 
     // printf("h = %f, v = %f\n", horizontal, vertical);
+    
+    // printf("h = %f, v = %f\n", horizontal, vertical);
+    // printf("v = (%f, %f, %f)\n", v.x, v.y, v.z);
+
+    // if (v.z > 0) {
+    //     vertical = -vertical;
+    // }
+
+    vertical -= dy * verticalFactor;
 
     horizontal = clampAngle(horizontal);
 
@@ -49,6 +52,8 @@ void third_person_follower_t::move(float dx, float dy) {
     // rotate <x, 0, z> by horizontal around the z axis
     // The z axis continues to be the same.
 
+    // printf("h = %f, v = %f\n", horizontal, vertical);
+    
     // g is from Ground
     float g = x;
     x = cosf(horizontal) * g;
@@ -56,4 +61,5 @@ void third_person_follower_t::move(float dx, float dy) {
 
     // <x, y, z> is the vector of the camera
     camera = *target + vector3f(x, y, z) * distance;
+    // printf("camera = (%f, %f, %f)\n", camera.x, camera.y, camera.z);
 }
