@@ -99,10 +99,11 @@ public:
         glOrtho(-2, 2, -2, 2, 2, -2);
 
         // Draw a cube for reference to the camera
-        // glColor3f(1, 0, 0);
+        glColor3f(1, 0, 0);
         glScaled(0.5f, 0.5f, 0.5f);
         // glRotated(180 * stopwatch_t::currentTimeMillis() / 1000.0f, 0, 1, 1);
-        drawBox();
+        // drawBox();
+        sHouseModel->draw();
 
         glutSwapBuffers();
     }

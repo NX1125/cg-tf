@@ -4,6 +4,7 @@
 void WFObject::draw() {
     float* k = arguments;
     for (int i = 0; i < n; i++, k += 4) {
+        // printf("c(%f, %f, %f, %f)\n", k[0], k[1], k[2], k[3]);
         commands[i](k);
     }
 }
@@ -86,7 +87,7 @@ void WFObjectLoader::loadMTL(char* line) {
     memcpy(currentMaterial.arguments + i, args, sizeof (args));
 }
 
-void findSlash(char* line, int& n, char** indices) {
+char* findSlash(char* line, int& n, char** indices) {
     while (*line) {
         if (*line == '/') {
             // remove the slash and put a '\0'. That creates a substring.
@@ -94,13 +95,18 @@ void findSlash(char* line, int& n, char** indices) {
             indices[n++] = line + 1;
             break;
         }
+        line++;
     }
+    return line;
 }
 
 void WFObjectLoader::loadOBJ(char* line) {
     char name[20];
-    sscanf(line, name, "%s");
-    if (strcmp(name, "v")) {
+    if (sscanf(line,  "%s", name) < 1) {
+        return;
+    }
+    // printf("name \"%s\"\n", name);
+    if (strcmp(name, "v") == 0) {
         float x, y, z, w = 1;
         // v <x> <y> <z> [w]
         sscanf(line, "%*s%f%f%f%f", &x, &y, &z, &w);
@@ -109,24 +115,27 @@ void WFObjectLoader::loadOBJ(char* line) {
         arguments.push_back(z);
         arguments.push_back(w);
         commands.push_back(glVertex4fv);
-    } else if (strcmp(name, "vt")) {
+    } else if (strcmp(name, "vt") == 0) {
         float u, v = 0, w = 0;
         // v <x> <y> <z> [w]
         sscanf(line, "%*s%f%f%f", &u, &v, &w);
         arguments.push_back(u);
         arguments.push_back(v);
         arguments.push_back(w);
+        arguments.push_back(0);
         commands.push_back(glTexCoord3fv);
-    } else if (strcmp(name, "vn")) {
+    } else if (strcmp(name, "vn") == 0) {
         float x, y, z;
         // v <x> <y> <z> [w]
         sscanf(line, "%*s%f%f%f", &x, &y, &z);
         arguments.push_back(x);
         arguments.push_back(y);
         arguments.push_back(z);
+        arguments.push_back(0);
         commands.push_back(glNormal3fv);
-    } else if (strcmp(name, "f")) {
+    } else if (strcmp(name, "f") == 0) {
         line++;
+        put(WFObject::begin);
         while (*line != '\0' && *line != '\n') {
             // f <v>/[vt]/[vn]
             int v, vt, vn;
@@ -138,8 +147,8 @@ void WFObjectLoader::loadOBJ(char* line) {
 
             indices[n++] = line;
 
-            findSlash(line, n, indices);
-            findSlash(line, n, indices);
+            line = findSlash(line, n, indices);
+            line = findSlash(line, n, indices);
 
             sscanf(indices[0], "%d", &v);
 
@@ -152,14 +161,14 @@ void WFObjectLoader::loadOBJ(char* line) {
 
             put(glVertex4fv, vertices, v);
         }
-    } else if (strcmp(name, "newmtl")) {
+        put(WFObject::end);
+    } else if (strcmp(name, "newmtl") == 0) {
         char name[256];
         sscanf(line, "%*s%s", name);
         loadMaterial(name);
-    } else if (strcmp(name, "usemtl")) {
+    } else if (strcmp(name, "usemtl") == 0) {
         char name[256];
         sscanf(line, "%*s%s", name);
-        loadMaterial(name);
         useMaterial(name);
     }
 }
@@ -168,9 +177,17 @@ void WFObjectLoader::put(WFCommand c, vector<float>& v, int index) {
     if (index < 0) {
         index += v.size();
     }
+    index *= 4;
     commands.push_back(c);
     for (int i = 0; i < 4; i++) {
         arguments.push_back(v[index++]);
+    }
+}
+
+void WFObjectLoader::put(WFCommand c) {
+    commands.push_back(c);
+    for (int i = 0; i < 4; i++) {
+        arguments.push_back(0);
     }
 }
 

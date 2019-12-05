@@ -29,13 +29,13 @@ private:
     float* arguments;
 
     int n;
-    
+
     WFObject(WFCommand* commands, float* arguments, int n) :
     commands(commands), arguments(arguments), n(n) {
     }
-    
+
 public:
-    
+
     ~WFObject() {
         delete commands;
         delete arguments;
@@ -48,19 +48,27 @@ private:
     friend WFObjectLoader;
 
     static void ambient(const GLfloat* coords) {
-        glMaterialfv(GL_FRONT, GL_AMBIENT, coords);
+        //        glMaterialfv(GL_FRONT, GL_AMBIENT, coords);
     }
 
     static void diffuse(const GLfloat* coords) {
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, coords);
+        //        glMaterialfv(GL_FRONT, GL_DIFFUSE, coords);
     }
 
     static void specular(const GLfloat* coords) {
-        glMaterialfv(GL_FRONT, GL_SPECULAR, coords);
+        //        glMaterialfv(GL_FRONT, GL_SPECULAR, coords);
     }
 
     static void shininess(const GLfloat* coords) {
-        glMaterialfv(GL_FRONT, GL_SHININESS, coords);
+        //        glMaterialfv(GL_FRONT, GL_SHININESS, coords);
+    }
+
+    static void begin(const GLfloat* ignore) {
+        glBegin(GL_POLYGON);
+    }
+
+    static void end(const GLfloat* ignore) {
+        glEnd();
     }
 };
 
@@ -106,6 +114,8 @@ private:
 
     void put(WFCommand c, vector<float>& v, int index);
 
+    void put(WFCommand c);
+
     static void loadMTL(char* line, WFObjectLoader& obj) {
         obj.loadMTL(line);
     }
@@ -115,7 +125,7 @@ private:
     }
 
     void forEachLine(const char* filename, void (*)(char*, WFObjectLoader&));
-    
+
     WFObject* build();
 };
 
