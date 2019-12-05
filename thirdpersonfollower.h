@@ -24,7 +24,7 @@ private:
     point3f camera;
     
     float normalDistance = 1;
-    float followFactor = 0.5;
+    float followFactor = 0.3;
     
     int previousMousePositionX;
     int previousMousePositionY;
@@ -33,36 +33,19 @@ private:
     float verticalFactor = 0.01f;
 public:
 
-    third_person_follower_t(point3f* target, float normalDistance) :
-    target(target), normalDistance(normalDistance) {
-        camera = *target;
-        camera.x += normalDistance;
-    }
+    third_person_follower_t(point3f* target, float normalDistance);
     
-    void lookAt() {
-        gluLookAt(camera.x, camera.y, camera.z,
-                target->x, target->y, target->z,
-                0,0,1);
-    }
+    void lookAt();
 
-    void setMousePressingPosition(int x, int y) {
-        previousMousePositionX = x;
-        previousMousePositionY = y;
-    }
+    void setMousePressingPosition(int x, int y);
     
     /**
      * Called when the mouse were moved. The camera rotates around the target
      * with horizontal and vertical movememnts.
      */
-    void mouseDragged(int x, int y) {
-        int dx = x - previousMousePositionX;
-        int dy = y - previousMousePositionY;
-        
-        move(dx, dy);
-        
-        previousMousePositionX = x;
-        previousMousePositionY = y;
-    }
+    void mouseDragged(int x, int y);
+    
+    void follow(float dt);
     
 private:
     
