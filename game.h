@@ -33,7 +33,7 @@ public:
     static bool sFollowerMouseEnabled;
     
     static Behaviour sBehaviour;
-
+    
     static void init() {
         glClearColor(0, 0, 0, 0);
         vertices[0][0] = vertices[1][0] = vertices[2][0] = vertices[3][0] = -1;
@@ -99,6 +99,10 @@ public:
         }
     }
 
+    static void mouseMoved(int x, int y) {
+        // TODO Move cannon of player
+    }
+
     static void mouseButtonEvent(int button, int state, int x, int y) {
         switch (state) {
             case GLUT_DOWN:
@@ -131,6 +135,21 @@ public:
     }
 
     static void idle() {
+    }
+    
+    static void keyPress(unsigned char key, int x, int y) {
+        switch (key) {
+            case 'r':
+                reset();
+                break;
+            case 'u':
+                break;
+            default:
+                break;
+        }
+    }
+    
+    static void reset() {
     }
 };
 

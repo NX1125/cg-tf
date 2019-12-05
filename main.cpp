@@ -54,11 +54,10 @@ int main(int argc, char** argv) {
         glutReshapeFunc(Game::reshape);
         glutDisplayFunc(Game::display);
 
-        // glutKeyboardFunc(keyDown);
+        glutKeyboardFunc(Game::keyPress);
         // glutKeyboardUpFunc(keyUp);
 
-        // glutMouseFunc(mouseButton);
-        // glutPassiveMotionFunc(Main::mouseMoved);
+        glutPassiveMotionFunc(Game::mouseMoved);
         glutMotionFunc(Game::mouseDragged);
         glutMouseFunc(Game::mouseButtonEvent);
 
