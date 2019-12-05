@@ -106,7 +106,11 @@ private:
 public:
     wf_object_t* load(const char* filename);
 
+    wf_object_t* loadRes(const char* name);
+
 private:
+
+    wf_object_t* load();
 
     void loadMaterial(const char* filename);
 

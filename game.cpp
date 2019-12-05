@@ -1,5 +1,6 @@
 
 #include "game.h"
+#include "airplane.h"
 
 GLfloat Game::sLightDiffuse[] = {1.0, 0.0, 0.0, 1.0}; /* Red diffuse light. */
 GLfloat Game::sLightPosition[] = {1.0, 1.0, 1.0, 0.0}; /* Infinite light location. */
@@ -69,7 +70,7 @@ void Game::init(app_settings* settings) {
     sArena = new arena_t(settings->player->radius * 2 * 8, settings->arena->radius);
 
     sFollower->setAngle(0, 20 * M_PI / 180.0);
-    
+
     loadModels();
 }
 
@@ -78,6 +79,8 @@ void Game::loadModels() {
 
     printf("Loading house model from \"casa.obj\"\n");
     sHouseModel = loader.load("./models/casa.obj");
+
+    airplane_t::sInit(loader);
 }
 
 void Game::drawBox(void) {

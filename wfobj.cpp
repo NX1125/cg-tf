@@ -12,8 +12,28 @@ void wf_object_t::draw() {
 wf_object_t* wf_object_loader_t::load(const char* filename) {
     file_path fp(filename);
     filepath = &fp;
-    forEachLine(filename, loadOBJ);
-    filepath = NULL;
+    return load();
+}
+
+wf_object_t* wf_object_loader_t::loadRes(const char* name) {
+    file_path fp("models");
+    string s(name);
+    s += ".obj";
+    fp.append(s);
+    filepath = &fp;
+    return load();
+}
+
+wf_object_t* wf_object_loader_t::load() {
+    arguments.clear();
+    commands.clear();
+    materials.clear();
+    normals.clear();
+    textures.clear();
+    vertices.clear();
+    const char* name = filepath->toString();
+    printf("Loading OBJ file: %s\n", name);
+    forEachLine(name, loadOBJ);
 
     return build();
 }
