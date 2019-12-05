@@ -4,7 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>airplane_movement_t.h</itemPath>
+      <itemPath>airplanemovement.h</itemPath>
       <itemPath>filepath.h</itemPath>
       <itemPath>settings.h</itemPath>
       <itemPath>shapes.h</itemPath>
@@ -87,9 +87,9 @@
           <commandLine>-lGL -lGLU -lglut</commandLine>
         </linkerTool>
       </compileType>
-      <item path="airplane_movement_t.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="airplanemovement.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="airplanemovement.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -176,9 +176,9 @@
           <commandLine>-lGL -lGLU -lglut</commandLine>
         </linkerTool>
       </compileType>
-      <item path="airplane_movement_t.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="airplanemovement.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="airplanemovement.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
