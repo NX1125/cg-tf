@@ -58,10 +58,21 @@ void third_person_follower_t::move(float dx, float dy) {
 
     vertical -= dy * verticalFactor;
 
+    setAngle(horizontal, -vertical, distance);
+}
+
+void third_person_follower_t::setAngle(float horizontal, float vertical) {
+    setAngle(horizontal, vertical, (*target - camera).length());
+}
+
+void third_person_follower_t::setAngle(float horizontal, float vertical,
+        float distance) {
+    // do this for some reason I don't know why
+    vertical = -vertical;
+    
     horizontal = clampAngle(horizontal);
 
     // clamp the vertical angle to -60° and 60°
-    const float maxVerticalAngle = 60 * M_PI / 180.0f;
     if (vertical < -maxVerticalAngle) {
         vertical = -maxVerticalAngle;
     } else if (vertical > maxVerticalAngle) {
@@ -90,8 +101,8 @@ void third_person_follower_t::move(float dx, float dy) {
 void third_person_follower_t::follow(float dt) {
     vector3f v = *target - camera;
     float length = v.normalize();
-    
+
     length = length * (1 - followFactor) + normalDistance * followFactor;
-    
+
     camera = *target - v * length;
 }

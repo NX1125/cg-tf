@@ -83,8 +83,24 @@ private:
     void debugFields();
 
     void parseSVG();
-    
+
     void findElements();
+
+    /**
+     * Translate the arena with its center to the origin and move all objects
+     * in the same way. That's done because it helps with the positioning of 
+     * objects and the arena is the reference to the other objects. But instead
+     * of updating the position of other objects, use make everyone in the SVG 
+     * to be in the world coordinates.
+     */
+    void normalize();
+
+    /**
+     * Translates the circle's center by (dx, dy).
+     */
+    static void translate(int dx, int dy, simple_svg_circle* circle);
+    
+    static void translate(int dx, int dy, vector<simple_svg_circle*>& circles);
 };
 
 #endif /* SETTINGS_H */

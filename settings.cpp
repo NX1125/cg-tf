@@ -37,7 +37,9 @@ app_settings::app_settings(const char* filename) {
             parseSVG();
 
             findElements();
-            
+
+            normalize();
+
             debugFields();
         } else {
             throw IOException(doc.ErrorDesc());
@@ -52,6 +54,31 @@ app_settings::app_settings(const char* filename) {
         throw;
     }
 }
+
+void app_settings::normalize() {
+    // let the position of the arena be take out of the other objects
+    double dx = -arena->cx;
+    double dy = -arena->cy;
+
+    translate(dx, dy, player);
+    translate(dx, dy, arena); // too lazy to do it bruh
+    translate(dx, dy, flyingEnemies);
+    translate(dx, dy, groundEnemies);
+    
+    airstrip->translate(dx, dy);
+}
+
+void app_settings::translate(int dx, int dy, vector<simple_svg_circle*>& circles) {
+    for (int i = 0; i < circles.size(); i++) {
+        translate(dx, dy, circles[i]);
+    }
+}
+
+void app_settings::translate(int dx, int dy, simple_svg_circle* circle) {
+    circle->cx += dx;
+    circle->cy += dy;
+}
+
 void app_settings::findElements() {
     for (unsigned int i = 0; i < svg->circles.size(); i++) {
         simple_svg_circle* c = &svg->circles[i];
@@ -72,16 +99,16 @@ void app_settings::findElements() {
             printf("[WARNING] Ignoring circle with color \"%s\"\n", fill.c_str());
         }
     }
-    
+
     switch (svg->lines.size()) {
-            case 0:
-                throw MissingSVGShapeException("line");
-            default:
-                printf("[WARNING] There are too many lines in SVG. Only the first will be used.");
-            case 1:
-                airstrip = &svg->lines[0];
-                break;
-        }
+        case 0:
+            throw MissingSVGShapeException("line");
+        default:
+            printf("[WARNING] There are too many lines in SVG. Only the first will be used.");
+        case 1:
+            airstrip = &svg->lines[0];
+            break;
+    }
 }
 
 void app_settings::debugFields() {
@@ -104,10 +131,10 @@ void app_settings::debugFields() {
     printf("Arena: %p\n", arena);
     printf("Player: %p\n", player);
     printf("Airstrip: %p\n", airstrip);
-    
+
     printf("Count of ground enemies: %ld\n", groundEnemies.size());
     printf("Count of flying enemies: %ld\n", flyingEnemies.size());
-    
+
     printf(" ***\n");
 }
 

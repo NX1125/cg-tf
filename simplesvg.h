@@ -54,7 +54,7 @@ public:
         glColor3f(fillColor.r, fillColor.g, fillColor.b);
     }
 
-    virtual void translate(float dx, float dy) = 0;
+    virtual void translate(double dx, double dy) = 0;
 
     void transformGL() {
         // simple_svg_matrix matrix;
@@ -94,7 +94,7 @@ public:
 
     void onDraw() override;
 
-    void translate(float dx, float dy) override {
+    void translate(double dx, double dy) override {
         cx += dx;
         cy += dy;
     }
@@ -116,7 +116,7 @@ public:
 
     void onDraw() override;
 
-    void translate(float dx, float dy) override {
+    void translate(double dx, double dy) override {
         cx += dx;
         cy += dy;
     }
@@ -135,7 +135,7 @@ public:
 
     void onDraw() override;
 
-    void translate(float dx, float dy) override {
+    void translate(double dx, double dy) override {
         x += dx;
         y += dy;
     }
@@ -153,7 +153,7 @@ public:
 
     void onDraw() override;
 
-    void translate(float dx, float dy) override {
+    void translate(double dx, double dy) override {
         for (int i = 0; i < n; i++) {
             path[2 * i] += dx;
             path[2 * i + 1] += dy;
