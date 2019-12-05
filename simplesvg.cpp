@@ -127,7 +127,7 @@ simple_svg_circle::simple_svg_circle(const TiXmlElement* root) : simple_svg_shap
     radius = readDoubleAttribute(root, "r");
 }
 
-circle_blueprint* simple_svg_ellipse::blueprint = NULL;
+circle_blueprint_t* simple_svg_ellipse::blueprint = NULL;
 
 simple_svg_ellipse::simple_svg_ellipse(const TiXmlElement* root) : simple_svg_shape(root) {
     cx = readDoubleAttribute(root, "cx");
@@ -137,7 +137,7 @@ simple_svg_ellipse::simple_svg_ellipse(const TiXmlElement* root) : simple_svg_sh
     ry = readDoubleAttribute(root, "ry");
 
     if (blueprint == NULL) {
-        blueprint = new circle_blueprint(64);
+        blueprint = new circle_blueprint_t(64);
     }
 }
 
@@ -160,7 +160,7 @@ void simple_svg_circle::toCircle(Circle dest) const {
     dest->cx = cx;
     dest->cy = cy;
     dest->radius = radius;
-    dest->blueprint = new circle_blueprint(radius, ARC_LENGTH);
+    dest->blueprint = new circle_blueprint_t(radius, ARC_LENGTH);
 }
 
 void simple_svg_line::toLine(line* line) const {

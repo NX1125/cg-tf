@@ -16,11 +16,11 @@
 #define M_TWOPI (2 * M_PI)
 #endif
 
-circle_blueprint::circle_blueprint(double radius, double maxArcLength) :
-circle_blueprint((unsigned int) ceil((M_TWOPI * radius) / maxArcLength)) {
+circle_blueprint_t::circle_blueprint_t(double radius, double maxArcLength) :
+circle_blueprint_t((unsigned int) ceil((M_TWOPI * radius) / maxArcLength)) {
 }
 
-circle_blueprint::circle_blueprint(unsigned int n) : numOfPoints(n) {
+circle_blueprint_t::circle_blueprint_t(unsigned int n) : numOfPoints(n) {
     points = (vector2d*) malloc(n * sizeof(vector2d));
 
     double angle = M_TWOPI / n;
@@ -37,7 +37,7 @@ circle_blueprint::circle_blueprint(unsigned int n) : numOfPoints(n) {
     }
 }
 
-void circle_blueprint::draw(bool opaque) {
+void circle_blueprint_t::draw(bool opaque) {
     glBegin(opaque ? GL_TRIANGLE_FAN : GL_LINE_LOOP);
     {
         if (opaque) {
@@ -58,7 +58,7 @@ void circle_blueprint::draw(bool opaque) {
     glEnd();
 }
 
-circle_blueprint::~circle_blueprint() {
+circle_blueprint_t::~circle_blueprint_t() {
     if (points != NULL) {
         free(points);
     }
@@ -85,7 +85,7 @@ void circle::translate() {
     glTranslated(cx, cy, 0);
 }
 
-void circle_blueprint::draw(bool opaque, double r) {
+void circle_blueprint_t::draw(bool opaque, double r) {
     glScaled(r, r, 1);
     draw(opaque);
 }

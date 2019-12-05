@@ -84,7 +84,7 @@ public:
 
     double radius;
 
-    circle_blueprint* blueprint = NULL;
+    circle_blueprint_t* blueprint = NULL;
 
     simple_svg_circle(const TiXmlElement* root);
 
@@ -103,7 +103,7 @@ public:
 
 class simple_svg_ellipse : public simple_svg_shape {
 private:
-    static circle_blueprint* blueprint;
+    static circle_blueprint_t* blueprint;
 
 public:
     double cx;

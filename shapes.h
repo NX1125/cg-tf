@@ -313,12 +313,12 @@ struct line {
     }
 };
 
-typedef struct circle_blueprint* CircleBlueprint;
+typedef struct circle_blueprint_t* CircleBlueprint;
 
 /**
  * A circumference sampled by a fixed angle.
  */
-struct circle_blueprint {
+struct circle_blueprint_t {
     /**
      * The number of points this circumference has.
      */
@@ -329,11 +329,11 @@ struct circle_blueprint {
      */
     struct vector2d* points;
 
-    circle_blueprint(double radius, double maxArcLength);
+    circle_blueprint_t(double radius, double maxArcLength);
 
-    circle_blueprint(unsigned int n);
+    circle_blueprint_t(unsigned int n);
 
-    virtual ~circle_blueprint();
+    virtual ~circle_blueprint_t();
 
     void draw(bool opaque);
 
