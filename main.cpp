@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
 
         glutCreateWindow(title.c_str());
 
-        Game::init();
+        Game::init(settings);
 
         glutReshapeFunc(Game::reshape);
         glutDisplayFunc(Game::display);
@@ -68,6 +68,8 @@ int main(int argc, char** argv) {
         // glutInitWindowPosition(100, 20);
 
         printf("Game context created\n");
+
+        delete settings;
 
         glutMainLoop();
     } catch (IOException& ex) {

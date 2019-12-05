@@ -41,6 +41,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/game.o \
 	${OBJECTDIR}/lines.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/resetlistener.o \
 	${OBJECTDIR}/settings.o \
 	${OBJECTDIR}/shapes.o \
 	${OBJECTDIR}/simplesvg.o \
@@ -109,6 +110,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/resetlistener.o: resetlistener.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/resetlistener.o resetlistener.cpp
 
 ${OBJECTDIR}/settings.o: settings.cpp
 	${MKDIR} -p ${OBJECTDIR}

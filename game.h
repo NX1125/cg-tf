@@ -12,6 +12,8 @@
 
 #include "shapes.h"
 #include "thirdpersonfollower.h"
+#include "settings.h"
+#include "resetlistener.h"
 
 
 enum Behaviour {
@@ -34,7 +36,9 @@ public:
     
     static Behaviour sBehaviour;
     
-    static void init() {
+    static vector<reset_listener_t*> sResetListeners;
+    
+    static void init(app_settings* settings) {
         glClearColor(0, 0, 0, 0);
         vertices[0][0] = vertices[1][0] = vertices[2][0] = vertices[3][0] = -1;
         vertices[4][0] = vertices[5][0] = vertices[6][0] = vertices[7][0] = 1;
@@ -150,6 +154,13 @@ public:
     }
     
     static void reset() {
+        for (reset_listener_t* l : sResetListeners) {
+            l->reset();
+        }
+    }
+    
+    static void addResetListener(reset_listener_t* l) {
+        sResetListeners.push_back(l);
     }
 };
 

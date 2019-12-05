@@ -6,6 +6,8 @@
                    projectFiles="true">
       <itemPath>airplanemovement.h</itemPath>
       <itemPath>filepath.h</itemPath>
+      <itemPath>game.h</itemPath>
+      <itemPath>reset_listener_t.h</itemPath>
       <itemPath>settings.h</itemPath>
       <itemPath>shapes.h</itemPath>
       <itemPath>simplesvg.h</itemPath>
@@ -31,6 +33,7 @@
       <itemPath>game.cpp</itemPath>
       <itemPath>lines.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>resetlistener.cpp</itemPath>
       <itemPath>settings.cpp</itemPath>
       <itemPath>shapes.cpp</itemPath>
       <itemPath>simplesvg.cpp</itemPath>
@@ -100,9 +103,15 @@
       </item>
       <item path="game.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="game.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="reset_listener_t.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="resetlistener.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="settings.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -191,9 +200,15 @@
       </item>
       <item path="game.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="game.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="reset_listener_t.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="resetlistener.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="settings.cpp" ex="false" tool="1" flavor2="0">
       </item>
