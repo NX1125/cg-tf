@@ -8,8 +8,24 @@ void WFObject::draw() {
     }
 }
 
-void WFObjectLoader::load(const char* objFilename) {
+WFObject* WFObjectLoader::build() {
+    WFCommand* cs = (WFCommand*) malloc(commands.size() * sizeof(WFCommand));
+    float* args = (float*) malloc(arguments.size() * sizeof(float));
+    
+    for (int i = 0; i < commands.size(); i++) {
+        cs[i] = commands[i];
+    }
+    for (int i = 0; i < arguments.size(); i++) {
+        args[i] = arguments[i];
+    }
+    
+    return new WFObject(cs, args, commands.size());
+}
+
+WFObject* WFObjectLoader::load(const char* objFilename) {
     forEachLine(objFilename, loadOBJ);
+    
+    return build();
 }
 
 void WFObjectLoader::loadMaterial(const char* mtlFilename) {

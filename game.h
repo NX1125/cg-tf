@@ -14,7 +14,7 @@
 #include "thirdpersonfollower.h"
 #include "settings.h"
 #include "resetlistener.h"
-
+#include "wfobj.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
@@ -33,11 +33,13 @@ public:
     static point3f sTarget;
 
     static bool sFollowerMouseEnabled;
-    
+
     static Behaviour sBehaviour;
-    
+
     static vector<reset_listener_t*> sResetListeners;
     
+    static WFObject* sHouseModel;
+
     static void init(app_settings* settings) {
         glClearColor(0, 0, 0, 0);
         vertices[0][0] = vertices[1][0] = vertices[2][0] = vertices[3][0] = -1;
@@ -50,6 +52,15 @@ public:
         glEnable(GL_DEPTH_TEST);
 
         sFollower = new third_person_follower_t(&sTarget, 0.5f);
+
+        loadModels();
+    }
+
+    static void loadModels() {
+        WFObjectLoader loader;
+
+        printf("Loading house model from \"casa.obj\"\n");
+        sHouseModel = loader.load("./models/casa.obj");
     }
 
     // Extracted from:
@@ -140,7 +151,7 @@ public:
 
     static void idle() {
     }
-    
+
     static void keyPress(unsigned char key, int x, int y) {
         switch (key) {
             case 'r':
@@ -152,13 +163,13 @@ public:
                 break;
         }
     }
-    
+
     static void reset() {
         for (reset_listener_t* l : sResetListeners) {
             l->reset();
         }
     }
-    
+
     static void addResetListener(reset_listener_t* l) {
         sResetListeners.push_back(l);
     }

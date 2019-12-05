@@ -29,7 +29,17 @@ private:
     float* arguments;
 
     int n;
+    
+    WFObject(WFCommand* commands, float* arguments, int n) :
+    commands(commands), arguments(arguments), n(n) {
+    }
+    
 public:
+    
+    ~WFObject() {
+        delete commands;
+        delete arguments;
+    }
 
     void draw();
 
@@ -82,7 +92,7 @@ private:
     WFMaterial currentMaterial;
 
 public:
-    void load(const char* objFilename);
+    WFObject* load(const char* objFilename);
 
 private:
 
@@ -105,6 +115,8 @@ private:
     }
 
     void forEachLine(const char* filename, void (*)(char*, WFObjectLoader&));
+    
+    WFObject* build();
 };
 
 #endif /* WFOBJ_H */
