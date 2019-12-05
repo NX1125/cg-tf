@@ -38,13 +38,13 @@ OBJECTFILES= \
 	${OBJECTDIR}/airplanemovement.o \
 	${OBJECTDIR}/circle.o \
 	${OBJECTDIR}/filepath.o \
+	${OBJECTDIR}/game.o \
 	${OBJECTDIR}/lines.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/settings.o \
 	${OBJECTDIR}/shapes.o \
 	${OBJECTDIR}/simplesvg.o \
 	${OBJECTDIR}/stopwatch.o \
-	${OBJECTDIR}/takeoff.o \
 	${OBJECTDIR}/textrendering.o \
 	${OBJECTDIR}/thirdpersonfollower.o \
 	${OBJECTDIR}/tinyxml/tinystr.o \
@@ -94,6 +94,11 @@ ${OBJECTDIR}/filepath.o: filepath.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/filepath.o filepath.cpp
 
+${OBJECTDIR}/game.o: game.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/game.o game.cpp
+
 ${OBJECTDIR}/lines.o: lines.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -123,11 +128,6 @@ ${OBJECTDIR}/stopwatch.o: stopwatch.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/stopwatch.o stopwatch.cpp
-
-${OBJECTDIR}/takeoff.o: takeoff.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/takeoff.o takeoff.cpp
 
 ${OBJECTDIR}/textrendering.o: textrendering.cpp
 	${MKDIR} -p ${OBJECTDIR}

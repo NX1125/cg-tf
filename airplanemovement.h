@@ -8,6 +8,10 @@
 #ifndef AIRPLANE_MOVEMENT_T_H
 #define AIRPLANE_MOVEMENT_T_H
 
+#include <cmath>
+
+#include "shapes.h"
+
 class airplane_movement_t {
 private:
 

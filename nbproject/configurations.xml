@@ -28,13 +28,13 @@
       <itemPath>airplanemovement.cpp</itemPath>
       <itemPath>circle.cpp</itemPath>
       <itemPath>filepath.cpp</itemPath>
+      <itemPath>game.cpp</itemPath>
       <itemPath>lines.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>settings.cpp</itemPath>
       <itemPath>shapes.cpp</itemPath>
       <itemPath>simplesvg.cpp</itemPath>
       <itemPath>stopwatch.cpp</itemPath>
-      <itemPath>takeoff.cpp</itemPath>
       <itemPath>textrendering.cpp</itemPath>
       <itemPath>thirdpersonfollower.cpp</itemPath>
       <itemPath>tinyxml/tinystr.cpp</itemPath>
@@ -97,6 +97,8 @@
       </item>
       <item path="filepath.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="game.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
@@ -116,8 +118,6 @@
       <item path="stopwatch.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="stopwatch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="takeoff.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="takeoff.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -186,6 +186,8 @@
       </item>
       <item path="filepath.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="game.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
@@ -205,8 +207,6 @@
       <item path="stopwatch.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="stopwatch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="takeoff.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="takeoff.h" ex="false" tool="3" flavor2="0">
       </item>
