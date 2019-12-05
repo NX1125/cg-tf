@@ -49,6 +49,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/tinyxml/tinyxml.o \
 	${OBJECTDIR}/tinyxml/tinyxmlerror.o \
 	${OBJECTDIR}/tinyxml/tinyxmlparser.o \
+	${OBJECTDIR}/wfobj.o \
 	${OBJECTDIR}/xmlutils.o
 
 
@@ -145,6 +146,11 @@ ${OBJECTDIR}/tinyxml/tinyxmlparser.o: tinyxml/tinyxmlparser.cpp
 	${MKDIR} -p ${OBJECTDIR}/tinyxml
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tinyxml/tinyxmlparser.o tinyxml/tinyxmlparser.cpp
+
+${OBJECTDIR}/wfobj.o: wfobj.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/wfobj.o wfobj.cpp
 
 ${OBJECTDIR}/xmlutils.o: xmlutils.cpp
 	${MKDIR} -p ${OBJECTDIR}
