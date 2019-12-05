@@ -21,6 +21,8 @@ private:
 public:
     file_path(const char* path);
 
+    ~file_path();
+
     void debug();
 
     void append(const char* component);

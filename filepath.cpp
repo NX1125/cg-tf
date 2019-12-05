@@ -30,6 +30,9 @@ file_path::file_path(const char* path) {
     }
 }
 
+file_path::~file_path() {
+}
+
 void file_path::append(const char* component) {
     add(component);
 
@@ -87,4 +90,5 @@ void file_path::debug() {
 
 void file_path::removeLast() {
     components.pop_back();
+    valid = false;
 }
