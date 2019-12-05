@@ -182,7 +182,7 @@ public:
 
     void onDraw() override;
 
-    void translate(float dx, float dy) override {
+    void translate(double dx, double dy) override {
         x1 += dx;
         y1 += dy;
         x2 += dx;
