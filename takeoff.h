@@ -70,12 +70,12 @@ private:
      * measured between the start and end of the takeoff must not be greater
      * than this time.
      */
-    unsigned int timeToComplete;
+    time_t timeToComplete = 0L;
 
     /**
      * The time since the start of the current takeoff. 
      */
-    time_t currentTime = 0;
+    time_t currentTime = 0L;
 
     /**
      * The current position of the target that takes off.

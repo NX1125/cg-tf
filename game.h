@@ -19,6 +19,11 @@
 #include "airplanemovement.h"
 #include "player.h"
 #include "stopwatch.h"
+#include "airstrip.h"
+
+enum Camera {
+    COCKPIT, CANNON_VIEW, THIRD_PERSON_CAMERA, UP_VIEW, SIDE_VIEW
+};
 
 /**
  * A static class, just to not use global variables, as asked in a previous TC.
@@ -30,13 +35,10 @@ public:
     static int sHeight;
 
     static third_person_follower_t* sFollower;
-    static point3f sTarget;
 
     static bool sFollowerMouseEnabled;
 
     static vector<reset_listener_t*> sResetListeners;
-    
-    static wf_object_t* sHouseModel;
     
     static arena_t* sArena;
 
@@ -54,12 +56,16 @@ public:
     static GLfloat vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
     static GLfloat color[6][3];
     
+    static const float NORMAL_DISTANCE ;
+    
     static player_t* sPlayer;
     
     static stopwatch_t* sWatch;
     
     static time_t sAccumulatedTime;
-
+    
+    static Camera sCameraView;
+    
     static void drawBox(void);
 
     static void display();

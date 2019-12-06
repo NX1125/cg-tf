@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/airplanemovement.o \
+	${OBJECTDIR}/airstrip.o \
 	${OBJECTDIR}/arena.o \
 	${OBJECTDIR}/circle.o \
 	${OBJECTDIR}/filepath.o \
@@ -87,6 +88,11 @@ ${OBJECTDIR}/airplanemovement.o: airplanemovement.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/airplanemovement.o airplanemovement.cpp
+
+${OBJECTDIR}/airstrip.o: airstrip.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/airstrip.o airstrip.cpp
 
 ${OBJECTDIR}/arena.o: arena.cpp
 	${MKDIR} -p ${OBJECTDIR}

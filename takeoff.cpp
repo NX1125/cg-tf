@@ -7,7 +7,7 @@
 
 #include "takeoff.h"
 
-#include <math.h>
+#include <cmath>
 #include <cstdio>
 
 takeoff_t::takeoff_t(const point3f& start, const point3f& end,
@@ -24,7 +24,7 @@ start(start), end(end), height(height), timeToComplete(timeToComplete) {
     // The horizontal angle is the angle of the airstrip on the xy plane, 
     // and since the airstrip doesn't move, the angle is always the same.
     // So we just compute it once and return it.
-    horizontalAngle = atan2(normal.y, normal.x);
+    horizontalAngle = atan2f(normal.y, normal.x);
 }
 
 void takeoff_t::reset() {
@@ -37,7 +37,7 @@ void takeoff_t::reset() {
 void takeoff_t::update(int time) {
     // Check if we didn't reached the end of the airstrip
     if (completed || currentTime > timeToComplete) {
-        printf("Takeoff completed in %lu ms\n", currentTime);
+        printf("Takeoff completed in %ld ms\n", currentTime);
 
         position = end;
         position.z = height;

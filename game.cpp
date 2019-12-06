@@ -31,13 +31,10 @@ GLfloat Game::color[6][3] = {
 };
 
 third_person_follower_t* Game::sFollower = NULL;
-point3f Game::sTarget;
 
 bool Game::sFollowerMouseEnabled = false;
 
 vector<reset_listener_t*> Game::sResetListeners;
-
-wf_object_t* Game::sHouseModel = NULL;
 
 arena_t* Game::sArena = NULL;
 
@@ -50,6 +47,10 @@ time_t Game::sAccumulatedTime = 0;
 // As stated in spec, the size of the window is initially 500x500.
 int Game::sWidth = 500;
 int Game::sHeight = 500;
+
+Camera Game::sCameraView = Camera::UP_VIEW;
+
+const float Game::NORMAL_DISTANCE = 50;
 
 void Game::init(app_settings* settings) {
     glClearColor(0, 0, 0, 0);
@@ -81,8 +82,10 @@ void Game::init(app_settings* settings) {
 
     sPlayer = new player_t(takeoff, settings->player->radius);
 
+    sArena->setAirstrip(new airstrip_t(start, end, sPlayer->getRadius() * 2));
+
     sFollower = new third_person_follower_t(/*point3f(0,0,0)*/
-            sPlayer->getPosition(), 10);
+            sPlayer->getPosition(), NORMAL_DISTANCE);
     sFollower->setAngle(0, -20 * M_PI / 180.0);
 
     loadModels();
@@ -94,8 +97,6 @@ void Game::init(app_settings* settings) {
 
 void Game::loadModels() {
     wf_object_loader_t loader;
-
-    sHouseModel = loader.loadRes("trenoSemHelice");
 
     player_t::sInit(loader);
 }
@@ -118,30 +119,35 @@ void Game::drawBox(void) {
 void Game::display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    //    gluPerspective(/* field of view in degree */ 40.0,
-    //            /* aspect ratio */ 1.0,
-    //            /* Z near */ 1.0, /* Z far */ 500.0);
-    //    glOrtho(-sArena->getRadius(), sArena->getRadius(), -sArena->getRadius(), sArena->getRadius(), sArena->getHeight(), -10);
+    switch (sCameraView) {
+        case Camera::UP_VIEW:
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    // sFollower->lookAtDebug();
-    //    gluLookAt(sArena->getRadius(), sArena->getRadius(), sArena->getHeight(),
-    //            0,0,0, 0,0,1);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
 
-    glOrtho(-sArena->getRadius(), sArena->getRadius(), -sArena->getRadius(), sArena->getRadius(), -sArena->getHeight() * 2, sArena->getHeight() * 2);
-    // For easy debug
+            glOrtho(-sArena->getRadius(), sArena->getRadius(), -sArena->getRadius(), sArena->getRadius(), -sArena->getHeight() * 2, sArena->getHeight() * 2);
+            break;
+        case Camera::THIRD_PERSON_CAMERA:
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            gluPerspective(/* field of view in degree */ 40.0,
+                    /* aspect ratio */ 1.0,
+                    /* Z near */ 1.0, /* Z far */ 500.0);
+
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            sFollower->lookAt();
+            break;
+    }
+
 
     glEnable(GL_LIGHTING);
 
-    // Draw a cube for reference to the camera
     glColor3f(1, 0, 0);
-    // glScaled(0.5f, 0.5f, 0.5f);
-    // glRotated(180 * stopwatch_t::currentTimeMillis() / 1000.0f, 0, 1, 1);
+    // Draw a cube for reference to the camera
     // drawBox();
-    // sHouseModel->draw();
 
     sPlayer->draw();
 
@@ -230,11 +236,31 @@ void Game::idle() {
 }
 
 void Game::keyPressed(unsigned char key, int x, int y) {
-    if (key == 'r') {
-        reset();
-    } else {
-        sPlayer->keyPress(key);
+    switch (key) {
+        case 'r':
+            reset();
+            return;
+        case '1':
+            printf("Changing to cockpit view\n");
+            sCameraView = Camera::COCKPIT;
+            break;
+        case '2':
+            printf("Changing to cannon view\n");
+            sCameraView = Camera::CANNON_VIEW;
+            break;
+        case '3':
+            printf("Changing to third person view\n");
+            sCameraView = Camera::THIRD_PERSON_CAMERA;
+            break;
+        case '4':
+            printf("Changing to up view\n");
+            sCameraView = Camera::UP_VIEW;
+            break;
+        default:
+            sPlayer->keyPress(key);
+            return ;
     }
+    glutPostRedisplay();
 }
 
 void Game::keyReleased(unsigned char key, int x, int y) {
@@ -242,6 +268,8 @@ void Game::keyReleased(unsigned char key, int x, int y) {
 }
 
 void Game::reset() {
+    printf("Resetting game\n");
+    printf("Resetting listeners");
     for (reset_listener_t* l : sResetListeners) {
         l->reset();
     }

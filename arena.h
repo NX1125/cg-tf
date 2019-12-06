@@ -9,6 +9,7 @@
 #define ARENA_H
 
 #include "shapes.h"
+#include "airstrip.h"
 
 /**
  * The arena is the environment that the player plays the game. In here, there
@@ -43,13 +44,11 @@ private:
 
     float radiusSqr;
 
+    airstrip_t* airstrip = NULL;
+
 public:
 
-    arena_t(float height, float radius) :
-    height(height), radius(radius) {
-        blueprint = new circle_blueprint_t(32);
-        radiusSqr = radius * radius;
-    }
+    arena_t(float height, float radius);
 
     /**
      * The drawing of an arena counts the bases of the enemies, decorations such
@@ -58,6 +57,10 @@ public:
      * Enemy bases that are dead are not painted.
      */
     void draw();
+
+    void setAirstrip(airstrip_t* airstrip) {
+        this->airstrip = airstrip;
+    }
 
     float getHeight() const {
         return height;

@@ -1,9 +1,17 @@
 
 #include "arena.h"
 
+arena_t::arena_t(float height, float radius) :
+height(height), radius(radius) {
+    blueprint = new circle_blueprint_t(32);
+    radiusSqr = radius * radius;
+}
+
+
 void arena_t::draw() {
     glPushMatrix();
     {
+        airstrip->draw();
         glScalef(radius, radius, 1);
         drawGround();
         // drawRoof();
