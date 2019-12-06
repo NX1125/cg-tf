@@ -40,7 +40,7 @@ public:
     static bool sFollowerMouseEnabled;
 
     static vector<reset_listener_t*> sResetListeners;
-    
+
     static arena_t* sArena;
 
     static void init(app_settings* settings);
@@ -67,8 +67,6 @@ public:
     
     static Camera sCameraView;
     
-    static void drawBox(void);
-
     static void display();
 
     static void mouseDragged(int x, int y);
