@@ -8,19 +8,20 @@
 #include "thirdpersonfollower.h"
 
 third_person_follower_t::third_person_follower_t(const point3f& target, float normalDistance) :
-target(target), camera(target), normalDistance(normalDistance) {
+target(target), camera(target), normalDistance(normalDistance), offset(0, 0, 1) {
     camera.x += normalDistance;
 }
 
 void third_person_follower_t::lookAt() {
+    point3f p = getFocus();
     gluLookAt(camera.x, camera.y, camera.z,
-            target.x, target.y, target.z,
+            p.x, p.y, p.z,
             0, 0, 1);
 }
 
 void third_person_follower_t::lookAtDebug() {
     gluLookAt(target.x + normalDistance, target.y, target.z + normalDistance * 0.1,
-            target.x , target.y , target.z,
+            target.x, target.y, target.z,
             0, 0, 1);
 }
 
@@ -43,22 +44,13 @@ void third_person_follower_t::mouseDragged(int x, int y) {
     previousMousePositionY = y;
 }
 
-float clampAngle(float angle) {
-    float t = fmod(angle, M_PI * 2);
-    if (angle > 0) {
-        return t;
-    } else {
-        return M_PI * 2 + t;
-    }
-}
-
 void third_person_follower_t::move(float dx, float dy) {
     vector3f v = camera - target;
 
     float distance = v.normalize();
 
     // convert the target-camera vector to angles.
-    float horizontal = atan2(v.y, v.x) + dx * horizontalFactor;
+    float horizontal = atan2f(v.y, v.x) + dx * horizontalFactor;
     float vertical = asinf((camera.z - target.z) / distance);
 
     vertical += dy * verticalFactor;
@@ -122,7 +114,7 @@ void third_person_follower_t::follow(float dt) {
     }
 
     if (invalidated) {
-        float horizontal = atan2(v.y, v.x);
+        float horizontal = atan2f(v.y, v.x);
 
         // rotate <1,0,0> by vertical around the y axis
         float r = cosf(vertical);

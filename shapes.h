@@ -394,5 +394,9 @@ struct point2d closestPointFromLineToPoint(
 
 void drawAxis(float size);
 
+
+float clampAngle(float angle);
+
+
 #endif /* SHAPES_H */
 

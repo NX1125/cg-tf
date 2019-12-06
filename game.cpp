@@ -86,7 +86,7 @@ void Game::init(app_settings* settings) {
 
     sFollower = new third_person_follower_t(/*point3f(0,0,0)*/
             sPlayer->getPosition(), NORMAL_DISTANCE);
-    sFollower->setAngle(0, -20 * M_PI / 180.0);
+    sFollower->setAngle(0, 20 * M_PI / 180.0);
 
     loadModels();
 
@@ -120,6 +120,32 @@ void Game::display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     switch (sCameraView) {
+        case Camera::TAKEOFF_FUNCTION_VIEW:
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glOrtho(0, 1, 0, 1, 1, -1);
+        {
+            int n = 20;
+
+            glColor3f(1, 1, 0);
+            glBegin(GL_LINE_STRIP);
+            {
+                for (int i = 0; i <= n; i++) {
+                    float x = i / (float) n;
+                    float y = takeoff_t::getTakeoffFactor(x);
+
+                    glVertex2d(x, y);
+                }
+            }
+            glEnd();
+        }
+
+            glutSwapBuffers();
+
+            return;
         case Camera::UP_VIEW:
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
@@ -217,6 +243,7 @@ void Game::idle() {
     // printf("Time: %d ms\n", time);
 
     sPlayer->update(time);
+    sPlayer->clipZ(sArena->getHeight());
 
     if (sPlayer->canTeleport()) {
         sPlayer->teleport(sArena->getRadius());
@@ -256,9 +283,13 @@ void Game::keyPressed(unsigned char key, int x, int y) {
             printf("Changing to up view\n");
             sCameraView = Camera::UP_VIEW;
             break;
+        case '5':
+            printf("Changing to takeoff function view\n");
+            sCameraView = Camera::TAKEOFF_FUNCTION_VIEW;
+            break;
         default:
             sPlayer->keyPress(key);
-            return ;
+            return;
     }
     glutPostRedisplay();
 }

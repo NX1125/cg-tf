@@ -8,8 +8,6 @@
 #ifndef AIRPLANE_MOVEMENT_T_H
 #define AIRPLANE_MOVEMENT_T_H
 
-#include <cmath>
-
 #include "shapes.h"
 #include "behaviourupdate.h"
 

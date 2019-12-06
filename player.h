@@ -65,6 +65,11 @@ private:
 public:
 
     player_t(takeoff_t* takeoff, float radius);
+    
+    /**
+     * Moves the player to inside the arena if it hit the roof or the ground.
+     */
+    void clipZ(float height);
 
     void setVelocityFactor(float velocityFactor) {
         this->velocityFactor = velocityFactor;

@@ -94,14 +94,30 @@ void takeoff_t::setTakeoff(float k) {
     // The vertical angle is a bit complicated, since it uses the tangent of a
     // function to be the slope. We have to compute the arctan of it.
     verticalAngle = atanf(direction.z);
+    
+    printf("v = %f\n", verticalAngle);
 }
 
 float takeoff_t::getTakeoffHeight(float x) const {
-    return height * sinf(x * M_PI / 2);
+    return height * getTakeoffFactor(x);
 }
+
+float takeoff_t::getTakeoffFactor(float x) {
+    // The idea here is to scale the sine wave of [-pi, pi] to [0,1].
+    // f(t) = sin(t), f(0) = 0, f(1) = sin(1)
+    // f(t) = sin(t - pi / 2), f(0) = sin(-pi/2)=-1, f(1) = sin(1 - pi / 2)
+    // f(t) = sin(pi * t - pi / 2), f(0) = sin(-pi/2)=-1, f(1) = sin(pi - pi / 2) = 1
+    // f(t) = sin(pi * t - pi / 2) + 1, f(0) = sin(-pi/2) + 1=0, f(1) = 1 + 1 = 2
+    // f(t) = (sin(pi * t - pi / 2) + 1) / 2, f(0) = 0 / 2 = 0, f(1) = 2 / 2 = 1
+    // f(t) = (sin(pi * (t - 1 / 2)) + 1) / 2, f(0) = 0 / 2 = 0, f(1) = 2 / 2 = 1
+    return (sinf(M_PI * (x - 0.5f)) + 1) * 0.5f;
+}
+
 
 float takeoff_t::getTakeoffTangentZ(float k) const {
     // derivative of getTakeoffHeight
+    // f(t) = (sin(pi * (t - 1 / 2)) + 1) / 2
+    // f'(t) = (pi * cos(pi * (t - 1 / 2)) ) / 2
     return height * M_PI / 2 * cosf(k * M_PI / 2);
 }
 

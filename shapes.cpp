@@ -14,8 +14,9 @@ void point2d::add(vector2d& v, double s) {
 }
 
 vector2d make_unitVector(double a) {
-    return vector2d{
-        cos(a), sin(a)};
+    float x, y;
+    sincosf(a, &y, &x);
+    return vector2d(x, y);
 }
 
 struct point2d closestPointFromLineToPoint(
@@ -45,7 +46,7 @@ void drawAxisPart(float x, float y, float z) {
 }
 
 void drawAxis(float s) {
-        glDisable(GL_LIGHTING);
+    glDisable(GL_LIGHTING);
     glPushMatrix();
     {
         drawAxisPart(s, 0, 0);
@@ -53,5 +54,14 @@ void drawAxis(float s) {
         drawAxisPart(0, 0, s);
     }
     glPopMatrix();
-        glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHTING);
+}
+
+float clampAngle(float angle) {
+    float t = fmodf(angle, M_PI * 2);
+    if (angle > 0) {
+        return t;
+    } else {
+        return M_PI * 2 + t;
+    }
 }

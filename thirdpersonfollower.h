@@ -21,6 +21,12 @@ class third_person_follower_t {
 private:
     point3f target;
     point3f camera;
+    
+    /**
+     * The offset is used to compute the focus point, by adding it with the 
+     * target.
+     */
+    vector3f offset;
 
     float normalDistance = 1;
     float followFactor = 1.0f;
@@ -77,6 +83,10 @@ public:
 
     void setTarget(const point3f& target) {
         this->target = target;
+    }
+    
+    point3f getFocus() const {
+        return target + offset;
     }
 
 private:

@@ -91,8 +91,8 @@ private:
     /**
      * Whether the takeoff is complete.
      */
-    bool completed;
-    
+    bool completed = false;
+
     bool secondHalf = false;
 
 public:
@@ -144,6 +144,10 @@ private:
     float getTakeoffHeight(float x) const;
 
     float getTakeoffTangentZ(float x) const;
+
+public:
+
+    static float getTakeoffFactor(float x);
 };
 
 #endif /* TAKEOFF_T_H */

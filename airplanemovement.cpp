@@ -7,6 +7,9 @@
 
 #include "airplanemovement.h"
 
+#include <cmath>
+#include <cstdio>
+
 void airplane_movement_t::keyPress(unsigned char key) {
     switch (key) {
         case '+':
@@ -91,7 +94,7 @@ void airplane_movement_t::setInitialConditions(const point3f& p, const vector3f&
     magnitude = velocity.length();
 
     // The angle of the vector <x, y> is the horizontal angle.
-    horizontal = atan2(velocity.y, velocity.x);
+    horizontal = atan2f(velocity.y, velocity.x);
     // This projects the vector to the xy plane and uses the z component 
     // as opposite cathetus while the length of xy is the adjacent cathetus.
     vertical = asinf(velocity.z / magnitude);

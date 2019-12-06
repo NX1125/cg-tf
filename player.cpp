@@ -19,10 +19,11 @@ void player_t::draw() {
     {
         glTranslatef(position.x, position.y, position.z);
         drawAxis(radius);
-        // considering that the front of the airplane is at +y and the back is at -y
-        glRotatef(horizontal, 0, 0, 1);
-        glRotatef(vertical, 1, 0, 0);
-        glRotatef(horizontalAngularVelocity, 0, 1, 0);
+        // considering that the front of the airplane is at +x and the back is at -x
+        const float degreePerRadians = 180 / M_PI;
+        glRotatef(horizontal * degreePerRadians, 0, 0, 1);
+        glRotatef(vertical * degreePerRadians, 0, 1, 0);
+        glRotatef(horizontalAngularVelocity * degreePerRadians, 1, 0, 0);
         glRotatef(90, 1, 0, 0);
         glScalef(radius, radius, radius);
         drawAxis(radius);
@@ -113,3 +114,13 @@ const char* player_t::getName() const {
     return "player";
 }
 
+void player_t::clipZ(float height) {
+    if (mBehaviour != Behaviour::CONTROLLING) return;
+    if (position.z < radius) {
+        printf("The player is hitting the ground!\n");
+        position.z = radius;
+    } else if (position.z > height - radius) {
+        printf("The player is hitting the roof!\n");
+        position.z = height - radius;
+    }
+}
