@@ -111,6 +111,7 @@ vector3f player_t::getVelocity() const {
 }
 
 void player_t::setPosition(const point3f& p) {
+    position  =p;
     controller->setPosition(p);
 }
 
@@ -155,3 +156,8 @@ void player_t::mousePress(int button) {
 void player_t::kill() {
     dead = true;
 }
+
+bool player_t::canDie() const {
+    return mBehaviour == Behaviour::CONTROLLING;
+}
+

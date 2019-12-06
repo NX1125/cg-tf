@@ -81,6 +81,10 @@ public:
         this->camera = camera;
     }
 
+    point3f getCamera() const {
+        return camera;
+    }
+
     void setTarget(const point3f& target) {
         this->target = target;
     }

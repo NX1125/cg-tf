@@ -10,6 +10,18 @@
 #include <cmath>
 #include <cstdio>
 
+airplane_movement_t::airplane_movement_t() {
+}
+
+void airplane_movement_t::clipZ(float height, float radius) {
+    if (position.z < radius) {
+        position.z = radius;
+    } else if (position.z > height - radius) {
+        position.z = height - radius;
+    }
+}
+
+
 void airplane_movement_t::keyPress(unsigned char key) {
     switch (key) {
         case '+':

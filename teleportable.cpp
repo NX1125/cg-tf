@@ -3,7 +3,7 @@
 
 #include "teleportable.h"
 
-void teleportable_t::teleport(float bounds) {
+bool teleportable_t::teleport(float bounds) {
     point3f p = getPosition();
     vector3f v = getVelocity();
 
@@ -35,5 +35,9 @@ void teleportable_t::teleport(float bounds) {
         p.y = c.y - r.y;
 
         setPosition(p);
+        
+        return true;
     }
+    
+    return false;
 }

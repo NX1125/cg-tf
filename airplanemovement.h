@@ -107,6 +107,8 @@ private:
 
 public:
 
+    airplane_movement_t();
+
     /**
      * A helper method that converts the user input into an axis for the angles.
      * The key is only used if it is 'a', 's', 'd', 'w', '+' or '-'.
@@ -122,6 +124,8 @@ public:
     vector3f getVelocity() const {
         return velocity;
     }
+
+    void clipZ(float height, float radius);
 
 private:
 

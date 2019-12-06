@@ -70,7 +70,7 @@ private:
 
     void createBases(vector<simple_svg_circle*>& bases);
 
-    void createEnemies(vector<simple_svg_circle*>& enemies, float height);
+    void createEnemies(vector<simple_svg_circle*>& enemies, float height, float initialVelocity);
 
 public:
 

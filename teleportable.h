@@ -20,7 +20,7 @@ public:
     /**
      * 
      */
-    void teleport(float bounds);
+    bool teleport(float bounds);
 
     virtual vector3f getVelocity() const = 0;
 

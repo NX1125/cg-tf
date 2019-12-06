@@ -18,10 +18,10 @@ enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
 };
 
-class player_t : public teleportable_t, obstacle_t {
+class player_t : public teleportable_t, public obstacle_t {
 private:
     static wf_object_t* sPlayerBodyModel;
-    
+
     static point3f sBombDoor;
 
     /**
@@ -64,13 +64,13 @@ private:
     float radius;
 
     float velocityFactor = 1.0f;
-    
+
     bool dead = false;
-    
+
 public:
 
     player_t(takeoff_t* takeoff, float radius);
-    
+
     /**
      * Moves the player to inside the arena if it hit the roof or the ground.
      */
@@ -85,7 +85,7 @@ public:
     void keyPress(unsigned char key);
 
     void keyRelease(unsigned char key);
-    
+
     void mousePress(int button);
 
     Behaviour getBehaviour() const {
@@ -99,7 +99,7 @@ public:
     float getRadius() const {
         return radius;
     }
-    
+
     vector3f getVelocity() const;
 
     void update(int millis);
@@ -109,22 +109,24 @@ public:
     bool canTeleport() const {
         return mBehaviour == Behaviour::CONTROLLING;
     }
-    
+
     const char* getName() const override;
-    
+
     void setPosition(const point3f& p) override;
 
     /**
      * Throw a bomb.
      */
     void bomb();
-    
+
     /**
      * Fire a bullet.
      */
     void fire();
-    
+
     void kill();
+
+    bool canDie() const;
 };
 
 #endif /* AIRPLANE_H */

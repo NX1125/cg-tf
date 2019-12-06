@@ -39,7 +39,7 @@ Game::Game(app_settings* settings) {
     player->setVelocityFactor(settings->vel);
 
     createBases(settings->groundEnemies);
-    createEnemies(settings->flyingEnemies, arena->getHeight() / 2);
+    createEnemies(settings->flyingEnemies, arena->getHeight() / 2, settings->eVel * takeoff->getFinalVelocity());
 }
 
 void Game::createBases(vector<simple_svg_circle*>& bases) {
@@ -48,10 +48,12 @@ void Game::createBases(vector<simple_svg_circle*>& bases) {
     }
 }
 
-void Game::createEnemies(vector<simple_svg_circle*>& enemies, float height) {
+void Game::createEnemies(vector<simple_svg_circle*>& enemies, float height, float velocity) {
     for (simple_svg_circle* enemy : enemies) {
         point3f p(enemy->cx, enemy->cy, height);
-        this->enemies.push_back(new flying_enemy_t(p, enemy->radius));
+        flying_enemy_t* e = new flying_enemy_t(p, enemy->radius);
+        e->setInitialVelocity(velocity);
+        this->enemies.push_back(e);
     }
 }
 
@@ -145,20 +147,18 @@ void Game::display() {
             glLoadIdentity();
             follower->lookAt();
             break;
+        case Camera::CANNON_VIEW:
+        case Camera::COCKPIT:
+            break;
     }
 
-
     // glEnable(GL_LIGHTING);
-
-    glColor3f(1, 0, 0);
 
     player->draw();
 
     // glDisable(GL_LIGHTING);
 
-    // TODO Update camera depending of the current type
     arena->draw();
-    // TODO Draw each flying enemy
     for (enemy_base_t* base : bases) {
         base->transformAndDraw();
     }
@@ -229,8 +229,31 @@ void Game::idle() {
     player->update(time);
     player->clipZ(arena->getHeight());
 
+    for (flying_enemy_t* enemy : enemies) {
+        enemy->update(time);
+        enemy->clipZ(arena->getHeight());
+    }
+
+    if (player->canDie()) {
+        for (flying_enemy_t* enemy : enemies) {
+            if (!enemy->isDead() && enemy->overlaps(player)) {
+                printf("The player just hit an enemy while flying\n");
+                enemy->kill();
+                player->kill();
+                break;
+            }
+        }
+    }
+
+    for (flying_enemy_t* enemy : enemies) {
+        enemy->teleport(arena->getRadius());
+    }
+
     if (player->canTeleport()) {
-        player->teleport(arena->getRadius());
+        point3f p = player->getPosition();
+        if (player->teleport(arena->getRadius())) {
+            follower->setCamera(follower->getCamera() + (player->getPosition() - p));
+        }
     }
 
     follower->setTarget(player->getPosition());

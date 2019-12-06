@@ -16,15 +16,40 @@
 
 wf_object_t* flying_enemy_t::sEnemyModel = NULL;
 
+std::default_random_engine flying_enemy_t::sRandomMovement;
+
 flying_enemy_t::flying_enemy_t(point3f position, float radius) :
 radius(radius) {
-    controller = new airplane_movement_t( );
+    controller = new airplane_movement_t();
     controller->setPosition(position);
 }
+
+void flying_enemy_t::setInitialVelocity(float initialVelocity) {
+    this->initialVelocity = initialVelocity;
+    controller->setMagnitude(initialVelocity);
+}
+
 
 void flying_enemy_t::update(int millis) {
     controller->update(millis);
 }
+
+void flying_enemy_t::clipZ(float z) {
+    controller->clipZ(z, radius);
+}
+
+point3f flying_enemy_t::getPosition() const {
+    return controller->getPosition();
+}
+
+float flying_enemy_t::getRadius() const {
+    return radius;
+}
+
+void flying_enemy_t::kill() {
+    dead = true;
+}
+
 
 void flying_enemy_t::transformAndDraw() {
     glPushMatrix();
@@ -55,3 +80,14 @@ void flying_enemy_t::init(wf_object_loader_t* loader) {
     // sEnemyModel = loader->loadRes("enemy");
 }
 
+void flying_enemy_t::setPosition(const point3f& p) {
+    controller->setPosition(p);
+}
+
+vector3f flying_enemy_t::getVelocity() const {
+    return controller->getVelocity();
+}
+
+const char* flying_enemy_t::getName() const {
+    return "fly";
+}
