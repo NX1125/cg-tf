@@ -13,6 +13,7 @@
 #include "airplanemovement.h"
 #include "teleportable.h"
 #include "projectile.h"
+#include "cannon.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
@@ -59,6 +60,8 @@ private:
 
     takeoff_t* takeoff;
     airplane_movement_t* controller;
+    
+    cannon_t* cannon;
 
     /**
      * The radius given in the settings.

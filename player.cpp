@@ -12,6 +12,7 @@ player_t::player_t(takeoff_t* takeoff, float radius) :
 takeoff(takeoff), radius(radius) {
     position = takeoff->getStart();
     controller = new airplane_movement_t();
+    cannon = new cannon_t(vector3f(2 * radius, 0, 0));
 }
 
 void player_t::sInit(wf_object_loader_t& loader) {
@@ -28,6 +29,7 @@ void player_t::draw() {
         glRotatef(horizontal * degreePerRadians, 0, 0, 1);
         glRotatef(vertical * degreePerRadians, 0, 1, 0);
         glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
+        cannon->draw();
         glRotatef(90, 1, 0, 0);
         glScalef(radius, radius, radius);
         drawAxis(radius);
