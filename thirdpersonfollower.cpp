@@ -7,15 +7,14 @@
 
 #include "thirdpersonfollower.h"
 
-third_person_follower_t::third_person_follower_t(point3f* target, float normalDistance) :
-target(target), normalDistance(normalDistance) {
-    camera = *target;
+third_person_follower_t::third_person_follower_t(const point3f& target, float normalDistance) :
+target(target), camera(target), normalDistance(normalDistance) {
     camera.x += normalDistance;
 }
 
 void third_person_follower_t::lookAt() {
     gluLookAt(camera.x, camera.y, camera.z,
-            target->x, target->y, target->z,
+            target.x, target.y, target.z,
             0, 0, 1);
 }
 
@@ -48,7 +47,7 @@ float clampAngle(float angle) {
 }
 
 void third_person_follower_t::move(float dx, float dy) {
-    vector3f v = *target - camera;
+    vector3f v = target - camera;
 
     float distance = v.normalize();
 
@@ -62,7 +61,7 @@ void third_person_follower_t::move(float dx, float dy) {
 }
 
 void third_person_follower_t::setAngle(float horizontal, float vertical) {
-    setAngle(horizontal, vertical, (*target - camera).length());
+    setAngle(horizontal, vertical, (target - camera).length());
 }
 
 void third_person_follower_t::setAngle(float horizontal, float vertical,
@@ -94,15 +93,15 @@ void third_person_follower_t::setAngle(float horizontal, float vertical,
     float y = sinf(horizontal) * g;
 
     // <x, y, z> is the vector of the camera
-    camera = *target + vector3f(x, y, z) * distance;
+    camera = target + vector3f(x, y, z) * distance;
     // printf("camera = (%f, %f, %f)\n", camera.x, camera.y, camera.z);
 }
 
 void third_person_follower_t::follow(float dt) {
-    vector3f v = *target - camera;
+    vector3f v = target - camera;
     float length = v.normalize();
 
     length = length * (1 - followFactor) + normalDistance * followFactor;
 
-    camera = *target - v * length;
+    camera = target - v * length;
 }

@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>airplanemovement.h</itemPath>
       <itemPath>arena.h</itemPath>
+      <itemPath>behaviourupdate.h</itemPath>
       <itemPath>filepath.h</itemPath>
       <itemPath>game.h</itemPath>
       <itemPath>player.h</itemPath>
@@ -101,6 +102,8 @@
       <item path="arena.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="arena.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="behaviourupdate.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -204,6 +207,8 @@
       <item path="arena.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="arena.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="behaviourupdate.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>

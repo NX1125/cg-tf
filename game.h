@@ -17,10 +17,8 @@
 #include "wfobj.h"
 #include "arena.h"
 #include "airplanemovement.h"
-
-enum Behaviour {
-    ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
-};
+#include "player.h"
+#include "stopwatch.h"
 
 /**
  * A static class, just to not use global variables, as asked in a previous TC.
@@ -35,8 +33,6 @@ public:
     static point3f sTarget;
 
     static bool sFollowerMouseEnabled;
-
-    static Behaviour sBehaviour;
 
     static vector<reset_listener_t*> sResetListeners;
     
@@ -58,7 +54,11 @@ public:
     static GLfloat vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
     static GLfloat color[6][3];
     
-    static airplane_movement_t* sController;
+    static player_t* sPlayer;
+    
+    static stopwatch_t* sWatch;
+    
+    static time_t sAccumulatedTime;
 
     static void drawBox(void);
 
@@ -78,7 +78,9 @@ public:
     
     static void idle();
 
-    static void keyPress(unsigned char key, int x, int y);
+    static void keyPressed(unsigned char key, int x, int y);
+    
+    static void keyReleased(unsigned char key, int x, int y);
 
     static void reset();
 

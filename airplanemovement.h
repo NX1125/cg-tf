@@ -11,6 +11,7 @@
 #include <cmath>
 
 #include "shapes.h"
+#include "behaviourupdate.h"
 
 /**
  * The player movement is similar to an airplane (in the spec, it is called
@@ -28,7 +29,7 @@
  * is a factor that is used to correct the angular velocity with the magnitude
  * change.
  */
-class airplane_movement_t {
+class airplane_movement_t : public behaviour_update_t {
 private:
 
     // cached keys. These are saved to support diagonal movement.
@@ -99,7 +100,7 @@ private:
      * This is used to compute the vertical angular velocity.
      */
     float verticalFactor = 0.05;
-    
+
     /**
      * A factor used to increase or decrease the magnitude when the '+' or '-'
      * keys are typed.
@@ -125,24 +126,54 @@ private:
     void updateKey(unsigned char key, float intensity);
 
     void updateVelocity();
-    
+
 public:
+
+    void update(int millis) {
+        move(millis / 1000.0);
+    }
 
     /**
      * Moves the current position by the velocity though a time interval.
      * It also rotates the current angles by their angular velocities.
      */
     void move(float dt);
-    
+
     void setInputAxis(float dx, float dy);
-    
+
     void setInitialConditions(const point3f& p, const vector3f& v);
+
+    void setAngles(float horizontal, float vertical) {
+        this->horizontal = horizontal;
+        this->vertical = vertical;
+    }
+
+    void setPosition(point3f position) {
+        this->position = position;
+    }
 
     float getMagnitude() const {
         return magnitude;
     }
 
     void setMagnitude(float magnitude);
+
+    float getHorizontalAngularVelocity() const {
+        return horizontalVelocity;
+    }
+
+    point3f getPosition() const {
+        return position;
+    }
+
+    float getHorizontalAngle() const {
+        return horizontal;
+    }
+
+    float getVerticalAngle() const {
+        return vertical;
+    }
+
 };
 
 #endif /* AIRPLANE_MOVEMENT_T_H */

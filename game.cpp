@@ -33,16 +33,19 @@ GLfloat Game::color[6][3] = {
 third_person_follower_t* Game::sFollower = NULL;
 point3f Game::sTarget;
 
-Behaviour Game::sBehaviour = Behaviour::ON_GROUND;
-
 bool Game::sFollowerMouseEnabled = false;
 
 vector<reset_listener_t*> Game::sResetListeners;
 
 wf_object_t* Game::sHouseModel = NULL;
-wf_object_t* Game::sController = NULL;
 
 arena_t* Game::sArena = NULL;
+
+player_t* Game::sPlayer = NULL;
+
+stopwatch_t* Game::sWatch = NULL;
+
+time_t Game::sAccumulatedTime = 0;
 
 // As stated in spec, the size of the window is initially 500x500.
 int Game::sWidth = 500;
@@ -65,21 +68,32 @@ void Game::init(app_settings* settings) {
 
     glEnable(GL_DEPTH_TEST);
 
-    sFollower = new third_person_follower_t(&sTarget, 0.5f);
     // as stated in the spec, the height of the arena is 8 times the player's
     // diameter. We have the radius, that's why 2 * 8
     sArena = new arena_t(settings->player->radius * 2 * 8, settings->arena->radius);
 
+    simple_svg_line* airstrip = settings->airstrip;
+
+    point3f start(airstrip->x1, airstrip->y1, 0);
+    point3f end(airstrip->x2, airstrip->y2, 0);
+
+    takeoff_t* takeoff = new takeoff_t(start, end, sArena->getHeight() / 2, 4000);
+
+    sPlayer = new player_t(takeoff, settings->player->radius);
+
+    sFollower = new third_person_follower_t(/*point3f(0,0,0)*/
+            sPlayer->getPosition(), 0.5f);
     sFollower->setAngle(0, 20 * M_PI / 180.0);
-    sController = new airplane_movement_t();
 
     loadModels();
+
+    sWatch = new stopwatch_t();
 }
 
 void Game::loadModels() {
     wf_object_loader_t loader;
 
-    sHouseModel = loader.loadRes("casa");
+    sHouseModel = loader.loadRes("trenoSemHelice");
 
     player_t::sInit(loader);
 }
@@ -102,28 +116,30 @@ void Game::drawBox(void) {
 void Game::display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+//    glMatrixMode(GL_PROJECTION);
+//    gluPerspective(/* field of view in degree */ 40.0,
+//            /* aspect ratio */ 1.0,
+//            /* Z near */ 1.0, /* Z far */ 10.0);
+    
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
     sFollower->lookAt();
-
-    glOrtho(-2, 2, -2, 2, 2, -2);
-
+    
     glEnable(GL_LIGHTING);
 
     // Draw a cube for reference to the camera
     glColor3f(1, 0, 0);
-    glScaled(0.5f, 0.5f, 0.5f);
+    // glScaled(0.5f, 0.5f, 0.5f);
     // glRotated(180 * stopwatch_t::currentTimeMillis() / 1000.0f, 0, 1, 1);
     // drawBox();
-    sHouseModel->draw();
+    // sHouseModel->draw();
+
+    sPlayer->draw();
 
     glDisable(GL_LIGHTING);
 
     // TODO Update camera depending of the current type
-    // TODO Draw arena
     sArena->draw();
-    // TODO Draw player
     // TODO Draw each flying enemy
     // TODO Draw each base
     // TODO Draw projectiles (bombs and bullets)
@@ -154,7 +170,8 @@ void Game::mouseButtonEvent(int button, int state, int x, int y) {
 }
 
 void Game::mousePressed(int button, int x, int y) {
-    if (button == GLUT_RIGHT_BUTTON && sBehaviour == Behaviour::ON_GROUND) {
+    if (button == GLUT_RIGHT_BUTTON &&
+            sPlayer->getBehaviour() == Behaviour::ON_GROUND) {
         sFollower->setMousePressingPosition(x, y);
         sFollowerMouseEnabled = true;
     }
@@ -174,18 +191,41 @@ void Game::reshape(int width, int height) {
 }
 
 void Game::idle() {
+    sWatch->mark();
+
+    int time = sWatch->getMarkedElaspedTimeMillis();
+
+    if (time <= 10) {
+        return;
+    }
+
+    // printf("Time: %d ms\n", time);
+
+    sPlayer->update(time);
+
+    //    sFollower->setTarget(sPlayer->getPosition());
+    //    sFollower->follow(time / 1000.0f);
+
+    sAccumulatedTime += time;
+
+    if (sAccumulatedTime * 30 > 1000) {
+        glutPostRedisplay();
+        sAccumulatedTime = 0;
+    }
+
+    sWatch->setMarkAsOffset();
 }
 
-void Game::keyPress(unsigned char key, int x, int y) {
-    switch (key) {
-        case 'r':
-            reset();
-            break;
-        case 'u':
-            break;
-        default:
-            break;
+void Game::keyPressed(unsigned char key, int x, int y) {
+    if (key == 'r') {
+        reset();
+    } else {
+        sPlayer->keyPress(key);
     }
+}
+
+void Game::keyReleased(unsigned char key, int x, int y) {
+    sPlayer->keyRelease(key);
 }
 
 void Game::reset() {

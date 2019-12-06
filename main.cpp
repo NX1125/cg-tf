@@ -54,8 +54,8 @@ int main(int argc, char** argv) {
         glutReshapeFunc(Game::reshape);
         glutDisplayFunc(Game::display);
 
-        glutKeyboardFunc(Game::keyPress);
-        // glutKeyboardUpFunc(keyUp);
+        glutKeyboardFunc(Game::keyPressed);
+        glutKeyboardUpFunc(Game::keyReleased);
 
         glutPassiveMotionFunc(Game::mouseMoved);
         glutMotionFunc(Game::mouseDragged);
@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
         // As stated in the spec, the initial frame size is 500x500
         const int initialWidth = 500;
         const int initialHeight = 500;
-        
+
         glutInitWindowSize(initialWidth, initialHeight);
         glutReshapeWindow(initialWidth, initialHeight);
         // glutInitWindowPosition(100, 20);

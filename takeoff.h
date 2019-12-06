@@ -9,6 +9,7 @@
 #define TAKEOFF_T_H
 
 #include "shapes.h"
+#include "behaviourupdate.h"
 
 /**
  * A class that helps with the takeoff of the airplane. The takeoff was
@@ -21,7 +22,7 @@
  * point that the airplane takeoff the land and starts flying. There are two
  * sections then for the takeoff.
  */
-class takeoff_t {
+class takeoff_t : public behaviour_update_t {
 private:
 
     /**
@@ -37,6 +38,13 @@ private:
      * A vector on ground that is the normal of the airstrip.
      */
     vector3f normal;
+
+    /**
+     * The horizontal angle is the angle of the airstrip in the xy plane.
+     */
+    float horizontalAngle;
+
+    float verticalAngle;
 
     /**
      * The length of the airstrip. This is the distance between the starting and
@@ -65,7 +73,7 @@ private:
     /**
      * The time since the start of the current takeoff. 
      */
-    unsigned int currentTime;
+    time_t currentTime = 0;
 
     /**
      * The current position of the target that takes off.
@@ -82,6 +90,8 @@ private:
      * Whether the takeoff is complete.
      */
     bool completed;
+    
+    bool secondHalf = false;
 
 public:
 
@@ -90,14 +100,40 @@ public:
 
     void reset();
 
-    void run(int time);
+    void update(int time);
 
     /**
      * Returns the velocity that the airplane has at the end of the airstrip
      * when the takeoff is completed.
      */
     float getFinalVelocity() const;
-    
+
+    bool isCompleted() const {
+        return completed;
+    }
+
+    point3f getPosition() const {
+        return position;
+    }
+
+    float getHorizontalAngle() const {
+        return horizontalAngle;
+    }
+
+    float getVerticalAngle() const {
+        return verticalAngle;
+    }
+
+    float getHorizontalAngularVelocity() const {
+        // There is no rotation around its own axis yet.
+        return 0;
+    }
+
+    point3f getStart() const {
+        return start;
+    }
+
+
 private:
     void setGround(float k);
 

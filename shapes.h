@@ -385,5 +385,7 @@ private:
 struct point2d closestPointFromLineToPoint(
         const point2d& start, const vector2d& ray, const point2d& p);
 
+void drawAxis(float size);
+
 #endif /* SHAPES_H */
 

@@ -13,13 +13,10 @@ void point2d::add(vector2d& v, double s) {
     y += v.y * s;
 }
 
-
 vector2d make_unitVector(double a) {
     return vector2d{
-        cos(a), sin(a)
-    };
+        cos(a), sin(a)};
 }
-
 
 struct point2d closestPointFromLineToPoint(
         const point2d& start, const vector2d& ray, const point2d& p) {
@@ -39,3 +36,20 @@ float point3f::distanceSqr(const point3f& p1, const point3f& p2) {
     return v.lengthSqr();
 }
 
+void drawAxisPart(float x, float y, float z) {
+    glColor3f(x, y, z);
+    glBegin(GL_LINES);
+    glVertex3f(0, 0, 0);
+    glVertex3f(x, y, z);
+    glEnd();
+}
+
+void drawAxis(float s) {
+    glPushMatrix();
+    {
+        drawAxisPart(s, 0, 0);
+        drawAxisPart(0, s, 0);
+        drawAxisPart(0, 0, s);
+    }
+    glPopMatrix();
+}

@@ -70,7 +70,7 @@ void airplane_movement_t::updateVelocity() {
     velocity.x = x;
     velocity.y = y;
     velocity.z = z;
-    
+
     velocity *= magnitude;
 }
 
@@ -87,9 +87,12 @@ void airplane_movement_t::setMagnitude(float magnitude) {
 void airplane_movement_t::setInitialConditions(const point3f& p, const vector3f& v) {
     position = p;
     velocity = v;
-    
+
     magnitude = velocity.length();
-    
+
+    // The angle of the vector <x, y> is the horizontal angle.
     horizontal = atan2(velocity.y, velocity.x);
-    vertical = atan2(velocity.z, magnitude);
+    // This projects the vector to the xy plane and uses the z component 
+    // as opposite cathetus while the length of xy is the adjacent cathetus.
+    vertical = asinf(velocity.z / magnitude);
 }

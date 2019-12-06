@@ -19,7 +19,7 @@
  */
 class third_person_follower_t {
 private:
-    point3f* target = NULL;
+    point3f target;
     point3f camera;
 
     float normalDistance = 1;
@@ -34,7 +34,7 @@ private:
     float maxVerticalAngle = 60 * M_PI / 180.0f;
 public:
 
-    third_person_follower_t(point3f* target, float normalDistance);
+    third_person_follower_t(const point3f& target, float normalDistance);
 
     void lookAt();
 
@@ -68,6 +68,14 @@ public:
      * @param vertical   An angle in radians
      */
     void setAngle(float horizontal, float vertical);
+
+    void setCamera(const point3f& camera) {
+        this->camera = camera;
+    }
+
+    void setTarget(const point3f& target) {
+        this->target = target;
+    }
 
 private:
 

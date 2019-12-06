@@ -56,6 +56,10 @@ public:
      */
     void draw();
 
+    float getHeight() const {
+        return height;
+    }
+
 private:
 
     /**
