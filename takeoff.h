@@ -83,12 +83,6 @@ private:
     point3f position;
 
     /**
-     * The forward direction of the airplane. When on ground, this has the same
-     * normal as the airstrip, but when flying it has a z component.
-     */
-    vector3f direction;
-
-    /**
      * Whether the takeoff is complete.
      */
     bool completed = false;
@@ -139,7 +133,7 @@ public:
 private:
     void setGround(float k);
 
-    void setTakeoff(float k);
+    void setTakeoff(float k, float distance);
 
     float getTakeoffHeight(float x) const;
 
@@ -148,6 +142,8 @@ private:
 public:
 
     static float getTakeoffFactor(float x);
+
+    static float getTakeoffTangent(float x);
 };
 
 #endif /* TAKEOFF_T_H */

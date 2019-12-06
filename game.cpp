@@ -78,7 +78,7 @@ void Game::init(app_settings* settings) {
     point3f start(airstrip->x1, airstrip->y1, 0);
     point3f end(airstrip->x2, airstrip->y2, 0);
 
-    takeoff_t* takeoff = new takeoff_t(start, end, sArena->getHeight() / 2, 4000);
+    takeoff_t* takeoff = new takeoff_t(start, end, sArena->getHeight() / 5, 4000);
 
     sPlayer = new player_t(takeoff, settings->player->radius);
 
@@ -136,6 +136,31 @@ void Game::display() {
                 for (int i = 0; i <= n; i++) {
                     float x = i / (float) n;
                     float y = takeoff_t::getTakeoffFactor(x);
+
+                    glVertex2d(x, y);
+                }
+            }
+            glEnd();
+            
+            glColor3f(0, 1, 0);
+            glBegin(GL_LINE_STRIP);
+            {
+                for (int i = 0; i <= n; i++) {
+                    float x = i / (float) n;
+                    float y = takeoff_t::getTakeoffTangent(x);
+
+                    glVertex2d(x, y);
+                }
+            }
+            glEnd();
+            
+            glColor3f(1, 0, 0);
+            glBegin(GL_LINE_STRIP);
+            {
+                for (int i = 0; i <= n; i++) {
+                    float x = i / (float) n;
+                    float y = takeoff_t::getTakeoffTangent(x);
+                    y = atanf(y);
 
                     glVertex2d(x, y);
                 }

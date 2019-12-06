@@ -29,7 +29,6 @@ start(start), end(end), height(height), timeToComplete(timeToComplete) {
 
 void takeoff_t::reset() {
     position = start;
-    direction = normal;
     currentTime = 0;
     completed = false;
 }
@@ -64,7 +63,7 @@ void takeoff_t::update(int time) {
             secondHalf = true;
             printf("The second half of the airstrip were reached in %ld ms\n", currentTime);
         }
-        setTakeoff(k);
+        setTakeoff(k, distance);
     } else {
         setGround(k);
     }
@@ -80,22 +79,23 @@ float takeoff_t::getFinalVelocity() const {
 
 void takeoff_t::setGround(float k) {
     position = start + (end - start) * k;
-    direction = normal;
 
     verticalAngle = 0;
 }
 
-void takeoff_t::setTakeoff(float k) {
+void takeoff_t::setTakeoff(float k, float distance) {
     setGround(k);
     float k2 = (k - 0.5f) / 0.5f;
     position.z = getTakeoffHeight(k2);
-    direction.z = getTakeoffTangentZ(k2);
+    float r = distance - length * 0.5f;
 
     // The vertical angle is a bit complicated, since it uses the tangent of a
     // function to be the slope. We have to compute the arctan of it.
-    verticalAngle = atanf(direction.z);
-    
+    verticalAngle = atanf(height * getTakeoffTangent(k2) / (length / 2));
+
+    //     printf("z = %f\n", direction.z);
     printf("v = %f\n", verticalAngle);
+    // printf("k2 = %f\n", k2);
 }
 
 float takeoff_t::getTakeoffHeight(float x) const {
@@ -113,11 +113,18 @@ float takeoff_t::getTakeoffFactor(float x) {
     return (sinf(M_PI * (x - 0.5f)) + 1) * 0.5f;
 }
 
-
 float takeoff_t::getTakeoffTangentZ(float k) const {
     // derivative of getTakeoffHeight
     // f(t) = (sin(pi * (t - 1 / 2)) + 1) / 2
     // f'(t) = (pi * cos(pi * (t - 1 / 2)) ) / 2
-    return height * M_PI / 2 * cosf(k * M_PI / 2);
+    return height * getTakeoffTangent(k);
+}
+
+float takeoff_t::getTakeoffTangent(float k) {
+    // derivative of getTakeoffHeight
+    // f(t) = (sin(pi * (t - 1 / 2)) + 1) / 2
+    // f'(t) = (pi * cos(pi * (t - 1 / 2)) ) / 2
+    // f'(t) = (pi * cos(pi * (t - 1 / 2)) ) / 2
+    return M_PI / 2 * cosf(M_PI * (k - 0.5f));
 }
 
