@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/airplanemovement.o \
 	${OBJECTDIR}/airstrip.o \
 	${OBJECTDIR}/arena.o \
+	${OBJECTDIR}/bomb.o \
 	${OBJECTDIR}/circle.o \
 	${OBJECTDIR}/filepath.o \
 	${OBJECTDIR}/game.o \
@@ -99,6 +100,11 @@ ${OBJECTDIR}/arena.o: arena.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/arena.o arena.cpp
+
+${OBJECTDIR}/bomb.o: bomb.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bomb.o bomb.cpp
 
 ${OBJECTDIR}/circle.o: circle.cpp
 	${MKDIR} -p ${OBJECTDIR}

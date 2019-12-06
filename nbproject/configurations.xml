@@ -8,6 +8,7 @@
       <itemPath>airstrip.h</itemPath>
       <itemPath>arena.h</itemPath>
       <itemPath>behaviourupdate.h</itemPath>
+      <itemPath>bomb.h</itemPath>
       <itemPath>filepath.h</itemPath>
       <itemPath>game.h</itemPath>
       <itemPath>player.h</itemPath>
@@ -36,6 +37,7 @@
       <itemPath>airplanemovement.cpp</itemPath>
       <itemPath>airstrip.cpp</itemPath>
       <itemPath>arena.cpp</itemPath>
+      <itemPath>bomb.cpp</itemPath>
       <itemPath>circle.cpp</itemPath>
       <itemPath>filepath.cpp</itemPath>
       <itemPath>game.cpp</itemPath>
@@ -114,6 +116,10 @@
       <item path="arena.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="behaviourupdate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bomb.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="bomb.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -231,6 +237,10 @@
       <item path="arena.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="behaviourupdate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bomb.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="bomb.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
       </item>

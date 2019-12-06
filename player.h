@@ -12,14 +12,17 @@
 #include "takeoff.h"
 #include "airplanemovement.h"
 #include "teleportable.h"
+#include "projectile.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
 };
 
-class player_t : public teleportable_t{
+class player_t : public teleportable_t, obstacle_t {
 private:
     static wf_object_t* sPlayerBodyModel;
+    
+    static point3f sBombDoor;
 
     /**
      * The location that the player will be drawn. The position can be updated
@@ -61,7 +64,9 @@ private:
     float radius;
 
     float velocityFactor = 1.0f;
-
+    
+    bool dead = false;
+    
 public:
 
     player_t(takeoff_t* takeoff, float radius);
@@ -118,6 +123,8 @@ public:
      * Fire a bullet.
      */
     void fire();
+    
+    void kill();
 };
 
 #endif /* AIRPLANE_H */

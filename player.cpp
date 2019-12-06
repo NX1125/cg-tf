@@ -6,6 +6,8 @@
 
 wf_object_t* player_t::sPlayerBodyModel = NULL;
 
+point3f player_t::sBombDoor(0,0,1);
+
 player_t::player_t(takeoff_t* takeoff, float radius) :
 takeoff(takeoff), radius(radius) {
     position = takeoff->getStart();
@@ -150,3 +152,6 @@ void player_t::mousePress(int button) {
     }
 }
 
+void player_t::kill() {
+    dead = true;
+}

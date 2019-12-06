@@ -273,21 +273,28 @@ onRun()
 ==============================
 
 
+// A sphere used for collision.
+==============================
+Obstacle
+------------------------------
+overlaps(sphere)
+==============================
+
+
 ==============================
 Bomb: projectile
 ------------------------------
-velocity at z axis
+acceleration z
 ------------------------------
 Bomb()
 static
 	load bomb model
 ------------------------------
 onRun()
-	IF bomb hit an enemy base THEN
+	IF hit an obstacle
 		remove bomb
-		kill base
-	ELSE IF bomb hit ground
-		remove bomb
+                if the obstacle is an enemy
+                    kill it
 	ELSE
 		update velocity at z axis
 ------------------------------
@@ -313,13 +320,15 @@ draw(): void, abstract
         draw
 ------------------------------
 update(time)
-	compute next position
-	move(next position, dt)
-		position = next position
+	move(dt)
+		compute next position
 ------------------------------
 // used to know if the projectile should be removed from the list of projectiles
 isDead(): bool
 kill()
+------------------------------
+hit(obstacle)
+    kill itself
 ==============================
 
 

@@ -16,13 +16,33 @@
 #include "shapes.h"
 
 /**
+ * An interface 
+ */
+class obstacle_t {
+public:
+
+    virtual float getRadius() const = 0;
+
+    virtual point3f getPosition() const = 0;
+
+    bool overlaps(const point3f& p, float radius) {
+        float bounds = radius + getRadius();
+        return point3f::distanceSqr(getPosition(), p) < bounds * bounds;
+    }
+
+    bool overlaps(const obstacle_t* o) {
+        return overlaps(o->getPosition(), o->getRadius());
+    }
+};
+
+/**
  * An abstract class that uses a projectile movement to move the object.
  */
-class projectile_t {
+class projectile_t : public obstacle_t {
 private:
 
     static std::vector<projectile_t*> sProjectileQueue;
-    
+
     /**
      * The initial point that the projectile started.
      */
@@ -45,6 +65,8 @@ private:
 public:
 
     projectile_t(const point3f& offset, const vector3f& velocity);
+    
+    point3f getPosition() const override;
 
     void update(int millis);
 
@@ -53,13 +75,17 @@ public:
     bool isDead() const {
         return dead;
     }
-    
+
     void kill() {
         dead = true;
     }
 
     void transformAndDraw() const;
-    
+
+    virtual void hit(obstacle_t* other) {
+        kill();
+    }
+
     static void addProjectile(projectile_t* p);
 
 protected:

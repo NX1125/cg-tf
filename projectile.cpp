@@ -14,6 +14,10 @@ projectile_t::projectile_t(const point3f& offset, const vector3f& velocity) :
 offset(offset), position(offset), velocity(velocity) {
 }
 
+point3f projectile_t::getPosition() const {
+    return position;
+}
+
 void projectile_t::update(int millis) {
     accumulatedTime += millis / 1000.0f;
     move(accumulatedTime);
