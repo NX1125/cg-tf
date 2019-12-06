@@ -11,6 +11,7 @@
 
 #include "shapes.h"
 #include "wfobj.h"
+#include "projectile.h"
 
 
 class cannon_t {
@@ -28,10 +29,16 @@ private:
     
     float horizontalFactor = 0.3f;
     float verticalFactor = 0.3f;
+    
+    projectile_manager_t* manager = NULL;
+    
 public:
     
     cannon_t(const vector3f& position);
-    
+    void setManager(projectile_manager_t* manager) {
+        this->manager = manager;
+    }
+
     void draw();
     
     void setInputAxis(float x, float y);

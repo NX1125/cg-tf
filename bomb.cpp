@@ -8,6 +8,7 @@
 
 #include "bomb.h"
 #include "player.h"
+#include "cube.h"
 
 float bomb_t::sGravityAcceleration = -10;
 
@@ -17,6 +18,7 @@ projectile_t(offset, velocity) {
 
 void bomb_t::move(float time) {
     projectile_t::move(time);
+    getVelocity().z += time * time * sGravityAcceleration * 0.5f;
 }
 
 void bomb_t::hit(obstacle_t* other) {
@@ -31,5 +33,6 @@ void bomb_t::setSGravityAcceleration(float acc) {
 
 void bomb_t::draw() const {
     // TODO Draw bomb model
+    cube_t::drawBox();
 }
 

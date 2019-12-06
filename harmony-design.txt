@@ -47,26 +47,6 @@ idle()
 
 
 
-==============================
-Propeller
-------------------------------
-angle: float
-offset: vector3f
-angular velocity
-------------------------------
-draw()
-    translate to offset
-    draw model
-------------------------------
-setMagniude(v)
-    angular velocity = v * a factor
-    clamp angle
-------------------------------
-update(time)
-	// update propeller rotation using the angular velocity
-        rotation = angular velocity * time
-==============================
-
 
 
 
@@ -144,8 +124,6 @@ getDirection()
 
 ==============================
 Player
-------------------------------
-cannon: Cannon
 ------------------------------
 fire()
 	get cannon position

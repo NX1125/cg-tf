@@ -72,6 +72,10 @@ public:
 
     point3f getPosition() const override;
 
+    vector3f& getVelocity() {
+        return velocity;
+    }
+
     void update(int millis);
 
     virtual void move(float time);
@@ -93,12 +97,11 @@ public:
     void clip(float radius, float height) {
         float r = radius - getRadius();
         if (position.z < getRadius() || position.z + getRadius() > height ||
-                position.x * position.x + position.y * position.y >= r) {
+                position.x * position.x + position.y * position.y >= r * r) {
             kill();
         }
     }
 
-protected:
     virtual void draw() const = 0;
 };
 
@@ -128,6 +131,8 @@ public:
     void update(int millis);
 
     void removeOutsideOfArena(float radius, float height);
+
+    void draw();
 
 private:
 

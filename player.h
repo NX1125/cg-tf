@@ -24,7 +24,7 @@ class player_t : public teleportable_t, public obstacle_t {
 private:
     static wf_object_t* sPlayerBodyModel;
 
-    static point3f sBombDoor;
+    static vector3f sBombDoor;
 
     /**
      * The location that the player will be drawn. The position can be updated
@@ -75,10 +75,14 @@ private:
     float velocityFactor = 1.0f;
 
     bool dead = false;
+    
+    projectile_manager_t* manager = NULL;
 
 public:
 
     player_t(takeoff_t* takeoff, float radius);
+
+    void setManager(projectile_manager_t* manager);
 
     /**
      * Moves the player to inside the arena if it hit the roof or the ground.

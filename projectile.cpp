@@ -6,6 +6,8 @@
  * Created on 6 de Dezembro de 2019, 15:21
  */
 
+#include <cstdio>
+
 #include "projectile.h"
 
 std::vector<projectile_t*> projectile_t::sProjectileQueue;
@@ -31,9 +33,10 @@ void projectile_t::transformAndDraw() const {
     glPushMatrix();
     {
         point3f v = position + velocity;
-        gluLookAt(position.x, position.y, position.z,
-                v.x, v.y, v.z,
-                0.0f, 0.0f, 1.0f);
+        glTranslatef(position.x, position.y, position.z);
+//        gluLookAt(position.x, position.y, position.z,
+//                v.x, v.y, v.z,
+//                0.0f, 0.0f, 1.0f);
 
         draw();
     }
@@ -94,10 +97,24 @@ void projectile_manager_t::removeOutsideOfArena(float radius, float height) {
 }
 
 void projectile_manager_t::removeDeadProjectiles() {
+    int n = projectiles.size();
     for (int i = 0; i < projectiles.size(); i++) {
         if (projectiles[i]->isDead()) {
+            projectile_t* p = projectiles[i];
             projectiles.erase(projectiles.begin() + i);
+            delete p;
             i--;
         }
     }
+    n -= projectiles.size();
+    if (n != 0) {
+        printf("There were %d projectiles removed\n", n);
+    }
 }
+
+void projectile_manager_t::draw() {
+    for (projectile_t* p : projectiles) {
+        p->transformAndDraw();
+    }
+}
+

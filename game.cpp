@@ -42,6 +42,8 @@ Game::Game(app_settings* settings) {
 
     createBases(settings->groundEnemies);
     createEnemies(settings->flyingEnemies, arena->getHeight() / 2, settings->eVel * takeoff->getFinalVelocity());
+    
+    player->setManager(manager);
 }
 
 void Game::createBases(vector<simple_svg_circle*>& bases) {
@@ -171,6 +173,7 @@ void Game::display() {
         enemy->transformAndDraw();
     }
     // TODO Draw projectiles (bombs and bullets)
+    manager->draw();
 
     glutSwapBuffers();
 }
@@ -236,6 +239,10 @@ void Game::idle() {
     player->update(time);
     player->clipZ(arena->getHeight());
 
+    manager->update(time);
+    
+    manager->removeOutsideOfArena(arena->getRadius(), arena->getHeight());
+    
     for (flying_enemy_t* enemy : enemies) {
         enemy->update(time);
         enemy->clipZ(arena->getHeight());

@@ -3,10 +3,11 @@
 
 #include "player.h"
 #include "behaviourupdate.h"
+#include "bomb.h"
 
 wf_object_t* player_t::sPlayerBodyModel = NULL;
 
-point3f player_t::sBombDoor(0, 0, 1);
+vector3f player_t::sBombDoor(0, 0, -1);
 
 player_t::player_t(takeoff_t* takeoff, float radius) :
 takeoff(takeoff), radius(radius) {
@@ -21,6 +22,11 @@ takeoff(takeoff), radius(radius) {
     
     propellerLeft->setScaleFactor(factor);
     propellerRight->setScaleFactor(factor);
+}
+
+void player_t::setManager(projectile_manager_t* manager) {
+    this->manager = manager;
+    cannon->setManager(manager);
 }
 
 void player_t::sInit(wf_object_loader_t& loader) {
@@ -165,6 +171,11 @@ void player_t::clipZ(float height) {
 void player_t::bomb() {
     printf("The player just threw a bomb\n");
     // TODO Create a bomb and attach it to projectiles
+    vector3f v = controller->getVelocity();
+    v.z = 0;
+    bomb_t* b = new bomb_t(position + sBombDoor * radius, v);
+    b->setRadius(radius / 8);
+    manager->addProjectile(b);
 }
 
 void player_t::fire() {
