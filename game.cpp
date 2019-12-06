@@ -141,7 +141,7 @@ void Game::display() {
                 }
             }
             glEnd();
-            
+
             glColor3f(0, 1, 0);
             glBegin(GL_LINE_STRIP);
             {
@@ -153,7 +153,7 @@ void Game::display() {
                 }
             }
             glEnd();
-            
+
             glColor3f(1, 0, 0);
             glBegin(GL_LINE_STRIP);
             {
@@ -179,6 +179,15 @@ void Game::display() {
             glLoadIdentity();
 
             glOrtho(-sArena->getRadius(), sArena->getRadius(), -sArena->getRadius(), sArena->getRadius(), -sArena->getHeight() * 2, sArena->getHeight() * 2);
+            break;
+        case Camera::SIDE_VIEW:
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glOrtho(-sArena->getRadius(), sArena->getRadius(), -sArena->getRadius(), sArena->getRadius(), -sArena->getHeight() * 2, sArena->getHeight() * 2);
+            glRotated(-90, 1, 0, 0);
             break;
         case Camera::THIRD_PERSON_CAMERA:
             glMatrixMode(GL_PROJECTION);
@@ -311,6 +320,10 @@ void Game::keyPressed(unsigned char key, int x, int y) {
         case '5':
             printf("Changing to takeoff function view\n");
             sCameraView = Camera::TAKEOFF_FUNCTION_VIEW;
+            break;
+        case '6':
+            printf("Changing to side view\n");
+            sCameraView = Camera::SIDE_VIEW;
             break;
         default:
             sPlayer->keyPress(key);

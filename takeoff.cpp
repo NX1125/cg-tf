@@ -91,7 +91,7 @@ void takeoff_t::setTakeoff(float k, float distance) {
 
     // The vertical angle is a bit complicated, since it uses the tangent of a
     // function to be the slope. We have to compute the arctan of it.
-    verticalAngle = atanf(height * getTakeoffTangent(k2) / (length / 2));
+    verticalAngle = -atanf(height * getTakeoffTangent(k2) / (length / 2));
 
     //     printf("z = %f\n", direction.z);
     printf("v = %f\n", verticalAngle);
