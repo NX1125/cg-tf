@@ -38,13 +38,17 @@ Game::Game(app_settings* settings) {
 
     player->setVelocityFactor(settings->vel);
 
+    manager = new projectile_manager_t();
+    
     createBases(settings->groundEnemies);
     createEnemies(settings->flyingEnemies, arena->getHeight() / 2, settings->eVel * takeoff->getFinalVelocity());
 }
 
 void Game::createBases(vector<simple_svg_circle*>& bases) {
     for (simple_svg_circle* enemy : bases) {
-        this->bases.push_back(new enemy_base_t(point3f(enemy->cx, enemy->cy, enemy->radius), enemy->radius));
+        enemy_base_t* b = new enemy_base_t(point3f(enemy->cx, enemy->cy, enemy->radius), enemy->radius);
+        manager->addObstacles(b, false);
+        this->bases.push_back(b);
     }
 }
 
@@ -52,6 +56,7 @@ void Game::createEnemies(vector<simple_svg_circle*>& enemies, float height, floa
     for (simple_svg_circle* enemy : enemies) {
         point3f p(enemy->cx, enemy->cy, height);
         flying_enemy_t* e = new flying_enemy_t(p, enemy->radius);
+        manager->addObstacles(e, true);
         e->setInitialVelocity(velocity);
         this->enemies.push_back(e);
     }

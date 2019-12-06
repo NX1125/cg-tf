@@ -12,8 +12,9 @@
 #include "shapes.h"
 #include "airplanemovement.h"
 #include "wfobj.h"
+#include "projectile.h"
 
-class enemy_base_t {
+class enemy_base_t : public obstacle_t {
 private:
 
     static wf_object_t* sEnemyModel;
@@ -31,10 +32,19 @@ public:
     void transformAndDraw();
 
     static void init(wf_object_loader_t* loader);
-    
+
     void kill() {
         dead = true;
     }
+
+    point3f getPosition() const override {
+        return position;
+    }
+
+    float getRadius() const override {
+        return radius;
+    }
+
 };
 
 #endif /* ENEMYBASE_H */

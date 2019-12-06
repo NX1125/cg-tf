@@ -6,7 +6,7 @@
 
 wf_object_t* player_t::sPlayerBodyModel = NULL;
 
-point3f player_t::sBombDoor(0,0,1);
+point3f player_t::sBombDoor(0, 0, 1);
 
 player_t::player_t(takeoff_t* takeoff, float radius) :
 takeoff(takeoff), radius(radius) {
@@ -27,7 +27,7 @@ void player_t::draw() {
         const float degreePerRadians = 180 / M_PI;
         glRotatef(horizontal * degreePerRadians, 0, 0, 1);
         glRotatef(vertical * degreePerRadians, 0, 1, 0);
-        glRotatef(horizontalAngularVelocity * degreePerRadians, 1, 0, 0);
+        glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
         glRotatef(90, 1, 0, 0);
         glScalef(radius, radius, radius);
         drawAxis(radius);
@@ -94,7 +94,10 @@ void player_t::update(int millis) {
         horizontal = behaviour->getHorizontalAngle();
         vertical = behaviour->getVerticalAngle();
         // There is no rotation around its own axis yet.
-        horizontalAngularVelocity = behaviour->getHorizontalAngularVelocity();
+
+        const float angleFactor = 0.02f;
+
+        horizontalAngularVelocity = behaviour->getHorizontalAngularVelocity() * angleFactor;
     }
 
     if (mBehaviour == Behaviour::TAKING_OFF && takeoff->isCompleted()) {
@@ -104,6 +107,11 @@ void player_t::update(int millis) {
         controller->setMagnitude(takeoff->getFinalVelocity() * velocityFactor);
         controller->setAngles(takeoff->getHorizontalAngle(), 0);
     }
+
+    const float k = 0.8f;
+
+    horizontalAngularVelocityDrawing *= k;
+    horizontalAngularVelocityDrawing += horizontalAngularVelocity * (1 - k);
 }
 
 vector3f player_t::getVelocity() const {
@@ -111,7 +119,7 @@ vector3f player_t::getVelocity() const {
 }
 
 void player_t::setPosition(const point3f& p) {
-    position  =p;
+    position = p;
     controller->setPosition(p);
 }
 

@@ -43,10 +43,10 @@ void airplane_movement_t::keyReleased(unsigned char key) {
 void airplane_movement_t::updateKey(unsigned char key, float intensity) {
     switch (key) {
         case 'a':
-            left = intensity;
+            left = -intensity;
             break;
         case 'd':
-            right = intensity;
+            right = -intensity;
             break;
         case 's':
             down = intensity;

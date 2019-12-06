@@ -197,6 +197,30 @@ drawMap(): void
 
 
 
+/**
+ * A class that keeps track of all projectiles and hadling collision between the
+ * projectiles and obstacles. Both projectiles and obstacles can be added.
+ */
+==============================
+projectile_manager_t
+------------------------------
+/**
+ * Obstacles that cannot die, but can stop a projectile.
+ */
+inanimate obstacles
+/**
+ * Obstacles that can die and stops a projectile.
+ */
+animated obstacles
+------------------------------
+projectiles: a list of projectiles
+------------------------------
+addObstacles(obs, animated)
+addProjectile(p)
+------------------------------
+update(millis)
+==============================
+
 
 ==============================
 bullet: projectile

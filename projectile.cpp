@@ -40,6 +40,64 @@ void projectile_t::transformAndDraw() const {
     glPopMatrix();
 }
 
+void projectile_t::hit(obstacle_t* other) {
+    kill();
+}
+
 void projectile_t::addProjectile(projectile_t* p) {
     sProjectileQueue.push_back(p);
+}
+
+void projectile_manager_t::addObstacles(obstacle_t* obs, bool animated) {
+    if (animated) {
+        animatedObstacles.push_back(obs);
+    } else {
+        inanimateObstacles.push_back(obs);
+    }
+}
+
+void projectile_manager_t::addProjectile(projectile_t* p) {
+    projectiles.push_back(p);
+}
+
+void projectile_manager_t::update(int millis) {
+    for (projectile_t* p : projectiles) {
+        p->update(millis);
+    }
+
+    for (obstacle_t* obs : animatedObstacles) {
+        if (obs->isAlive()) {
+            hit(obs);
+        }
+    }
+    removeDeadProjectiles();
+    for (obstacle_t* obs : inanimateObstacles) {
+        hit(obs);
+    }
+    removeDeadProjectiles();
+}
+
+void projectile_manager_t::hit(obstacle_t* o) {
+    for (int i = 0; i < projectiles.size(); i++) {
+        if (projectiles[i]->overlaps(o)) {
+            projectiles[i]->hit(o);
+            break;
+        }
+    }
+}
+
+void projectile_manager_t::removeOutsideOfArena(float radius, float height) {
+    for (projectile_t* p : projectiles) {
+        p->clip(radius, height);
+    }
+    removeDeadProjectiles();
+}
+
+void projectile_manager_t::removeDeadProjectiles() {
+    for (int i = 0; i < projectiles.size(); i++) {
+        if (projectiles[i]->isDead()) {
+            projectiles.erase(projectiles.begin() + i);
+            i--;
+        }
+    }
 }

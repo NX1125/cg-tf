@@ -48,6 +48,8 @@ private:
      * movement.
      */
     float horizontalAngularVelocity = 0;
+    
+    float horizontalAngularVelocityDrawing = 0;
 
     /**
      * The behaviour of the player through time. Initially, the player object

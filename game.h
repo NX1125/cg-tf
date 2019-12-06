@@ -55,10 +55,12 @@ private:
 
     Camera cameraView = Camera::UP_VIEW;
 
-    const float normalDistance = 50;
+    const float normalDistance = 100;
 
     std::vector<enemy_base_t*> bases;
     std::vector<flying_enemy_t*> enemies;
+    
+    projectile_manager_t* manager;
 
 public:
 

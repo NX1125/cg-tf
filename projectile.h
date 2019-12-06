@@ -16,7 +16,7 @@
 #include "shapes.h"
 
 /**
- * An interface 
+ * An object that can stop a projectile.
  */
 class obstacle_t {
 public:
@@ -32,6 +32,10 @@ public:
 
     bool overlaps(const obstacle_t* o) {
         return overlaps(o->getPosition(), o->getRadius());
+    }
+
+    virtual bool isAlive() {
+        return true;
     }
 };
 
@@ -65,7 +69,7 @@ private:
 public:
 
     projectile_t(const point3f& offset, const vector3f& velocity);
-    
+
     point3f getPosition() const override;
 
     void update(int millis);
@@ -82,15 +86,56 @@ public:
 
     void transformAndDraw() const;
 
-    virtual void hit(obstacle_t* other) {
-        kill();
-    }
+    virtual void hit(obstacle_t* other);
 
     static void addProjectile(projectile_t* p);
+
+    void clip(float radius, float height) {
+        float r = radius - getRadius();
+        if (position.z < getRadius() || position.z + getRadius() > height ||
+                position.x * position.x + position.y * position.y >= r) {
+            kill();
+        }
+    }
 
 protected:
     virtual void draw() const = 0;
 };
+
+/**
+ * A class that keeps track of all projectiles and hadling collision between the
+ * projectiles and obstacles. Both projectiles and obstacles can be added.
+ */
+class projectile_manager_t {
+private:
+    /**
+     * Obstacles that cannot die, but can stop a projectile.
+     */
+    std::vector<obstacle_t*> inanimateObstacles;
+    /**
+     * Obstacles that can die and stops a projectile.
+     */
+    std::vector<obstacle_t*> animatedObstacles;
+
+    std::vector<projectile_t*> projectiles;
+
+public:
+
+    void addObstacles(obstacle_t* obs, bool animated);
+
+    void addProjectile(projectile_t* p);
+
+    void update(int millis);
+
+    void removeOutsideOfArena(float radius, float height);
+
+private:
+
+    void hit(obstacle_t* o);
+
+    void removeDeadProjectiles();
+};
+
 
 #endif /* PROJECTILE_T_H */
 

@@ -89,7 +89,7 @@ private:
      * 
      * This is used to compute the horizontal angular velocity.
      */
-    float horizontalFactor = 0.05;
+    float horizontalFactor = 0.005;
 
     /**
      * A factor used to convert the vertical movement with the magnitude of
@@ -177,7 +177,7 @@ public:
     }
 
     float getVerticalAngle() const {
-        return vertical;
+        return -vertical;
     }
 
 };
