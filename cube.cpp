@@ -3,6 +3,8 @@
 
 #include "cube.h"
 
+// https://www.opengl.org/archives/resources/code/samples/glut_examples/examples/cube.c
+
 GLfloat cube_t::normals[6][3] = {/* Normals for the 6 faces of a cube. */
     {-1.0, 0.0, 0.0},
     {0.0, 1.0, 0.0},

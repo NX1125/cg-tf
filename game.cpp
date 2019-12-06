@@ -3,32 +3,7 @@
 #include "player.h"
 #include "cube.h"
 
-GLfloat Game::sLightDiffuse[] = {1.0, 0.0, 0.0, 1.0}; /* Red diffuse light. */
-GLfloat Game::sLightPosition[] = {1.0, 1.0, 1.0, 0.0}; /* Infinite light location. */
-
-third_person_follower_t* Game::sFollower = NULL;
-
-bool Game::sFollowerMouseEnabled = false;
-
-vector<reset_listener_t*> Game::sResetListeners;
-
-arena_t* Game::sArena = NULL;
-
-player_t* Game::sPlayer = NULL;
-
-stopwatch_t* Game::sWatch = NULL;
-
-time_t Game::sAccumulatedTime = 0;
-
-// As stated in spec, the size of the window is initially 500x500.
-int Game::sWidth = 500;
-int Game::sHeight = 500;
-
-Camera Game::sCameraView = Camera::UP_VIEW;
-
-const float Game::NORMAL_DISTANCE = 50;
-
-void Game::init(app_settings* settings) {
+Game::Game(app_settings* settings) {
     glClearColor(0, 0, 0, 0);
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, sLightDiffuse);

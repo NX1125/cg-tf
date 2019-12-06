@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/arena.o \
 	${OBJECTDIR}/bomb.o \
 	${OBJECTDIR}/circle.o \
+	${OBJECTDIR}/cube.o \
 	${OBJECTDIR}/filepath.o \
 	${OBJECTDIR}/game.o \
 	${OBJECTDIR}/lines.o \
@@ -110,6 +111,11 @@ ${OBJECTDIR}/circle.o: circle.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/circle.o circle.cpp
+
+${OBJECTDIR}/cube.o: cube.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cube.o cube.cpp
 
 ${OBJECTDIR}/filepath.o: filepath.cpp
 	${MKDIR} -p ${OBJECTDIR}

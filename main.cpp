@@ -28,6 +28,28 @@ app_settings* loadSettings(char* configFile) {
     return new app_settings(path.toString());
 }
 
+Game* sGame = NULL;
+
+void display();
+
+void mouseDragged(int x, int y);
+
+void mouseMoved(int x, int y);
+
+void mouseButtonEvent(int button, int state, int x, int y);
+
+void mousePressed(int button, int x, int y);
+
+void mouseReleased(int button, int x, int y);
+
+void reshape(int width, int height);
+
+void idle();
+
+void keyPressed(unsigned char key, int x, int y);
+
+void keyReleased(unsigned char key, int x, int y);
+
 /*
  * 
  */
@@ -49,19 +71,19 @@ int main(int argc, char** argv) {
 
         glutCreateWindow(title.c_str());
 
-        Game::init(settings);
+        sGame = new Game(settings);
 
-        glutReshapeFunc(Game::reshape);
-        glutDisplayFunc(Game::display);
+        glutReshapeFunc(reshape);
+        glutDisplayFunc(display);
 
-        glutKeyboardFunc(Game::keyPressed);
-        glutKeyboardUpFunc(Game::keyReleased);
+        glutKeyboardFunc(keyPressed);
+        glutKeyboardUpFunc(keyReleased);
 
-        glutPassiveMotionFunc(Game::mouseMoved);
-        glutMotionFunc(Game::mouseDragged);
-        glutMouseFunc(Game::mouseButtonEvent);
+        glutPassiveMotionFunc(mouseMoved);
+        glutMotionFunc(mouseDragged);
+        glutMouseFunc(mouseButtonEvent);
 
-        glutIdleFunc(Game::idle);
+        glutIdleFunc(idle);
 
         // As stated in the spec, the initial frame size is 500x500
         const int initialWidth = 500;
@@ -76,6 +98,8 @@ int main(int argc, char** argv) {
         delete settings;
 
         glutMainLoop();
+        
+        delete sGame;
     } catch (IOException& ex) {
         printf("[error] An exception: %s\n", ex.what());
     } catch (MissingElementException& ex) {
@@ -87,3 +111,44 @@ int main(int argc, char** argv) {
     return EXIT_SUCCESS;
 }
 
+// wrappers for GLUT to Game
+
+void display() {
+    sGame->display();
+}
+
+void mouseDragged(int x, int y) {
+    sGame->mouseDragged(x, y);
+}
+
+void mouseMoved(int x, int y) {
+    sGame->mouseMoved(x, y);
+}
+
+void mouseButtonEvent(int button, int state, int x, int y) {
+    sGame->mouseButtonEvent(button, state, x, y);
+}
+
+void mousePressed(int button, int x, int y) {
+    sGame->mousePressed(button, x, y);
+}
+
+void mouseReleased(int button, int x, int y) {
+    sGame->mouseReleased(button, x, y);
+}
+
+void reshape(int width, int height) {
+    sGame->reshape(width, height);
+}
+
+void idle() {
+    sGame->idle();
+}
+
+void keyPressed(unsigned char key, int x, int y) {
+    sGame->keyPressed(key, x, y);
+}
+
+void keyReleased(unsigned char key, int x, int y) {
+    sGame->keyReleased(key, x, y);
+}

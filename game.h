@@ -27,69 +27,67 @@ enum Camera {
 };
 
 /**
- * A static class, just to not use global variables, as asked in a previous TC.
  */
 class Game {
+private:
+    // As stated in spec, the size of the window is initially 500x500.
+    int sWidth;
+    int sHeight;
+
+    GLfloat sLightDiffuse[4] = {1.0, 0.0, 0.0, 1.0}; /* Red diffuse light. */
+    GLfloat sLightPosition[4] = {1.0, 1.0, 1.0, 0.0}; /* Infinite light location. */
+
+    third_person_follower_t* sFollower = NULL;
+
+    bool sFollowerMouseEnabled = false;
+
+    vector<reset_listener_t*> sResetListeners;
+
+    arena_t* sArena = NULL;
+
+    player_t* sPlayer = NULL;
+
+    stopwatch_t* sWatch = NULL;
+
+    time_t sAccumulatedTime = 0;
+
+    Camera sCameraView = Camera::UP_VIEW;
+
+    const float NORMAL_DISTANCE = 50;
+
 public:
 
-    static int sWidth;
-    static int sHeight;
+    Game(app_settings* settings);
 
-    static third_person_follower_t* sFollower;
+private:
 
-    static bool sFollowerMouseEnabled;
+    void loadModels();
 
-    static vector<reset_listener_t*> sResetListeners;
+public:
 
-    static arena_t* sArena;
+    void display();
 
-    static void init(app_settings* settings);
+    void mouseDragged(int x, int y);
 
-    static void loadModels();
+    void mouseMoved(int x, int y);
 
-    // Extracted from:
-    // https://www.opengl.org/archives/resources/code/samples/glut_examples/examples/cube.c
-    // Will delete after the third-person-camera is done
-    static GLfloat sLightDiffuse[];
-    static GLfloat sLightPosition[];
-    static GLfloat normals[6][3];
-    static GLint faces[6][4];
-    static GLfloat vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
-    static GLfloat color[6][3];
-    
-    static const float NORMAL_DISTANCE ;
-    
-    static player_t* sPlayer;
-    
-    static stopwatch_t* sWatch;
-    
-    static time_t sAccumulatedTime;
-    
-    static Camera sCameraView;
-    
-    static void display();
+    void mouseButtonEvent(int button, int state, int x, int y);
 
-    static void mouseDragged(int x, int y);
+    void mousePressed(int button, int x, int y);
 
-    static void mouseMoved(int x, int y);
+    void mouseReleased(int button, int x, int y);
 
-    static void mouseButtonEvent(int button, int state, int x, int y);
+    void reshape(int width, int height);
 
-    static void mousePressed(int button, int x, int y);
+    void idle();
 
-    static void mouseReleased(int button, int x, int y);
+    void keyPressed(unsigned char key, int x, int y);
 
-    static void reshape(int width, int height);
-    
-    static void idle();
+    void keyReleased(unsigned char key, int x, int y);
 
-    static void keyPressed(unsigned char key, int x, int y);
-    
-    static void keyReleased(unsigned char key, int x, int y);
+    void reset();
 
-    static void reset();
-
-    static void addResetListener(reset_listener_t* l);
+    void addResetListener(reset_listener_t* l);
 };
 
 

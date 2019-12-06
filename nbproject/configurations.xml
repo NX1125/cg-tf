@@ -9,6 +9,7 @@
       <itemPath>arena.h</itemPath>
       <itemPath>behaviourupdate.h</itemPath>
       <itemPath>bomb.h</itemPath>
+      <itemPath>cube.h</itemPath>
       <itemPath>filepath.h</itemPath>
       <itemPath>game.h</itemPath>
       <itemPath>player.h</itemPath>
@@ -39,6 +40,7 @@
       <itemPath>arena.cpp</itemPath>
       <itemPath>bomb.cpp</itemPath>
       <itemPath>circle.cpp</itemPath>
+      <itemPath>cube.cpp</itemPath>
       <itemPath>filepath.cpp</itemPath>
       <itemPath>game.cpp</itemPath>
       <itemPath>lines.cpp</itemPath>
@@ -122,6 +124,10 @@
       <item path="bomb.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cube.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cube.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="filepath.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -243,6 +249,10 @@
       <item path="bomb.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="circle.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cube.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cube.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="filepath.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -8,6 +8,8 @@
 #ifndef CUBE_H
 #define CUBE_H
 
+// https://www.opengl.org/archives/resources/code/samples/glut_examples/examples/cube.c
+
 class cube_t {
 private:
     static GLfloat normals[6][3];
@@ -16,9 +18,9 @@ private:
     static GLfloat color[6][3];
 
     static bool sStart;
-    
+
     static bool init();
-    
+
 public:
     static void drawBox(void);
 
