@@ -73,6 +73,14 @@ void player_t::update(int millis) {
         case Behaviour::CONTROLLING:
             behaviour = controller;
             break;
+        case Behaviour::ON_GROUND:
+            // the horizontal is constant
+            horizontal = takeoff->getHorizontalAngle();
+            // the player is at the ground parallel to it
+            vertical = 0;
+            // There is no rotation around its own axis yet.
+            horizontalAngularVelocity = 0;
+            break;
     }
     if (behaviour != NULL) {
         behaviour->update(millis);
@@ -96,6 +104,12 @@ void player_t::update(int millis) {
 vector3f player_t::getVelocity() const {
     return controller->getVelocity();
 }
-void player_t::teleported() {
-    controller->setPosition(position);
+
+void player_t::setPosition(const point3f& p) {
+    controller->setPosition(p);
 }
+
+const char* player_t::getName() const {
+    return "player";
+}
+

@@ -8,6 +8,8 @@
 #ifndef TAKEOFF_T_H
 #define TAKEOFF_T_H
 
+#include <ctime>
+
 #include "shapes.h"
 #include "behaviourupdate.h"
 

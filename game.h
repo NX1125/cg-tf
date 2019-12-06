@@ -85,8 +85,6 @@ public:
     static void reset();
 
     static void addResetListener(reset_listener_t* l);
-    
-    static void teleport(point3f& p, vector3f, float radius, const char* name);
 };
 
 

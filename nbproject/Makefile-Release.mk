@@ -48,6 +48,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/simplesvg.o \
 	${OBJECTDIR}/stopwatch.o \
 	${OBJECTDIR}/takeoff.o \
+	${OBJECTDIR}/teleportable.o \
 	${OBJECTDIR}/textrendering.o \
 	${OBJECTDIR}/thirdpersonfollower.o \
 	${OBJECTDIR}/tinyxml/tinystr.o \
@@ -146,6 +147,11 @@ ${OBJECTDIR}/takeoff.o: takeoff.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/takeoff.o takeoff.cpp
+
+${OBJECTDIR}/teleportable.o: teleportable.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/teleportable.o teleportable.cpp
 
 ${OBJECTDIR}/textrendering.o: textrendering.cpp
 	${MKDIR} -p ${OBJECTDIR}

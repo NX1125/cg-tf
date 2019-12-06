@@ -213,9 +213,7 @@ void Game::idle() {
     sPlayer->update(time);
 
     if (sPlayer->canTeleport()) {
-        teleport(sPlayer->getPosition(),
-                sPlayer->getVelocity(), sPlayer->getRadius(), "player");
-        sPlayer->teleported();
+        sPlayer->teleport(sArena->getRadius());
     }
 
     sFollower->setTarget(sPlayer->getPosition());
@@ -251,28 +249,5 @@ void Game::reset() {
 
 void Game::addResetListener(reset_listener_t* l) {
     sResetListeners.push_back(l);
-}
-
-void Game::teleport(point3f& p, vector3f velocity, float r, const char* name) {
-    vector2d proj(p.x, p.y);
-
-    float bounds = sArena->getRadius() - r;
-
-    if (proj.lengthSqr() >= bounds * bounds &&
-            velocity.x * p.x + velocity.y * p.y > 0) {
-        printf("Teleporting %s\n", name);
-        // the circle hit the wall of the arena. It will be teleported 
-        // to the other side
-        point2d start(p.x, p.y);
-        velocity.normalize();
-        vector2d v2(velocity.x, velocity.y);
-        v2.normalize();
-        point2d c = closestPointFromLineToPoint(start, v2, point2d(0, 0));
-
-        vector2d v = start - c;
-
-        p.x = c.x - v.x;
-        p.y = c.y - v.y;
-    }
 }
 

@@ -11,12 +11,13 @@
 #include "wfobj.h"
 #include "takeoff.h"
 #include "airplanemovement.h"
+#include "teleportable.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
 };
 
-class player_t {
+class player_t : public teleportable_t{
 private:
     static wf_object_t* sPlayerBodyModel;
 
@@ -79,7 +80,7 @@ public:
         return mBehaviour;
     }
 
-    point3f& getPosition() {
+    point3f getPosition() const {
         return position;
     }
 
@@ -97,7 +98,9 @@ public:
         return mBehaviour == Behaviour::CONTROLLING;
     }
     
-    void teleported();
+    const char* getName() const override;
+    
+    void setPosition(const point3f& p) override;
 };
 
 #endif /* AIRPLANE_H */
