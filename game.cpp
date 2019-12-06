@@ -178,7 +178,9 @@ void Game::mouseDragged(int x, int y) {
 }
 
 void Game::mouseMoved(int x, int y) {
-    // TODO Move cannon of player
+    if (player->getBehaviour() == Behaviour::CONTROLLING) {
+        player->setCannonAxis(x / (GLfloat) width, y / (GLfloat) height);
+    }
 }
 
 void Game::mouseButtonEvent(int button, int state, int x, int y) {
@@ -208,7 +210,7 @@ void Game::mouseReleased(int button, int x, int y) {
 
 void Game::reshape(int width, int height) {
     width = width;
-    sHeight = height;
+    height = height;
 
     glViewport(0, 0, width, height);
 

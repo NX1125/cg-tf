@@ -161,3 +161,7 @@ bool player_t::canDie() const {
     return mBehaviour == Behaviour::CONTROLLING;
 }
 
+void player_t::setCannonAxis(float x, float y) {
+    // TODO Move cannon
+}
+

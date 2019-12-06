@@ -18,6 +18,9 @@ position(position), radius(radius) {
 }
 
 void enemy_base_t::transformAndDraw() {
+    if (dead) {
+        return;
+    }
     glPushMatrix();
     {
         glTranslatef(position.x, position.y, position.z);

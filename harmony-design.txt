@@ -22,14 +22,6 @@ display()
 	ELSE IF player won THEN
 		draw "You win" on the middle of screen
 	draw current score on top-right of the window 
-	update camera position
-	arena.draw()
-	player.draw()
-	FOR EACH flying enemy
-		// remeber that enemy uses the same class as the player.
-		enemy.draw()
-	FOR EACH ground enemy
-		tank.draw()
 	FOR EACH projectile
 		projectile.draw()
 ------------------------------
@@ -51,26 +43,6 @@ idle()
 	// make random movements for each enemy
 	FOR EACH enemy
 		compute enemy next position
-
-	IF had taken off && !takeoff.move(dt) THEN
-		enable control
-	ELSE IF movement enabled THEN
-		compute player next position
-		IF the player hit an enemy THEN
-			kill player
-			kill enemy
-			make explosion animation for both airplanes
-		ELSE IF hit the wall of the arena THEN
-			teleport()
-		ELSE 
-			set position of airplane
-		// fire bullets at constant frequency
-		FOR EACH enemy
-			make a key press at its frequency
-	// teleport enemies when they hit the wall
-	FOR EACH enemy
-		IF hit wall of the arena THEN
-			teleport (enemy)
 ==============================
 
 
@@ -187,16 +159,6 @@ Player
 ------------------------------
 cannon: Cannon
 ------------------------------
-mouseMoved(dx, dy)
-	IF controlling THEN
-		cannon.mouseMoved(dx, dy)
-mousePressed(button)
-	switch button
-		case left
-			fire()
-		case right
-			bomb()
-------------------------------
 fire()
 	get cannon position
 	get cannon direction
@@ -211,25 +173,6 @@ bomb()
 ==============================
 
 
-
-// *** Tank ***
-
-
-
-
-==============================
-EnemyBase
-------------------------------
-static {
-	load obj file
-}
-------------------------------
-EnemyBase()
-------------------------------
-draw(): void
-	IF not dead THEN
-		draw tank
-==============================
 
 
 

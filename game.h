@@ -34,7 +34,7 @@ class Game {
 private:
     // As stated in spec, the size of the window is initially 500x500.
     int width;
-    int sHeight;
+    int height;
 
     GLfloat lightDiffuse[4] = {1.0, 0.0, 0.0, 1.0}; /* Red diffuse light. */
     GLfloat sLightPosition[4] = {1.0, 1.0, 1.0, 0.0}; /* Infinite light location. */

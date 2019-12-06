@@ -15,20 +15,26 @@
 
 class enemy_base_t {
 private:
-    
+
     static wf_object_t* sEnemyModel;
 
     point3f position;
-    
+
     float radius;
+
+    bool dead = false;
 
 public:
 
     enemy_base_t(point3f position, float radius);
 
     void transformAndDraw();
-    
+
     static void init(wf_object_loader_t* loader);
+    
+    void kill() {
+        dead = true;
+    }
 };
 
 #endif /* ENEMYBASE_H */

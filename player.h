@@ -127,6 +127,11 @@ public:
     void kill();
 
     bool canDie() const;
+
+    /**
+     * Both x and y are between 0 and 1.
+     */
+    void setCannonAxis(float x, float y);
 };
 
 #endif /* AIRPLANE_H */
