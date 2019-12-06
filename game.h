@@ -33,29 +33,29 @@ enum Camera {
 class Game {
 private:
     // As stated in spec, the size of the window is initially 500x500.
-    int sWidth;
+    int width;
     int sHeight;
 
-    GLfloat sLightDiffuse[4] = {1.0, 0.0, 0.0, 1.0}; /* Red diffuse light. */
+    GLfloat lightDiffuse[4] = {1.0, 0.0, 0.0, 1.0}; /* Red diffuse light. */
     GLfloat sLightPosition[4] = {1.0, 1.0, 1.0, 0.0}; /* Infinite light location. */
 
-    third_person_follower_t* sFollower = NULL;
+    third_person_follower_t* follower = NULL;
 
-    bool sFollowerMouseEnabled = false;
+    bool followerMouseEnabled = false;
 
     vector<reset_listener_t*> sResetListeners;
 
-    arena_t* sArena = NULL;
+    arena_t* arena = NULL;
 
-    player_t* sPlayer = NULL;
+    player_t* player = NULL;
 
-    stopwatch_t* sWatch = NULL;
+    stopwatch_t* watch = NULL;
 
     time_t sAccumulatedTime = 0;
 
-    Camera sCameraView = Camera::UP_VIEW;
+    Camera cameraView = Camera::UP_VIEW;
 
-    const float NORMAL_DISTANCE = 50;
+    const float normalDistance = 50;
 
     std::vector<enemy_base_t*> bases;
     std::vector<flying_enemy_t*> enemies;
