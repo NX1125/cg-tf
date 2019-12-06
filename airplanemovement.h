@@ -180,6 +180,10 @@ public:
         return -vertical;
     }
 
+    float getVelocityMagnitude() const override {
+        return magnitude;
+    }
+
 };
 
 #endif /* AIRPLANE_MOVEMENT_T_H */

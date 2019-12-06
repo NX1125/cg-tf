@@ -24,6 +24,8 @@ public:
     virtual float getVerticalAngle() const = 0;
 
     virtual float getHorizontalAngularVelocity() const = 0;
+    
+    virtual float getVelocityMagnitude() const = 0;
 };
 
 #endif /* BEHAVIOURUPDATE_H */

@@ -89,10 +89,16 @@ private:
 
     bool secondHalf = false;
 
+    float velocity;
+
 public:
 
     takeoff_t(const point3f& start, const point3f& end,
             float height, unsigned int timeToComplete);
+
+    float getVelocityMagnitude() const override {
+        return velocity;
+    }
 
     void reset();
 

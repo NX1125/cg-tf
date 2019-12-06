@@ -99,9 +99,14 @@ void player_t::update(int millis) {
             horizontalAngularVelocity = 0;
             break;
     }
+    float velocity = 0;
+    
     if (behaviour != NULL) {
         behaviour->update(millis);
         position = behaviour->getPosition();
+        
+        velocity = behaviour->getVelocityMagnitude();
+        
         // printf("(%f, %f, %f)\n", position.x, position.y, position.z);
         horizontal = behaviour->getHorizontalAngle();
         vertical = behaviour->getVerticalAngle();
@@ -115,6 +120,7 @@ void player_t::update(int millis) {
     if (mBehaviour == Behaviour::TAKING_OFF && takeoff->isCompleted()) {
         // transition from takeoff to give the controller to the user.
         mBehaviour = Behaviour::CONTROLLING;
+        
         controller->setPosition(position);
         controller->setMagnitude(takeoff->getFinalVelocity() * velocityFactor);
         controller->setAngles(takeoff->getHorizontalAngle(), 0);
@@ -127,8 +133,6 @@ void player_t::update(int millis) {
     
     propellerLeft->update(millis);
     propellerRight->update(millis);
-    
-    float velocity = getVelocity().length();
     
     propellerLeft->setMagnitude(velocity);
     propellerRight->setMagnitude(velocity);

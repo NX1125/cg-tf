@@ -55,6 +55,8 @@ void takeoff_t::update(int time) {
 
     float k = distance / length;
 
+    velocity = acceleration * dt;
+    
     // distance is after the middle of the airstrip
     // d > l / 2
     // 2d > l
