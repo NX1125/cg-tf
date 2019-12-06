@@ -3,7 +3,7 @@
 // TODO: Paint in the texture a closed door for the bomb to fall.
 // What are the important details for the models? 
 
-
+// Night mode, mini map, propellers, projectiles, move cannon with mouse, enemies, collision, reset, "random" movement, 
 
 
 // The user can control the cannon direction with the mouse.
@@ -14,59 +14,7 @@ Main
 ------------------------------
 // All of the bullets that aren't dead are saved to continue moving through space.
 bullets: a queue of bullets that when a bullet dies, it is removed from it.
-------------------------------
-mousePress(button)
-	IF movement enabled
-		IF left button THEN
-			fire()
-		ELSE IF right button THEN
-			bomb()
-------------------------------
-mouseMoved(position)
-	IF movement enabled
-		get cannon direction angles
-		set cannon direction
-------------------------------
-fire()
-	get current cannon direction
-	get current cannon front position
-	// this bullet has a factor that comes from the settings file and also
-	// need to be proportional to the current magnitude of the airplane.
-	add bullet to the queue of bullets
-getCannonDirection()
-------------------------------
-bomb()
-	get current airplane position
-	add a bomb with the velocity going downwards and with gravity. The forward velocity is proportional to the current airplane velocity
-		bomb with velocity = airplane.velocity.xy, z = 0
-		z with gravity
-------------------------------
-// These parts are mostly done in the previous code, so we just adapt
-load config file at the given directory
-	open config file at the given directory
-	search element tags
-load SVG file at the diretory from the config file
-	use the SVG parser that is already done
-init static loading of classes that are needed
-	// what are the classes to init?
-------------------------------
-create objects
-	create arena
-		use constructor of Arena using the player as 8 times of its diameter
-	player
-	airstrip
-	enemy airplanes
-	tanks
-------------------------------
-main(directory)
-	load config file at the given directory
-	load SVG file at the diretory from the config file
-	init static loading of classes that are needed
-	create objects
-	attach functions to GLUT
-	main loop
-		wait for 'u' press
-	collect memory garbage
+collect memory garbage
 ------------------------------
 display()
 	IF player is dead THEN
@@ -82,25 +30,8 @@ display()
 		enemy.draw()
 	FOR EACH ground enemy
 		tank.draw()
-	FOR EACH bullet
-		bullet.draw()
-	FOR EACH bomb
-		bullet.draw()
-------------------------------
-// This is the callback for keys that are being pressed. There are a bunch of keys to implement
-// where some will be added later for presentation.
-keyPress(key)
-	SWITCH key
-		CASE r
-			reset()
-		CASE u
-			IF hasn't takeoff THEN
-				takeoff()
-		DEFAULT
-			updateKey(key, 1)
-// Callback for keys that were released.
-keyUp(key)
-	updateKey(key, 0)
+	FOR EACH projectile
+		projectile.draw()
 ------------------------------
 addResetListener(ResetListener): void 
 ------------------------------
@@ -108,12 +39,6 @@ reset()
 	FOR EACH reset listener
 		listener.reset()
 	remove all projectiles // bombs and bullets
-------------------------------
-updateKey(key, intensity)
-	// the movement is disabled when the game weren't started yet. The player takes control
-	// after the airplane had a complete takeoff
-	IF movement enabled
-		movement controller . updateKeys(key, intensity)
 ------------------------------
 idle()	
 	// detect collision of each projectile with an obstacle
@@ -150,188 +75,12 @@ idle()
 
 
 
-
-// What about textures? 
-
-// What about night mode? 
-
-// If the points of the circle are counter-clockwise defined, then the triangle fan will be counter-clockwise.
-// It seems that OpenGL does the flip of the winding when Triangle strip is being used.
-// https://www.khronos.org/opengl/wiki/Primitive
-// There are two circles to draw and the walls.
-// The light is in the airstrip going to the next light source. The airstrip has light sources turning on and off
-// at the sides of the airstrip. The ground of the arena is dirt or so.
-==============================
-Arena
-------------------------------
-// The blueprint is a system that were already been written and it creates a circle by dividing the circumference 
-// by an even angle. It is already done, so we just use as a legacy library. 
-circle: circle_blueprint
-height: z
-------------------------------
-Arena(radius, height, light count)
-	create blueprint of the roof and ground which is just one blueprint
-	save the height to be used later for the roof
-------------------------------
-// There are two circles and walls to draw. It delegates to other two methods that does the job
-draw(): void
-	draw roof
-	draw ground
-	draw walls
-drawGround(): void
-	the roof uses the same circle as the ground, but since it is in opposite direction,
-	the culling faces are swapped:
-	cull face = GL_BACK
-	draw circle at (0)
-drawRoof()
-	draw circle at (height) with texture of clouds and enable blending since there is an alpha channel here
-	draw circle at (height + dy) with a blue texture
-draw circle(z)
-	use the blueprint to draw the circle in the xy plane and at z of the parameter
-// The wall is part of the cylinder and it is a quad between two correspondent and consecutive points
-// of both roof and ground circles. These walls should have their normal to inside the cylinder.
-drawWalls(): void
-	// Each piece of the wall uses a quad, but the entire wall uses a triangle strip
-	// STEP 2 means that the index increases 2 by 2: 0, 2, 4, 6, 8, ...
-	FOR EACH an index point i IN counter-clockwise WITH STEP 2
-		// This allows the first face to be counter-clockwise to inside the cylinder.
-		// Points roof[i] and ground[i] are on the same (x, y) but different z only.
-		// They are said to be correspondent.
-		// triangle strip () is just a way to say what are the points being passed to the 
-		// TRIANGLE_STRIP primitive, abstract to OpenGL. Maybe this will be passed to an 
-		// array or to the glVertex() directly.
-		triangle strip (
-			ground[i], roof[i],
-			roof[i + 1], ground[i + 1],
-		)
-// both roof and ground uses the same circle, only the culling is inverted. glCullFace(GL_BACK or GL_FRONT)
-// can be used here to use the same drawCircle() function but inverting the face.
-// The z coordinate is different for both roof and ground though. 
-roof[i].xy = ground[i].xy
-==============================
-
-
-// change blueprint to use display lists instead of the raw circle
-==============================
-circle_blueprint
-------------------------------
-circle_blueprint(n)
-==============================
-
-
-
-
-// *** Airplane, appearance, camera mode ***
-
-
-
-
-// The airplane model is an airplane with a hand holding it. The hand of the green airplane is not
-// visible though since it can get in the way of the player's view. For that, we have an airplane,
-// a hand and the color change. But for each one, we may change with the night mode or day mode,
-// and camera mode. When rendering from the cockpit, there is a model for the cockpit to render. 
-
-// During the movement, there are three axis in the airplane that have the moving effect. There
-// is a vertical rotation that is used for the up and down movement, and there are other two axis
-// used for the sideways movement. The airplane has an axis of rotation from the back to the front
-// of it. This rotation is proportion to the velocity and to the amount of press of the sideways
-// key.
-
-// The airplane object can be used for the player and flying enemies. 
-
-// The camera uses a transform to position itself. The camera is normally at the airplane,
-// so the airplane is our reference for now.
-
-// There are four keys to handle in the movement that are: 'a', 's', 'd' and 'w'.
-// Besides, there are the accelerators '+' and '-'. The problem though is that in 
-// the previous project, we used angles, but in this one angles are not good.
-// Actually, there are two rotations to do when moving.
-==============================
-Airplane
-------------------------------
-Airplane()
-------------------------------
-static {
-	load airplane files
-	load hand files
-	load cockpit files
-}
-------------------------------
-// This takes the current velocity, a timed pressing factor and a constant angle.
-// Named as:
-// theta: constant angle
-// timed pressing factor: k
-// current velocity: v
-getAirplaneAxisRotation(): angle
-	return theta * k * v
-------------------------------
-// The drawing of an airplane is a bit more complex since it loads from a file instead of a raw one.
-// It also has the color thing, green and red. 
-draw()
-	// The angle can be get from the movement controller
-	rotate airplane by the current axis angle times the pressing amount
-	rotate the center of gravity of the airplane as up or down. We assume that it is the wing axis.
-	rotate the z axis by the amount it is steering. This is the same as the airplane axis.
-	move origin to the current position of the airplane
-	IF this airplane is the player THEN
-		draw player
-	ELSE
-		draw enemy
-drawEnemy()
-	draw airplane
-	draw gun
-		transform {
-			point to the gun direction {
-				rotate along the sideways axis,
-				rotate along the z axis
-			}
-			translate to the point
-		}
-		draw gun model
-	draw hand
-drawPlayer()
-	SWITCH camera position
-		CASE cockpit
-			draw cockpit
-			rotate control wheel
-				draw control wheel
-				draw hand on control wheel
-		CASE cannon
-			rotate for the firing
-				draw cannon
-			draw bottom of airplane
-		CASE third person
-			update texture
-			draw airplane
-			IF on land
-				draw landing gear
-			draw cannon
-			draw bomb door
-------------------------------
-// The position at the cockpit is fixed and depends only of the center of the airplane.
-// It is easy to get it. We have to measure the position though in the model, but lets
-// say that it is a vector v while the airplane is at point p. The airplane has an
-// orientation described by a matrix H, then the cockpit position is p + Hv.
-getCockpitCamera(): matrix
-// The third person camera is more complex since it can use the mouse as a way to rotate
-// differently. There are two axis to rotate the camera while pointing to the center of 
-// screen. What is the matrix for this one?
-getThirdPersonCamera(): matrix
-// This is sitting above the gun, using the same direction as the cannon. 
-getGunCamera(): matrix
-------------------------------
-movement: AirplaneMovement
-------------------------------
-// enemies also have a controller since they also move obeying the movement of the airplane
-// likewise the player.
-getMovementHandler(): AirplaneMovement
-==============================
-
-
 ==============================
 Propeller
 ------------------------------
 rotation: AirplaneMovement
+------------------------------
+draw()
 ------------------------------
 run(time)
 	update propeller rotation using the angular velocity
@@ -341,222 +90,13 @@ getAngularVelocity(): angle
 ==============================
 
 
-==============================
-AirplaneMovement
-------------------------------
-AirplaneMovement(velocity factor)
-------------------------------
-position
-horizontal: angle
-vertical: angle
-------------------------------
-left, right, up, down: float
-k: factor
-------------------------------
-keyPress(key)
-	SWITCH key
-		CASE a
-			left = intensity
-		CASE d
-			right = intensity
-		CASE w
-			up = intensity
-		CASE s
-			down = intensity
-		// keys that updates the velocity magnitude of the player
-		CASE +
-			velocity *= 1 + k
-		CASE -
-			velocity *= 1 - k
-	SWITCH key orientation
-		CASE horizontal
-			player.setHorizontal(right - left)
-		CASE vertical
-			player.setVertical(up - down)
-setHorizontal(a, d): void
-	update rotation horizontal matrix // H
-		H = rotate along z axis
-	update movement axis matrix
-		T = rotate along y axis
-	update velocity direction
-setVertical(w, s): void
-	update rotation vertical matrix // V
-		V = rotate along x axis
-	update velocity direction
-updateVelocityDirection()
-	velocity direction = HVT*[0,1,0]
-------------------------------
-setVelocity(v): void
-getVelocity(): velocity
-------------------------------
-getHorizontalAngle()
-	return getVelocityMagnitude() * horizontal * angle factor
-getVerticalAngle()
-	return getVelocityMagnitude() * vertical * angle factor
-------------------------------
-move(time): void
-	save current position
-	compute next position
-		velocity = velocity direction * velocity magnitude * velocity factor
-		position += velocity * time interval
-==============================
 
 
 
 
 
-==============================
-Player
-------------------------------
-airplane
-movement
-takeoff
-------------------------------
-Player(diameter, line)
-	create takeoff object with the line and diameter
-	create movement controller
-	create airplane
-------------------------------
-camera mode
-------------------------------
-// getCockpitCamera(): mat4
-// getCannonCamera(): mat4
-// getThirdPersonCamera(): mat4
-==============================
 
 
-
-
-// The third person camera uses two axis of rotation when looking with the mouse around it.
-// Not only that, but the the movement of the player updates the angle and the position of the camera.
-// There are two axis to move around the object to look. 
-==============================
-ThirdPersonCamera
-------------------------------
-target: center of the player to look
-camera: a point
-constant distance
-follow factor
-------------------------------
-previous mouse position
-------------------------------
-setTarget(position)
-------------------------------
-run(time)
-	// makes the camera update and get closer to the airplane
-	// takes the current target and camera distance
-	current distance = target - camera
-	// interpolate the current distance to a constant distance
-	// k is a factor between 0 and 1
-	distance = current distance * (1 - k) + constant distance * k
-	camera = target + distance * normalized previous difference
-==============================
-
-
-
-
-// *** OBJ and MTL loading ***
-
-
-
-
-// A class that loads an OBJ and MTL files given a filename and helps with the drawing of it.
-// WE can use a display list for objects
-==============================
-Model3D
-------------------------------
-Model3D(objfile, mtlfile)
-	read object file
-	read material file
-------------------------------
-// draws the object with the materials from the file that it loaded of.
-draw(): void
-==============================
-
-// The .obj file format
-# a comment
-v <x> <y> <z> [w]
-vt <u> [v] [w]
-vn <x> <y> <z>
-f <v>/[vt]/[vn]
-mtllib <filename>
-usemtl <name>
-
-
-
-// WF = Wavefront
-
-==============================
-WFObject
-------------------------------
-vertices: vector<ivec4>
-normals: vector<ivec3>
-texture: vector<ivec3>
-------------------------------
-faces: vector<WFFace>
-------------------------------
-WFObject(fileobj)
-	FOR EACH line of the file
-		add line
-------------------------------
-addLine(line)
-	read word
-	SWITCH word
-		CASE v
-			read <x> <y> <z> [w]
-		CASE vt
-			read <u> [v] [w]
-		CASE vn
-			read <x> <y> <z>
-		CASE f
-			FOR EACH face <v>/[vt]/[vn]
-				IF has texture THEN
-					add texture command
-				IF has normal THEN
-					add normal command
-				add vertex command
-			create WFFace from current list of commands
-			clear list of commands
-		DEFAULT
-			do nothing
-------------------------------
-getVertex(index)
-	IF index is negative THEN
-		index = current count of vertices + index
-	RETURN vertex[index]
-==============================
-
-
-==============================
-WFFace
-------------------------------
-// vertex, normal, texture and color
-commands: an array of functions with values applied to it from the float array
-// a sequence of coordinates in multiple of 4. Each command has a struct to it.
-arguments: float*
-------------------------------
-WFFace(commands, arguments)
-==============================
-
-
-typedef void (WFCommand*)(float*);
-
-
-// The .mtl file
-newmtl <name>
-Ka <r> <g> <b>
-Kd <r> <g> <b>
-Ks <r> <g> <b>
-Ns <range>
-
-==============================
-WFMaterial
-------------------------------
-ambient: ivec4
-diffuse: ivec4
-specular: ivec4
-exponent: float
-==============================
 
 
 
@@ -602,12 +142,73 @@ next stripe()
 ==============================
 
 
+// *** Cannon ***
 
 
-// *** Camera ***
+==============================
+Cannon
+------------------------------
+static
+	load cannon model
+------------------------------
+horizontal: angle
+vertical: angle
+------------------------------
+offset: position to be defined from the model
+------------------------------
+factors for both horizontal and vertical
+------------------------------
+mouseMoved(dx, dy)
+	move(dd * factors)
+move(dx, dy)
+	update horizontal and vertical
+------------------------------
+getExit()
+	return offset + direction * cannon length
+getDirection()
+	// use the same algorithm as the others
+	r = cos(vertical)
+	x = r * cos(horizontal)
+	y = r * sin(horizontal)
+	z = sin(vertical)
+	return <x, y, z>
+------------------------------
+draw()
+	translate to position
+	rotate y by vertical
+	rotate z by horizontal
+	draw cannon object
+==============================
 
 
 
+==============================
+Player
+------------------------------
+cannon: Cannon
+------------------------------
+mouseMoved(dx, dy)
+	IF controlling THEN
+		cannon.mouseMoved(dx, dy)
+mousePressed(button)
+	switch button
+		case left
+			fire()
+		case right
+			bomb()
+------------------------------
+fire()
+	get cannon position
+	get cannon direction
+	get airplane velocity
+	create bullet
+	attach to Game the bullet as projectile
+bomb()
+	get door position
+	get airplane velocity xy
+	create bomb
+	attach to Game the bomb as projectile
+==============================
 
 
 
@@ -617,10 +218,10 @@ next stripe()
 
 
 ==============================
-Tank
+EnemyBase
 ------------------------------
 static {
-	load tank files
+	load obj file
 }
 ------------------------------
 Tank()
@@ -703,96 +304,15 @@ velocity
 ------------------------------
 draw(): abstract void
 ------------------------------
-run(dt)
+update(dt)
 	compute next position
 	onRun(dt, previous position, next position)
 	move(next position)
 		position = next position
-==============================
-
-
-// A class that helps with the takeoff of the airplane. The takeoff was previously called lifter, but now is called 
-// Takeoff. In the previous version, the takeoff consisted of the airplane moving from the start of the airstrip to
-// the end of it, by increasing the radius and increasing the velocity as well.
-// In 3D though, we wont need the increase of radius, but we need a vertical velocity that makes the airplane go up.
-// The airplane translates to the middle of the airstrip with a constant acceleration. The middle is the point that
-// the airplane takeoff the land and starts flying. There are two sections then for the takeoff.
-==============================
-Takeoff
 ------------------------------
-Takeoff(time to takeoff, airstrip)
-	compute acceleration
-	compute middle
-	compute airstrip length
-------------------------------
-// This vector has only the xy components. The z is not needed.
-acceleration: a vector that has its normal along the airstrip and a magnitude to be computed
-------------------------------
-move(dt): bool
-	IF total time accumulated > time to takeoff THEN
-		// We don't need to continue the takeoff
-		RETURN false
-	distance = acceleration * dt * dt / 2
-	k = interpolate to between 0 and 1 the distance from the start to the end
-	IF distance is after the middle THEN
-		// It's takeoff
-		position = getTakeoffPosition(k)
-		direction = getTakeoffTangent((k - 0.5) / 0.5)
-	ELSE
-		// we are still on the ground
-		position = getGroundPosition(k)
-		direction = airstrip direction
-	RETURN true
-getGroundPosition(k)
-	// it counts from the start to the airstrip to the end
-	RETURN k * (end - start) + start
-getTakeoffPosition(k)
-	// interpolate between 0 and 1 the second half of the airstrip 
-	k2 = (k - 0.5) / 0.5
-	// take the xy part of the ground position and change only the z coordinate
-	RETURN (getGroundPosition(k).xy, getTakeoffHeight(k2))
-getTakeoffHeight(x): z
-	RETURN sin(x * PI / 2)
-getTakeoffTangent(x): z
-	// derivative of getTakeoffHeight(x)
-	RETURN cos(x * PI / 2) * PI / 2
+// used to know if the projectile should be removed from the list of projectiles
+isDead(): bool
 ==============================
 
 
 
-// A listener that is implemented by anything that can be reseted upon the player use of 'r'
-==============================
-ResetListener
-------------------------------
-reset(): void
-==============================
-
-
-
-
-
-// How to load models with their materials? And what are the elements to read? 
-
-
-// All of the static initializations are called here, SVG and the config file are parsed here. 
-==============================
-Resources
-------------------------------
-==============================
-
-
-
-
-
-
-
-
-==============================
-------------------------------
-==============================
-
-
-	switch mode 
-		case DAY
-			
-		case NIGHT
