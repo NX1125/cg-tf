@@ -6,7 +6,7 @@ void arena_t::draw() {
     {
         glScalef(radius, radius, 1);
         drawGround();
-        drawRoof();
+        // drawRoof();
     }
     glPopMatrix();
 }

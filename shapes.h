@@ -19,6 +19,13 @@ struct vector2d {
     double x;
     double y;
 
+    vector2d() {
+    }
+
+    vector2d(double x, double y) :
+    x(x), y(y) {
+    }
+
     double normalize() {
         double length = sqrt(lengthSqr());
         x /= length;

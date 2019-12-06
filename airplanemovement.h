@@ -121,6 +121,10 @@ public:
      */
     void keyReleased(unsigned char key);
 
+    vector3f getVelocity() const {
+        return velocity;
+    }
+
 private:
 
     void updateKey(unsigned char key, float intensity);

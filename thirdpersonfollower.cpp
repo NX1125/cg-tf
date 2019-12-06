@@ -18,6 +18,12 @@ void third_person_follower_t::lookAt() {
             0, 0, 1);
 }
 
+void third_person_follower_t::lookAtDebug() {
+    gluLookAt(target.x + normalDistance, target.y, target.z + normalDistance * 0.1,
+            target.x , target.y , target.z,
+            0, 0, 1);
+}
+
 void third_person_follower_t::setMousePressingPosition(int x, int y) {
     previousMousePositionX = x;
     previousMousePositionY = y;
@@ -100,7 +106,37 @@ void third_person_follower_t::setAngle(float horizontal, float vertical,
 
 void third_person_follower_t::follow(float dt) {
     vector3f v = camera - target;
-    float length = v.normalize();
+
+    // convert the target-camera vector to angles.
+    float vertical = asinf((camera.z - target.z) / v.normalize());
+
+    bool invalidated = true;
+
+    // clamp the vertical angle to -60° and 60°
+    if (vertical < -maxVerticalAngle) {
+        vertical = -maxVerticalAngle;
+    } else if (vertical > maxVerticalAngle) {
+        vertical = maxVerticalAngle;
+    } else {
+        invalidated = false;
+    }
+
+    if (invalidated) {
+        float horizontal = atan2(v.y, v.x);
+
+        // rotate <1,0,0> by vertical around the y axis
+        float r = cosf(vertical);
+        v.z = sinf(vertical);
+
+        // rotate <x, 0, z> by horizontal around the z axis
+        // The z axis continues to be the same.
+
+        // printf("h = %f, v = %f\n", horizontal, vertical);
+
+        // g is from Ground
+        v.x = cosf(horizontal) * r;
+        v.y = sinf(horizontal) * r;
+    }
 
     camera = target + v * normalDistance;
 }

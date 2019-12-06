@@ -18,15 +18,14 @@ void player_t::draw() {
     glPushMatrix();
     {
         glTranslatef(position.x, position.y, position.z);
+        drawAxis(radius);
         // considering that the front of the airplane is at +y and the back is at -y
         glRotatef(horizontal, 0, 0, 1);
         glRotatef(vertical, 1, 0, 0);
         glRotatef(horizontalAngularVelocity, 0, 1, 0);
         glRotatef(90, 1, 0, 0);
-        // glScalef(radius, radius, radius);
-        glDisable(GL_LIGHTING);
+        glScalef(radius, radius, radius);
         drawAxis(radius);
-        glEnable(GL_LIGHTING);
         // glScalef(100, 100, 100);
 
         sPlayerBodyModel->draw();
@@ -89,7 +88,14 @@ void player_t::update(int millis) {
         // transition from takeoff to give the controller to the user.
         mBehaviour = Behaviour::CONTROLLING;
         controller->setPosition(position);
-        controller->setMagnitude(takeoff->getFinalVelocity());
+        controller->setMagnitude(takeoff->getFinalVelocity() * velocityFactor);
         controller->setAngles(takeoff->getHorizontalAngle(), 0);
     }
+}
+
+vector3f player_t::getVelocity() const {
+    return controller->getVelocity();
+}
+void player_t::teleported() {
+    controller->setPosition(position);
 }

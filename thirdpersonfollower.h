@@ -38,6 +38,8 @@ public:
 
     void lookAt();
 
+    void lookAtDebug();
+
     void setMousePressingPosition(int x, int y);
 
     /**

@@ -53,20 +53,26 @@ private:
 
     takeoff_t* takeoff;
     airplane_movement_t* controller;
-    
+
     /**
      * The radius given in the settings.
      */
     float radius;
 
+    float velocityFactor = 1.0f;
+
 public:
 
     player_t(takeoff_t* takeoff, float radius);
 
+    void setVelocityFactor(float velocityFactor) {
+        this->velocityFactor = velocityFactor;
+    }
+
     void draw();
-    
+
     void keyPress(unsigned char key);
-    
+
     void keyRelease(unsigned char key);
 
     Behaviour getBehaviour() const {
@@ -76,10 +82,22 @@ public:
     point3f& getPosition() {
         return position;
     }
+
+    float getRadius() const {
+        return radius;
+    }
     
+    vector3f getVelocity() const;
+
     void update(int millis);
 
     static void sInit(wf_object_loader_t& loader);
+
+    bool canTeleport() const {
+        return mBehaviour == Behaviour::CONTROLLING;
+    }
+    
+    void teleported();
 };
 
 #endif /* AIRPLANE_H */

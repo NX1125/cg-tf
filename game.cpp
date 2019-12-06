@@ -88,6 +88,8 @@ void Game::init(app_settings* settings) {
     loadModels();
 
     sWatch = new stopwatch_t();
+
+    sPlayer->setVelocityFactor(settings->vel);
 }
 
 void Game::loadModels() {
@@ -118,13 +120,19 @@ void Game::display() {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(/* field of view in degree */ 40.0,
-            /* aspect ratio */ 1.0,
-            /* Z near */ 1.0, /* Z far */ 20.0);
+    //    gluPerspective(/* field of view in degree */ 40.0,
+    //            /* aspect ratio */ 1.0,
+    //            /* Z near */ 1.0, /* Z far */ 500.0);
+    //    glOrtho(-sArena->getRadius(), sArena->getRadius(), -sArena->getRadius(), sArena->getRadius(), sArena->getHeight(), -10);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    sFollower->lookAt();
+    // sFollower->lookAtDebug();
+    //    gluLookAt(sArena->getRadius(), sArena->getRadius(), sArena->getHeight(),
+    //            0,0,0, 0,0,1);
+
+    glOrtho(-sArena->getRadius(), sArena->getRadius(), -sArena->getRadius(), sArena->getRadius(), -sArena->getHeight() * 2, sArena->getHeight() * 2);
+    // For easy debug
 
     glEnable(GL_LIGHTING);
 
@@ -204,6 +212,12 @@ void Game::idle() {
 
     sPlayer->update(time);
 
+    if (sPlayer->canTeleport()) {
+        teleport(sPlayer->getPosition(),
+                sPlayer->getVelocity(), sPlayer->getRadius(), "player");
+        sPlayer->teleported();
+    }
+
     sFollower->setTarget(sPlayer->getPosition());
     sFollower->follow(time / 1000.0f);
 
@@ -238,3 +252,27 @@ void Game::reset() {
 void Game::addResetListener(reset_listener_t* l) {
     sResetListeners.push_back(l);
 }
+
+void Game::teleport(point3f& p, vector3f velocity, float r, const char* name) {
+    vector2d proj(p.x, p.y);
+
+    float bounds = sArena->getRadius() - r;
+
+    if (proj.lengthSqr() >= bounds * bounds &&
+            velocity.x * p.x + velocity.y * p.y > 0) {
+        printf("Teleporting %s\n", name);
+        // the circle hit the wall of the arena. It will be teleported 
+        // to the other side
+        point2d start(p.x, p.y);
+        velocity.normalize();
+        vector2d v2(velocity.x, velocity.y);
+        v2.normalize();
+        point2d c = closestPointFromLineToPoint(start, v2, point2d(0, 0));
+
+        vector2d v = start - c;
+
+        p.x = c.x - v.x;
+        p.y = c.y - v.y;
+    }
+}
+

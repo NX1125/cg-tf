@@ -45,6 +45,7 @@ void drawAxisPart(float x, float y, float z) {
 }
 
 void drawAxis(float s) {
+        glDisable(GL_LIGHTING);
     glPushMatrix();
     {
         drawAxisPart(s, 0, 0);
@@ -52,4 +53,5 @@ void drawAxis(float s) {
         drawAxisPart(0, 0, s);
     }
     glPopMatrix();
+        glEnable(GL_LIGHTING);
 }

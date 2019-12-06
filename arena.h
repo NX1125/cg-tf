@@ -41,11 +41,14 @@ private:
      */
     float radius;
 
+    float radiusSqr;
+
 public:
 
     arena_t(float height, float radius) :
     height(height), radius(radius) {
         blueprint = new circle_blueprint_t(32);
+        radiusSqr = radius * radius;
     }
 
     /**
@@ -59,6 +62,15 @@ public:
     float getHeight() const {
         return height;
     }
+
+    float getRadius() const {
+        return radius;
+    }
+
+    float getRadiusSqr() const {
+        return radiusSqr;
+    }
+
 
 private:
 
