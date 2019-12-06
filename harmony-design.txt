@@ -50,15 +50,21 @@ idle()
 ==============================
 Propeller
 ------------------------------
-rotation: AirplaneMovement
+angle: float
+offset: vector3f
+angular velocity
 ------------------------------
 draw()
+    translate to offset
+    draw model
 ------------------------------
-run(time)
-	update propeller rotation using the angular velocity
-getAngularVelocity(): angle
-	// the angular velocity of the propeller depends of the current velocity. That's why have a reference to the movement object
-	RETURN angular velocity factor * get movement velocity
+setMagniude(v)
+    angular velocity = v * a factor
+    clamp angle
+------------------------------
+update(time)
+	// update propeller rotation using the angular velocity
+        rotation = angular velocity * time
 ==============================
 
 
@@ -123,18 +129,6 @@ Cannon
 static
 	load cannon model
 ------------------------------
-horizontal: angle
-vertical: angle
-------------------------------
-offset: position to be defined from the model
-------------------------------
-factors for both horizontal and vertical
-------------------------------
-mouseMoved(dx, dy)
-	move(dd * factors)
-move(dx, dy)
-	update horizontal and vertical
-------------------------------
 getExit()
 	return offset + direction * cannon length
 getDirection()
@@ -144,12 +138,6 @@ getDirection()
 	y = r * sin(horizontal)
 	z = sin(vertical)
 	return <x, y, z>
-------------------------------
-draw()
-	translate to position
-	rotate y by vertical
-	rotate z by horizontal
-	draw cannon object
 ==============================
 
 

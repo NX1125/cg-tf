@@ -14,6 +14,7 @@
 #include "teleportable.h"
 #include "projectile.h"
 #include "cannon.h"
+#include "propeller.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
@@ -49,7 +50,7 @@ private:
      * movement.
      */
     float horizontalAngularVelocity = 0;
-    
+
     float horizontalAngularVelocityDrawing = 0;
 
     /**
@@ -60,8 +61,11 @@ private:
 
     takeoff_t* takeoff;
     airplane_movement_t* controller;
-    
+
     cannon_t* cannon;
+
+    propeller_t* propellerRight;
+    propeller_t* propellerLeft;
 
     /**
      * The radius given in the settings.

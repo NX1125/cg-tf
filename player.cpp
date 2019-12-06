@@ -13,6 +13,14 @@ takeoff(takeoff), radius(radius) {
     position = takeoff->getStart();
     controller = new airplane_movement_t();
     cannon = new cannon_t(vector3f(radius, 0, 0));
+
+    propellerLeft = new propeller_t(vector3f(0, radius, radius));
+    propellerRight = new propeller_t(vector3f(0, -radius, radius));
+    
+    float factor = 0.5f / radius;
+    
+    propellerLeft->setScaleFactor(factor);
+    propellerRight->setScaleFactor(factor);
 }
 
 void player_t::sInit(wf_object_loader_t& loader) {
@@ -30,6 +38,8 @@ void player_t::draw() {
         glRotatef(vertical * degreePerRadians, 0, 1, 0);
         glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
         cannon->draw();
+        propellerLeft->draw();
+        propellerRight->draw();
         glRotatef(90, 1, 0, 0);
         glScalef(radius, radius, radius);
         drawAxis(radius);
@@ -114,6 +124,14 @@ void player_t::update(int millis) {
 
     horizontalAngularVelocityDrawing *= k;
     horizontalAngularVelocityDrawing += horizontalAngularVelocity * (1 - k);
+    
+    propellerLeft->update(millis);
+    propellerRight->update(millis);
+    
+    float velocity = getVelocity().length();
+    
+    propellerLeft->setMagnitude(velocity);
+    propellerRight->setMagnitude(velocity);
 }
 
 vector3f player_t::getVelocity() const {

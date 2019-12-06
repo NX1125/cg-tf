@@ -50,6 +50,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/player.o \
 	${OBJECTDIR}/projectile.o \
+	${OBJECTDIR}/propeller.o \
 	${OBJECTDIR}/settings.o \
 	${OBJECTDIR}/shapes.o \
 	${OBJECTDIR}/simplesvg.o \
@@ -164,6 +165,11 @@ ${OBJECTDIR}/projectile.o: projectile.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/projectile.o projectile.cpp
+
+${OBJECTDIR}/propeller.o: propeller.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/propeller.o propeller.cpp
 
 ${OBJECTDIR}/settings.o: settings.cpp
 	${MKDIR} -p ${OBJECTDIR}
