@@ -39,7 +39,7 @@ Game::Game(app_settings* settings) {
     player->setVelocityFactor(settings->vel);
 
     manager = new projectile_manager_t();
-    
+
     createBases(settings->groundEnemies);
     createEnemies(settings->flyingEnemies, arena->getHeight() / 2, settings->eVel * takeoff->getFinalVelocity());
 }
@@ -183,9 +183,9 @@ void Game::mouseDragged(int x, int y) {
 }
 
 void Game::mouseMoved(int x, int y) {
-    if (player->getBehaviour() == Behaviour::CONTROLLING) {
-        player->setCannonAxis(x / (GLfloat) width, y / (GLfloat) height);
-    }
+    //    if (player->getBehaviour() == Behaviour::CONTROLLING) {
+    player->setCannonAxis(x / (GLfloat) width, y / (GLfloat) height);
+    //    }
 }
 
 void Game::mouseButtonEvent(int button, int state, int x, int y) {
@@ -214,8 +214,8 @@ void Game::mouseReleased(int button, int x, int y) {
 }
 
 void Game::reshape(int width, int height) {
-    width = width;
-    height = height;
+    this->width = width;
+    this->height = height;
 
     glViewport(0, 0, width, height);
 

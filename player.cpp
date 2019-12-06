@@ -12,7 +12,7 @@ player_t::player_t(takeoff_t* takeoff, float radius) :
 takeoff(takeoff), radius(radius) {
     position = takeoff->getStart();
     controller = new airplane_movement_t();
-    cannon = new cannon_t(vector3f(2 * radius, 0, 0));
+    cannon = new cannon_t(vector3f(radius, 0, 0));
 }
 
 void player_t::sInit(wf_object_loader_t& loader) {
@@ -172,6 +172,6 @@ bool player_t::canDie() const {
 }
 
 void player_t::setCannonAxis(float x, float y) {
-    // TODO Move cannon
+    cannon->setInputAxis(x, y);
 }
 

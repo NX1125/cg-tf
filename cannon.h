@@ -25,11 +25,16 @@ private:
     
     float horizontal = 0;
     float vertical = 0;
+    
+    float horizontalFactor = 0.3f;
+    float verticalFactor = 0.3f;
 public:
     
     cannon_t(const vector3f& position);
     
     void draw();
+    
+    void setInputAxis(float x, float y);
 };
 
 #endif /* CANNON_H */

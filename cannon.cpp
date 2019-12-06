@@ -20,17 +20,21 @@ void cannon_t::draw() {
     {
         glTranslatef(offset.x, offset.y, offset.z);
 
-        const float degreePerRadians = 180 / M_PI;
-
-        glRotatef(horizontal * degreePerRadians, 0, 0, 1);
-        glRotatef(vertical * degreePerRadians, 0, 1, 0);
+        glRotatef(horizontal, 0, 0, 1);
+        glRotatef(vertical, 0, 1, 0);
 
         if (sModel == NULL) {
-            glScaled(10,1,1);
+            glScaled(10, 1, 1);
+            glTranslatef(1,0,0);
             cube_t::drawBox();
         } else {
             sModel->draw();
         }
     }
     glPopMatrix();
+}
+
+void cannon_t::setInputAxis(float x, float y) {
+    horizontal = -(x * 90 - 45);
+    vertical = y * 90 - 45;
 }
