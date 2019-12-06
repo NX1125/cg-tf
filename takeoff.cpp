@@ -51,6 +51,14 @@ void takeoff_t::run(int time) {
     }
 }
 
+float takeoff_t::getFinalVelocity() const {
+    // s(t) = a / 2 * t^2
+    // s'(t) = a / 2 * t * 2
+    // s'(t) = at
+    // v(t) = at
+    return (timeToComplete / 1000.0f) * acceleration;
+}
+
 void takeoff_t::setGround(float k) {
     position = start + (end - start) * k ;
     direction = normal;

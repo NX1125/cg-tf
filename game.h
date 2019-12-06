@@ -16,6 +16,7 @@
 #include "resetlistener.h"
 #include "wfobj.h"
 #include "arena.h"
+#include "airplanemovement.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
@@ -56,6 +57,8 @@ public:
     static GLint faces[6][4];
     static GLfloat vertices[8][3]; /* Will be filled in with X,Y,Z vertexes. */
     static GLfloat color[6][3];
+    
+    static airplane_movement_t* sController;
 
     static void drawBox(void);
 

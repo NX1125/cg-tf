@@ -63,8 +63,12 @@ int main(int argc, char** argv) {
 
         glutIdleFunc(Game::idle);
 
-        glutInitWindowSize(Game::sWidth, Game::sHeight);
-        glutReshapeWindow(Game::sWidth, Game::sHeight);
+        // As stated in the spec, the initial frame size is 500x500
+        const int initialWidth = 500;
+        const int initialHeight = 500;
+        
+        glutInitWindowSize(initialWidth, initialHeight);
+        glutReshapeWindow(initialWidth, initialHeight);
         // glutInitWindowPosition(100, 20);
 
         printf("Game context created\n");

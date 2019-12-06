@@ -92,6 +92,12 @@ public:
 
     void run(int time);
 
+    /**
+     * Returns the velocity that the airplane has at the end of the airstrip
+     * when the takeoff is completed.
+     */
+    float getFinalVelocity() const;
+    
 private:
     void setGround(float k);
 
