@@ -1,4 +1,6 @@
 
+#include <GL/freeglut_std.h>
+
 #include "player.h"
 #include "behaviourupdate.h"
 
@@ -124,3 +126,27 @@ void player_t::clipZ(float height) {
         position.z = height - radius;
     }
 }
+
+void player_t::bomb() {
+    printf("The player just threw a bomb\n");
+    // TODO Create a bomb and attach it to projectiles
+}
+
+void player_t::fire() {
+    printf("The player just fired\n");
+    // TODO Create a bullet and attach it to projectiles
+}
+
+void player_t::mousePress(int button) {
+    if (mBehaviour == Behaviour::CONTROLLING) {
+        switch (button) {
+            case GLUT_RIGHT_BUTTON:
+                bomb();
+                break;
+            case GLUT_LEFT_BUTTON:
+                fire();
+                break;
+        }
+    }
+}
+

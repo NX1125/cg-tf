@@ -44,6 +44,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/lines.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/player.o \
+	${OBJECTDIR}/projectile.o \
 	${OBJECTDIR}/settings.o \
 	${OBJECTDIR}/shapes.o \
 	${OBJECTDIR}/simplesvg.o \
@@ -128,6 +129,11 @@ ${OBJECTDIR}/player.o: player.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/player.o player.cpp
+
+${OBJECTDIR}/projectile.o: projectile.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/projectile.o projectile.cpp
 
 ${OBJECTDIR}/settings.o: settings.cpp
 	${MKDIR} -p ${OBJECTDIR}

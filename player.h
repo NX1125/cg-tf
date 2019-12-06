@@ -80,6 +80,8 @@ public:
     void keyPress(unsigned char key);
 
     void keyRelease(unsigned char key);
+    
+    void mousePress(int button);
 
     Behaviour getBehaviour() const {
         return mBehaviour;
@@ -106,6 +108,16 @@ public:
     const char* getName() const override;
     
     void setPosition(const point3f& p) override;
+
+    /**
+     * Throw a bomb.
+     */
+    void bomb();
+    
+    /**
+     * Fire a bullet.
+     */
+    void fire();
 };
 
 #endif /* AIRPLANE_H */

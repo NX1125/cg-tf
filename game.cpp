@@ -249,6 +249,8 @@ void Game::mousePressed(int button, int x, int y) {
             sPlayer->getBehaviour() == Behaviour::ON_GROUND) {
         sFollower->setMousePressingPosition(x, y);
         sFollowerMouseEnabled = true;
+    } else {
+        sPlayer->mousePress(button);
     }
 }
 

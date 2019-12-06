@@ -224,7 +224,7 @@ static {
 	load obj file
 }
 ------------------------------
-Tank()
+EnemyBase()
 ------------------------------
 draw(): void
 	IF not dead THEN
@@ -279,7 +279,7 @@ Bomb: projectile
 velocity at z axis
 ------------------------------
 Bomb()
-Bomb(): static
+static
 	load bomb model
 ------------------------------
 onRun()
@@ -302,16 +302,24 @@ projectile
 position
 velocity
 ------------------------------
-draw(): abstract void
+accumulated time
 ------------------------------
-update(dt)
+dead: bool
+------------------------------
+transformAndDraw(): void
+draw(): void, abstract 
+    IF alive THEN
+        transform
+        draw
+------------------------------
+update(time)
 	compute next position
-	onRun(dt, previous position, next position)
-	move(next position)
+	move(next position, dt)
 		position = next position
 ------------------------------
 // used to know if the projectile should be removed from the list of projectiles
 isDead(): bool
+kill()
 ==============================
 
 
