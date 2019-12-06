@@ -23,7 +23,7 @@ private:
     point3f camera;
 
     float normalDistance = 1;
-    float followFactor = 0.3;
+    float followFactor = 1.0f;
 
     int previousMousePositionX;
     int previousMousePositionY;

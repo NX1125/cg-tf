@@ -17,13 +17,12 @@ void player_t::sInit(wf_object_loader_t& loader) {
 void player_t::draw() {
     glPushMatrix();
     {
-//         printf("(%f, %f, %f)\n", position.x, position.y, position.z);
-        glTranslatef(position.x, position.y,position.z);
+        glTranslatef(position.x, position.y, position.z);
         // considering that the front of the airplane is at +y and the back is at -y
-//        glRotatef(horizontal, 0, 0, 1);
-//        glRotatef(vertical, 1, 0, 0);
-//        glRotatef(horizontalAngularVelocity, 0, 1, 0);
-//        glRotatef(90, 1, 0, 0);
+        glRotatef(horizontal, 0, 0, 1);
+        glRotatef(vertical, 1, 0, 0);
+        glRotatef(horizontalAngularVelocity, 0, 1, 0);
+        glRotatef(90, 1, 0, 0);
         // glScalef(radius, radius, radius);
         glDisable(GL_LIGHTING);
         drawAxis(radius);

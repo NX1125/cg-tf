@@ -82,8 +82,8 @@ void Game::init(app_settings* settings) {
     sPlayer = new player_t(takeoff, settings->player->radius);
 
     sFollower = new third_person_follower_t(/*point3f(0,0,0)*/
-            sPlayer->getPosition(), 0.5f);
-    sFollower->setAngle(0, 20 * M_PI / 180.0);
+            sPlayer->getPosition(), 10);
+    sFollower->setAngle(0, -20 * M_PI / 180.0);
 
     loadModels();
 
@@ -116,15 +116,16 @@ void Game::drawBox(void) {
 void Game::display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//    glMatrixMode(GL_PROJECTION);
-//    gluPerspective(/* field of view in degree */ 40.0,
-//            /* aspect ratio */ 1.0,
-//            /* Z near */ 1.0, /* Z far */ 10.0);
-    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(/* field of view in degree */ 40.0,
+            /* aspect ratio */ 1.0,
+            /* Z near */ 1.0, /* Z far */ 20.0);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     sFollower->lookAt();
-    
+
     glEnable(GL_LIGHTING);
 
     // Draw a cube for reference to the camera
@@ -203,8 +204,8 @@ void Game::idle() {
 
     sPlayer->update(time);
 
-    //    sFollower->setTarget(sPlayer->getPosition());
-    //    sFollower->follow(time / 1000.0f);
+    sFollower->setTarget(sPlayer->getPosition());
+    sFollower->follow(time / 1000.0f);
 
     sAccumulatedTime += time;
 

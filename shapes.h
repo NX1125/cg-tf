@@ -111,11 +111,11 @@ struct vector3f {
     }
 
     float normalize() {
-        float length = sqrt(lengthSqr());
-        x /= length;
-        y /= length;
-        z /= length;
-        return length;
+        float l = length();
+        x /= l;
+        y /= l;
+        z /= l;
+        return l;
     }
 
     float lengthSqr() const {

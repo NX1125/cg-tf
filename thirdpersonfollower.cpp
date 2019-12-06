@@ -31,7 +31,7 @@ void third_person_follower_t::mouseDragged(int x, int y) {
     int dx = x - previousMousePositionX;
     int dy = y - previousMousePositionY;
 
-    move(dx, dy);
+    move(-dx, dy);
 
     previousMousePositionX = x;
     previousMousePositionY = y;
@@ -47,28 +47,30 @@ float clampAngle(float angle) {
 }
 
 void third_person_follower_t::move(float dx, float dy) {
-    vector3f v = target - camera;
+    vector3f v = camera - target;
 
     float distance = v.normalize();
 
     // convert the target-camera vector to angles.
-    float horizontal = M_PI + atan2(v.y, v.x) + dx * horizontalFactor;
-    float vertical = atan2(-v.z, vector3f(v.x, v.y, 0).length());
+    float horizontal = atan2(v.y, v.x) + dx * horizontalFactor;
+    float vertical = asinf((camera.z - target.z) / distance);
 
-    vertical -= dy * verticalFactor;
+    vertical += dy * verticalFactor;
 
-    setAngle(horizontal, -vertical, distance);
+    setAngle(horizontal, vertical, distance);
 }
 
 void third_person_follower_t::setAngle(float horizontal, float vertical) {
-    setAngle(horizontal, vertical, (target - camera).length());
+    setAngle(horizontal, vertical, (camera - target).length());
 }
+
+// FIXME Why does the vertical angle doesn't work normally and need to be inverted?
 
 void third_person_follower_t::setAngle(float horizontal, float vertical,
         float distance) {
     // do this for some reason I don't know why
-    vertical = -vertical;
-    
+    // vertical = -vertical;
+
     horizontal = clampAngle(horizontal);
 
     // clamp the vertical angle to -60° and 60°
@@ -79,7 +81,7 @@ void third_person_follower_t::setAngle(float horizontal, float vertical,
     }
 
     // rotate <1,0,0> by vertical around the y axis
-    float x = cosf(vertical);
+    float r = cosf(vertical);
     float z = sinf(vertical);
 
     // rotate <x, 0, z> by horizontal around the z axis
@@ -88,20 +90,17 @@ void third_person_follower_t::setAngle(float horizontal, float vertical,
     // printf("h = %f, v = %f\n", horizontal, vertical);
 
     // g is from Ground
-    float g = x;
-    x = cosf(horizontal) * g;
-    float y = sinf(horizontal) * g;
+    float x = cosf(horizontal) * r;
+    float y = sinf(horizontal) * r;
 
     // <x, y, z> is the vector of the camera
     camera = target + vector3f(x, y, z) * distance;
-    // printf("camera = (%f, %f, %f)\n", camera.x, camera.y, camera.z);
+    //     printf("camera = (%f, %f, %f)\n", camera.x, camera.y, camera.z);
 }
 
 void third_person_follower_t::follow(float dt) {
-    vector3f v = target - camera;
+    vector3f v = camera - target;
     float length = v.normalize();
 
-    length = length * (1 - followFactor) + normalDistance * followFactor;
-
-    camera = target - v * length;
+    camera = target + v * normalDistance;
 }
