@@ -150,7 +150,7 @@ public:
         this->vertical = vertical;
     }
 
-    void setPosition(point3f position) {
+    void setPosition(const point3f& position) {
         this->position = position;
     }
 

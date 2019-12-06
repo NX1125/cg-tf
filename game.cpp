@@ -37,6 +37,22 @@ Game::Game(app_settings* settings) {
     sWatch = new stopwatch_t();
 
     sPlayer->setVelocityFactor(settings->vel);
+
+    createBases(settings->groundEnemies);
+    createEnemies(settings->flyingEnemies, sArena->getHeight() / 2);
+}
+
+void Game::createBases(vector<simple_svg_circle*>& bases) {
+    for (simple_svg_circle* enemy : bases) {
+        this->bases.push_back(new enemy_base_t(point3f(enemy->cx, enemy->cy, enemy->radius), enemy->radius));
+    }
+}
+
+void Game::createEnemies(vector<simple_svg_circle*>& enemies, float height) {
+    for (simple_svg_circle* enemy : enemies) {
+        point3f p(enemy->cx, enemy->cy, height);
+        this->enemies.push_back(new flying_enemy_t(p, enemy->radius));
+    }
 }
 
 void Game::loadModels() {
@@ -132,18 +148,23 @@ void Game::display() {
     }
 
 
-    glEnable(GL_LIGHTING);
+    // glEnable(GL_LIGHTING);
 
     glColor3f(1, 0, 0);
 
     sPlayer->draw();
 
-    glDisable(GL_LIGHTING);
+    // glDisable(GL_LIGHTING);
 
     // TODO Update camera depending of the current type
     sArena->draw();
     // TODO Draw each flying enemy
-    // TODO Draw each base
+    for (enemy_base_t* base : bases) {
+        base->transformAndDraw();
+    }
+    for (flying_enemy_t* enemy : enemies) {
+        enemy->transformAndDraw();
+    }
     // TODO Draw projectiles (bombs and bullets)
 
     glutSwapBuffers();

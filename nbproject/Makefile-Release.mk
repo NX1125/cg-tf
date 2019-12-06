@@ -41,7 +41,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/bomb.o \
 	${OBJECTDIR}/circle.o \
 	${OBJECTDIR}/cube.o \
+	${OBJECTDIR}/enemybase.o \
 	${OBJECTDIR}/filepath.o \
+	${OBJECTDIR}/flyingenemy.o \
 	${OBJECTDIR}/game.o \
 	${OBJECTDIR}/lines.o \
 	${OBJECTDIR}/main.o \
@@ -117,10 +119,20 @@ ${OBJECTDIR}/cube.o: cube.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cube.o cube.cpp
 
+${OBJECTDIR}/enemybase.o: enemybase.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/enemybase.o enemybase.cpp
+
 ${OBJECTDIR}/filepath.o: filepath.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/filepath.o filepath.cpp
+
+${OBJECTDIR}/flyingenemy.o: flyingenemy.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/flyingenemy.o flyingenemy.cpp
 
 ${OBJECTDIR}/game.o: game.cpp
 	${MKDIR} -p ${OBJECTDIR}

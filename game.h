@@ -20,6 +20,8 @@
 #include "player.h"
 #include "stopwatch.h"
 #include "airstrip.h"
+#include "enemybase.h"
+#include "flyingenemy.h"
 
 enum Camera {
     COCKPIT, CANNON_VIEW, THIRD_PERSON_CAMERA, UP_VIEW, SIDE_VIEW,
@@ -55,6 +57,9 @@ private:
 
     const float NORMAL_DISTANCE = 50;
 
+    std::vector<enemy_base_t*> bases;
+    std::vector<flying_enemy_t*> enemies;
+
 public:
 
     Game(app_settings* settings);
@@ -62,6 +67,10 @@ public:
 private:
 
     void loadModels();
+
+    void createBases(vector<simple_svg_circle*>& bases);
+
+    void createEnemies(vector<simple_svg_circle*>& enemies, float height);
 
 public:
 
