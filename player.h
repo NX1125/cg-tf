@@ -79,11 +79,15 @@ private:
     projectile_manager_t* manager = NULL;
 
     float bulletVelocityFactor = 1.0f;
+    
+    vector3f cockpitOffset;
 
 public:
 
     player_t(takeoff_t* takeoff, float radius);
 
+    void cockpitView();
+    
     void setManager(projectile_manager_t* manager);
 
     void setBulletVelocityFactor(float bulletVelocityFactor) {
@@ -99,7 +103,7 @@ public:
         this->velocityFactor = velocityFactor;
     }
 
-    void draw();
+    void draw(bool cockpit, bool gun, bool body);
 
     void keyPress(unsigned char key);
 

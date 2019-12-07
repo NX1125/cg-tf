@@ -24,6 +24,8 @@ takeoff(takeoff), radius(radius) {
 
     propellerLeft->setScaleFactor(factor);
     propellerRight->setScaleFactor(factor);
+
+    cockpitOffset = vector3f(radius, 0, radius);
 }
 
 void player_t::setManager(projectile_manager_t* manager) {
@@ -35,7 +37,7 @@ void player_t::sInit(wf_object_loader_t& loader) {
     sPlayerBodyModel = loader.loadRes("trenoSemHelice");
 }
 
-void player_t::draw() {
+void player_t::draw(bool cockpit, bool gun, bool body) {
     glPushMatrix();
     {
         point3f p = position;
@@ -62,17 +64,56 @@ void player_t::draw() {
         glRotatef(horizontal * degreePerRadians, 0, 0, 1);
         glRotatef(vertical * degreePerRadians, 0, 1, 0);
         glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
-        cannon->draw();
-        propellerLeft->draw();
-        propellerRight->draw();
-        glRotatef(90, 1, 0, 0);
-        glScalef(radius, radius, radius);
-        drawAxis(radius);
-        // glScalef(100, 100, 100);
+        if (gun) {
+            cannon->draw();
+        }
+        // cockpit
+        if (cockpit) {
+            glPushMatrix();
+            {
+                glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
+                // cube_t::drawBox();
+            }
+            glPopMatrix();
+        }
+        if (body) {
+            propellerLeft->draw();
+            propellerRight->draw();
 
-        sPlayerBodyModel->draw();
+            glRotatef(90, 1, 0, 0);
+            glScalef(radius, radius, radius);
+            drawAxis(radius);
+            // glScalef(100, 100, 100);
+
+            sPlayerBodyModel->draw();
+        }
     }
     glPopMatrix();
+}
+
+void player_t::cockpitView() {
+    vector3f up(0, 0, 1);
+    vector3f forward(1, 0, 0);
+
+    up = up.rotateX(horizontalAngularVelocityDrawing);
+    up = up.rotateY(vertical);
+    up = up.rotateZ(horizontal);
+
+    // forward = forward.rotateX(horizontalAngularVelocityDrawing);
+    forward = forward.rotateY(vertical);
+    forward = forward.rotateZ(horizontal);
+
+    vector3f ck = cockpitOffset;
+
+    ck = ck.rotateX(horizontalAngularVelocityDrawing);
+    ck = ck.rotateY(vertical);
+    ck = ck.rotateZ(horizontal);
+
+    point3f p = position + ck;
+
+    gluLookAt(p.x, p.y, p.z,
+            p.x + forward.x, p.y + forward.y, p.z + forward.z,
+            up.x, up.y, up.z);
 }
 
 void player_t::keyPress(unsigned char key) {
@@ -198,7 +239,7 @@ void player_t::bomb() {
 
 void player_t::fire() {
     printf("The player just fired\n");
-    
+
     point3f p = position;
     vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
 

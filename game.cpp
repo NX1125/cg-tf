@@ -42,7 +42,7 @@ Game::Game(app_settings* settings) {
 
     createBases(settings->groundEnemies);
     createEnemies(settings->flyingEnemies, arena->getHeight() / 2, settings->eVel * takeoff->getFinalVelocity());
-    
+
     player->setManager(manager);
 }
 
@@ -73,11 +73,11 @@ void Game::loadModels() {
 void Game::display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
     switch (cameraView) {
         case Camera::TAKEOFF_FUNCTION_VIEW:
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             glOrtho(0, 1, 0, 1, 1, -1);
@@ -126,26 +126,18 @@ void Game::display() {
 
             return;
         case Camera::UP_VIEW:
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
 
             glOrtho(-arena->getRadius(), arena->getRadius(), -arena->getRadius(), arena->getRadius(), -arena->getHeight() * 2, arena->getHeight() * 2);
             break;
         case Camera::SIDE_VIEW:
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             glOrtho(-arena->getRadius(), arena->getRadius(), -arena->getRadius(), arena->getRadius(), -arena->getHeight() * 2, arena->getHeight() * 2);
             glRotated(-90, 1, 0, 0);
             break;
         case Camera::THIRD_PERSON_CAMERA:
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
             gluPerspective(/* field of view in degree */ 40.0,
                     /* aspect ratio */ 1.0,
                     /* Z near */ 1.0, /* Z far */ 500.0);
@@ -156,12 +148,25 @@ void Game::display() {
             break;
         case Camera::CANNON_VIEW:
         case Camera::COCKPIT:
+            gluPerspective(/* field of view in degree */ 40.0,
+                    /* aspect ratio */ 1.0,
+                    /* Z near */ 1.0, /* Z far */ 500.0);
+
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            player->cockpitView();
             break;
     }
 
     // glEnable(GL_LIGHTING);
 
-    player->draw();
+    player->draw(
+            cameraView == Camera::COCKPIT,
+            cameraView == Camera::CANNON_VIEW ||
+            cameraView == Camera::THIRD_PERSON_CAMERA,
+            cameraView == Camera::CANNON_VIEW ||
+            cameraView == Camera::THIRD_PERSON_CAMERA
+            );
 
     // glDisable(GL_LIGHTING);
 
@@ -240,9 +245,9 @@ void Game::idle() {
     player->clipZ(arena->getHeight());
 
     manager->update(time);
-    
+
     manager->removeOutsideOfArena(arena->getRadius(), arena->getHeight());
-    
+
     for (flying_enemy_t* enemy : enemies) {
         enemy->update(time);
         enemy->clipZ(arena->getHeight());
