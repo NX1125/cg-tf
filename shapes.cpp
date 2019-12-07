@@ -70,3 +70,21 @@ float clampAngle(float angle) {
         return M_PI * 2 + t;
     }
 }
+
+vector3f vector3f::rotateX(float angle) {
+    float s, c;
+    sincosf(angle, &s, &c);
+    return vector3f(x, y * c - z * s, y * s + z * c);
+}
+
+vector3f vector3f::rotateY(float angle) {
+    float s, c;
+    sincosf(angle, &s, &c);
+    return vector3f(x * c + z * s, y, -x * s + z * c);
+}
+
+vector3f vector3f::rotateZ(float angle) {
+    float s, c;
+    sincosf(angle, &s, &c);
+    return vector3f(x * c - y * s, x * s + y * c, z);
+}

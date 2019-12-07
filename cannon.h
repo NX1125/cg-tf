@@ -42,6 +42,17 @@ public:
     void draw();
     
     void setInputAxis(float x, float y);
+    
+    vector3f getDirection();
+    
+    float getLength() const {
+        return 10;
+    }
+
+    vector3f getOffset() const {
+        return offset;
+    }
+
 };
 
 #endif /* CANNON_H */

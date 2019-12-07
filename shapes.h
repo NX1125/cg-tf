@@ -15,6 +15,7 @@
 #include <GL/gl.h>
 
 // Deprecated
+
 struct vector2d {
     double x;
     double y;
@@ -189,14 +190,20 @@ struct vector3f {
         vector3f result = {x, y, z}; // Make a copy of myself.
         return result;
     }
-    
+
     static float angle(const vector3f& a, const vector3f& b) {
         return acosf((a * b) / (a.length() * b.length()));
     }
-    
+
     float length() const {
         return sqrt(lengthSqr());
     }
+
+    vector3f rotateX(float angle);
+
+    vector3f rotateY(float angle);
+
+    vector3f rotateZ(float angle);
 };
 
 vector2d make_unitVector(double a);
@@ -244,7 +251,6 @@ struct point2d {
 };
 
 struct point3f {
-    
     float x;
     float y;
     float z;
@@ -287,7 +293,7 @@ struct point3f {
     }
 
     void add(vector3f& v, float s);
-    
+
     static float distanceSqr(const point3f& p1, const point3f& p2);
 };
 

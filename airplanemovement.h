@@ -165,7 +165,7 @@ public:
     void setMagnitude(float magnitude);
 
     float getHorizontalAngularVelocity() const {
-        return horizontalVelocity;
+        return -horizontalVelocity;
     }
 
     point3f getPosition() const {

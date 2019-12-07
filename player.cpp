@@ -4,6 +4,8 @@
 #include "player.h"
 #include "behaviourupdate.h"
 #include "bomb.h"
+#include "bullet.h"
+#include "cube.h"
 
 wf_object_t* player_t::sPlayerBodyModel = NULL;
 
@@ -17,9 +19,9 @@ takeoff(takeoff), radius(radius) {
 
     propellerLeft = new propeller_t(vector3f(0, radius, radius));
     propellerRight = new propeller_t(vector3f(0, -radius, radius));
-    
+
     float factor = 0.5f / radius;
-    
+
     propellerLeft->setScaleFactor(factor);
     propellerRight->setScaleFactor(factor);
 }
@@ -36,7 +38,24 @@ void player_t::sInit(wf_object_loader_t& loader) {
 void player_t::draw() {
     glPushMatrix();
     {
+        point3f p = position ;
+        vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+        
+        v = v.rotateX(horizontalAngularVelocityDrawing);
+        v = v.rotateY(vertical);
+        v = v.rotateZ(horizontal);
+        
+        p += v;
+        
+        glPushMatrix();
+        {
+            glTranslatef(p.x, p.y, p.z);
+            cube_t::drawBox();
+        }
+        glPopMatrix();
+
         glTranslatef(position.x, position.y, position.z);
+
         drawAxis(radius);
         // considering that the front of the airplane is at +x and the back is at -x
         const float degreePerRadians = 180 / M_PI;
@@ -106,19 +125,19 @@ void player_t::update(int millis) {
             break;
     }
     float velocity = 0;
-    
+
     if (behaviour != NULL) {
         behaviour->update(millis);
         position = behaviour->getPosition();
-        
+
         velocity = behaviour->getVelocityMagnitude();
-        
+
         // printf("(%f, %f, %f)\n", position.x, position.y, position.z);
         horizontal = behaviour->getHorizontalAngle();
         vertical = behaviour->getVerticalAngle();
         // There is no rotation around its own axis yet.
 
-        const float angleFactor = 0.02f;
+        const float angleFactor = 1.0f;
 
         horizontalAngularVelocity = behaviour->getHorizontalAngularVelocity() * angleFactor;
     }
@@ -126,20 +145,20 @@ void player_t::update(int millis) {
     if (mBehaviour == Behaviour::TAKING_OFF && takeoff->isCompleted()) {
         // transition from takeoff to give the controller to the user.
         mBehaviour = Behaviour::CONTROLLING;
-        
+
         controller->setPosition(position);
         controller->setMagnitude(takeoff->getFinalVelocity() * velocityFactor);
         controller->setAngles(takeoff->getHorizontalAngle(), 0);
     }
 
-    const float k = 0.8f;
+    const float k = 50 * millis / 1000.0f;
 
     horizontalAngularVelocityDrawing *= k;
     horizontalAngularVelocityDrawing += horizontalAngularVelocity * (1 - k);
-    
+
     propellerLeft->update(millis);
     propellerRight->update(millis);
-    
+
     propellerLeft->setMagnitude(velocity);
     propellerRight->setMagnitude(velocity);
 }
@@ -170,7 +189,6 @@ void player_t::clipZ(float height) {
 
 void player_t::bomb() {
     printf("The player just threw a bomb\n");
-    // TODO Create a bomb and attach it to projectiles
     vector3f v = controller->getVelocity();
     v.z = 0;
     bomb_t* b = new bomb_t(position + sBombDoor * radius, v);
@@ -180,7 +198,12 @@ void player_t::bomb() {
 
 void player_t::fire() {
     printf("The player just fired\n");
-    // TODO Create a bullet and attach it to projectiles
+    vector3f v = cannon->getDirection();
+    point3f p = position + cannon->getOffset() + v * cannon->getLength();
+    bullet_t* bullet = new bullet_t(p,
+            v * bulletVelocityFactor * controller->getMagnitude(), false);
+    bullet->setRadius(radius / 16);
+    manager->addProjectile(bullet);
 }
 
 void player_t::mousePress(int button) {

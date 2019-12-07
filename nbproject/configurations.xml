@@ -9,6 +9,7 @@
       <itemPath>arena.h</itemPath>
       <itemPath>behaviourupdate.h</itemPath>
       <itemPath>bomb.h</itemPath>
+      <itemPath>bullet.h</itemPath>
       <itemPath>cannon.h</itemPath>
       <itemPath>cube.h</itemPath>
       <itemPath>enemybase.h</itemPath>
@@ -43,6 +44,7 @@
       <itemPath>airstrip.cpp</itemPath>
       <itemPath>arena.cpp</itemPath>
       <itemPath>bomb.cpp</itemPath>
+      <itemPath>bullet.cpp</itemPath>
       <itemPath>cannon.cpp</itemPath>
       <itemPath>circle.cpp</itemPath>
       <itemPath>cube.cpp</itemPath>
@@ -130,6 +132,10 @@
       <item path="bomb.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bomb.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bullet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="bullet.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cannon.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -271,6 +277,10 @@
       <item path="bomb.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bomb.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bullet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="bullet.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cannon.cpp" ex="false" tool="1" flavor2="0">
       </item>

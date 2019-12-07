@@ -21,11 +21,11 @@ void cannon_t::draw() {
         glTranslatef(offset.x, offset.y, offset.z);
 
         glRotatef(horizontal, 0, 0, 1);
-        glRotatef(vertical, 0, 1, 0);
+        glRotatef(-vertical, 0, 1, 0);
 
         if (sModel == NULL) {
-            glScaled(10, 1, 1);
-            glTranslatef(1,0,0);
+            glScaled(getLength() / 2, 1, 1);
+            glTranslatef(1, 0, 0);
             cube_t::drawBox();
         } else {
             sModel->draw();
@@ -36,5 +36,20 @@ void cannon_t::draw() {
 
 void cannon_t::setInputAxis(float x, float y) {
     horizontal = -(x * 90 - 45);
-    vertical = y * 90 - 45;
+    vertical = -(y * 90 - 45);
+}
+
+vector3f cannon_t::getDirection() {
+    float r;
+    float z;
+
+    const float dr = M_PI / 180.0f;
+
+    sincosf(vertical * dr, &z, &r);
+
+    float x, y;
+
+    sincosf(horizontal * dr, &y, &x);
+
+    return vector3f(r * x, r * y, z);
 }

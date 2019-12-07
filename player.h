@@ -75,14 +75,20 @@ private:
     float velocityFactor = 1.0f;
 
     bool dead = false;
-    
+
     projectile_manager_t* manager = NULL;
+
+    float bulletVelocityFactor = 1.0f;
 
 public:
 
     player_t(takeoff_t* takeoff, float radius);
 
     void setManager(projectile_manager_t* manager);
+
+    void setBulletVelocityFactor(float bulletVelocityFactor) {
+        this->bulletVelocityFactor = bulletVelocityFactor;
+    }
 
     /**
      * Moves the player to inside the arena if it hit the roof or the ground.
