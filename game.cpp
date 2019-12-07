@@ -147,6 +147,14 @@ void Game::display() {
             follower->lookAt();
             break;
         case Camera::CANNON_VIEW:
+            gluPerspective(/* field of view in degree */ 40.0,
+                    /* aspect ratio */ 1.0,
+                    /* Z near */ 1.0, /* Z far */ 500.0);
+
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            player->cannonView();
+            break;
         case Camera::COCKPIT:
             gluPerspective(/* field of view in degree */ 40.0,
                     /* aspect ratio */ 1.0,

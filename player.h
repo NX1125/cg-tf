@@ -88,6 +88,8 @@ public:
 
     void cockpitView();
     
+    void cannonView();
+    
     void setManager(projectile_manager_t* manager);
 
     void setBulletVelocityFactor(float bulletVelocityFactor) {

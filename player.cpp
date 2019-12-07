@@ -91,6 +91,37 @@ void player_t::draw(bool cockpit, bool gun, bool body) {
     glPopMatrix();
 }
 
+void player_t::cannonView() {
+    vector3f up(0, 0, 1);
+
+    up = up.rotateX(horizontalAngularVelocityDrawing);
+    up = up.rotateY(vertical);
+    up = up.rotateZ(horizontal);
+
+    // TODO move slight above the cannon
+
+    vector3f off = cannon->getOffset();
+
+    off = off.rotateX(horizontalAngularVelocityDrawing);
+    off = off.rotateY(vertical);
+    off = off.rotateZ(horizontal);
+
+    point3f p = position + off;
+
+    point3f ep = position;
+    vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+
+    v = v.rotateX(horizontalAngularVelocityDrawing);
+    v = v.rotateY(vertical);
+    v = v.rotateZ(horizontal);
+
+    ep += v;
+
+    gluLookAt(p.x, p.y, p.z,
+            ep.x, ep.y, ep.z,
+            up.x, up.y, up.z);
+}
+
 void player_t::cockpitView() {
     vector3f up(0, 0, 1);
     vector3f forward(1, 0, 0);
