@@ -25,10 +25,12 @@ void airplane_movement_t::clipZ(float height, float radius) {
 void airplane_movement_t::keyPress(unsigned char key) {
     switch (key) {
         case '+':
-            velocity *= 1 + velocityAccelerationFactor;
+            printf("Increasing velocity\n");
+            magnitude *= 1 + velocityAccelerationFactor;
             break;
         case '-':
-            velocity *= 1 - velocityAccelerationFactor;
+            printf("Decreasing velocity\n");
+            magnitude *= 1 - velocityAccelerationFactor;
             break;
         default:
             updateKey(key, 1);

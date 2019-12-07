@@ -38,15 +38,15 @@ void player_t::sInit(wf_object_loader_t& loader) {
 void player_t::draw() {
     glPushMatrix();
     {
-        point3f p = position ;
+        point3f p = position;
         vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
-        
+
         v = v.rotateX(horizontalAngularVelocityDrawing);
         v = v.rotateY(vertical);
         v = v.rotateZ(horizontal);
-        
+
         p += v;
-        
+
         glPushMatrix();
         {
             glTranslatef(p.x, p.y, p.z);
@@ -151,7 +151,7 @@ void player_t::update(int millis) {
         controller->setAngles(takeoff->getHorizontalAngle(), 0);
     }
 
-    const float k = 50 * millis / 1000.0f;
+    const float k = 0.9f;
 
     horizontalAngularVelocityDrawing *= k;
     horizontalAngularVelocityDrawing += horizontalAngularVelocity * (1 - k);
@@ -198,8 +198,22 @@ void player_t::bomb() {
 
 void player_t::fire() {
     printf("The player just fired\n");
-    vector3f v = cannon->getDirection();
-    point3f p = position + cannon->getOffset() + v * cannon->getLength();
+    
+    point3f p = position;
+    vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+
+    v = v.rotateX(horizontalAngularVelocityDrawing);
+    v = v.rotateY(vertical);
+    v = v.rotateZ(horizontal);
+
+    p += v;
+
+    v = cannon->getDirection();
+
+    v = v.rotateX(horizontalAngularVelocityDrawing);
+    v = v.rotateY(vertical);
+    v = v.rotateZ(horizontal);
+
     bullet_t* bullet = new bullet_t(p,
             v * bulletVelocityFactor * controller->getMagnitude(), false);
     bullet->setRadius(radius / 16);

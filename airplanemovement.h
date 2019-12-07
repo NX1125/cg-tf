@@ -103,7 +103,7 @@ private:
      * A factor used to increase or decrease the magnitude when the '+' or '-'
      * keys are typed.
      */
-    float velocityAccelerationFactor = 0.01f;
+    float velocityAccelerationFactor = 0.1f;
 
 public:
 

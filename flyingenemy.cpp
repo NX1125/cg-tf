@@ -30,6 +30,7 @@ void flying_enemy_t::setInitialVelocity(float initialVelocity) {
 }
 
 void flying_enemy_t::update(int millis) {
+    if (dead) return;
     accumulatedTime += millis;
     if (accumulatedTime > 1000) {
         accumulatedTime = 0;
@@ -41,10 +42,10 @@ void flying_enemy_t::update(int millis) {
                 controller->setInputAxis(-1, 0);
                 break;
             case 2:
-                controller->setInputAxis(0, -controller->getVerticalAngle() * 0.01f);
+                // controller->setInputAxis(0, -controller->getVerticalAngle() * 0.01f);
                 break;
             case 3:
-                controller->setInputAxis(0.01f, 0.01f);
+                // controller->setInputAxis(0.01f, 0.01f);
                 break;
             default:
                 behaviour = -1;
@@ -78,6 +79,7 @@ void flying_enemy_t::kill() {
 }
 
 void flying_enemy_t::transformAndDraw() {
+    if (dead) return;
     glPushMatrix();
     {
         point3f p = controller->getPosition();
