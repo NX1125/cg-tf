@@ -97,7 +97,7 @@ private:
      * 
      * This is used to compute the vertical angular velocity.
      */
-    float verticalFactor = 0.05;
+    float verticalFactor = 0.005;
 
     /**
      * A factor used to increase or decrease the magnitude when the '+' or '-'

@@ -29,9 +29,36 @@ void flying_enemy_t::setInitialVelocity(float initialVelocity) {
     controller->setMagnitude(initialVelocity);
 }
 
-
 void flying_enemy_t::update(int millis) {
+    accumulatedTime += millis;
+    if (accumulatedTime > 1000) {
+        accumulatedTime = 0;
+        switch (behaviour) {
+            case 0:
+                controller->setInputAxis(1, 0);
+                break;
+            case 1:
+                controller->setInputAxis(-1, 0);
+                break;
+            case 2:
+                controller->setInputAxis(0, -controller->getVerticalAngle() * 0.01f);
+                break;
+            case 3:
+                controller->setInputAxis(0.01f, 0.01f);
+                break;
+            default:
+                behaviour = -1;
+        }
+        behaviour++;
+    }
     controller->update(millis);
+    
+    
+    const float k = 0.95f;
+
+    horizontal *= k;
+    horizontal += controller->getHorizontalAngularVelocity() * (1 - k);
+    
 }
 
 void flying_enemy_t::clipZ(float z) {
@@ -50,7 +77,6 @@ void flying_enemy_t::kill() {
     dead = true;
 }
 
-
 void flying_enemy_t::transformAndDraw() {
     glPushMatrix();
     {
@@ -61,7 +87,7 @@ void flying_enemy_t::transformAndDraw() {
         const float degreePerRadians = 180 / M_PI;
         glRotatef(controller->getHorizontalAngle() * degreePerRadians, 0, 0, 1);
         glRotatef(controller->getVerticalAngle() * degreePerRadians, 0, 1, 0);
-        glRotatef(controller->getHorizontalAngularVelocity() * degreePerRadians, 1, 0, 0);
+        glRotatef(horizontal * degreePerRadians, 1, 0, 0);
         glRotatef(90, 1, 0, 0);
         glScalef(radius, radius, radius);
         drawAxis(radius);

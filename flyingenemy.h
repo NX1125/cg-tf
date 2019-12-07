@@ -30,7 +30,13 @@ private:
     bool dead = false;
 
     float initialVelocity;
+    
+    time_t accumulatedTime = 0;
+    
+    int behaviour = 0;
 
+    float horizontal;
+    
 public:
 
     flying_enemy_t(point3f position, float radius);

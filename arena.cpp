@@ -7,14 +7,13 @@ height(height), radius(radius) {
     radiusSqr = radius * radius;
 }
 
-
 void arena_t::draw() {
     glPushMatrix();
     {
         airstrip->draw();
         glScalef(radius, radius, 1);
         drawGround();
-        // drawRoof();
+        drawRoof();
     }
     glPopMatrix();
 }

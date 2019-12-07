@@ -9,6 +9,7 @@
 #include "bomb.h"
 #include "player.h"
 #include "cube.h"
+#include "enemybase.h"
 
 float bomb_t::sGravityAcceleration = -10;
 
@@ -23,8 +24,11 @@ void bomb_t::move(float time) {
 
 void bomb_t::hit(obstacle_t* other) {
     printf("A bomb hit an obstacle\n");
-    bomb_t::hit(other);
-    // TODO Check if the obstacle is an enemy base
+    projectile_t::hit(other);
+    if (enemy_base_t* base = dynamic_cast<enemy_base_t*> (other)) {
+        printf("The bomb fell onto a base\n");
+        base->kill();
+    }
 }
 
 void bomb_t::setSGravityAcceleration(float acc) {
