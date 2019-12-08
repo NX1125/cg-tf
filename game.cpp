@@ -32,7 +32,7 @@ Game::Game(app_settings* settings) {
     arena->setAirstrip(new airstrip_t(start, end, player->getRadius() * 2));
 
     normalDistance = player->getRadius() * 8;
-    
+
     follower = new third_person_follower_t(/*point3f(0,0,0)*/
             player->getPosition(), normalDistance);
     follower->setAngle(0, 20 * M_PI / 180.0);
@@ -196,6 +196,41 @@ void Game::display() {
 
     // glEnable(GL_LIGHTING);
 
+    glViewport(0, 0, width, height);
+
+    drawWorld();
+
+    glDisable(GL_DEPTH_TEST);
+
+    drawHUD();
+
+    // The minimap need to fit in 1/4 of the frame at the bottom-right position.
+
+    int w = width / 4;
+    int h = height / 4;
+
+    const float padding = 10;
+
+    glViewport(width - w - padding, padding, w, h);
+
+    float r = arena->getRadius();
+
+    // Make the frame fit into NDC
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-r, r, r, -r);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    drawMap();
+
+    glEnable(GL_DEPTH_TEST);
+
+    glutSwapBuffers();
+}
+
+void Game::drawWorld() {
     player->draw(
             cameraView == Camera::COCKPIT,
             cameraView == Camera::CANNON_VIEW ||
@@ -215,9 +250,9 @@ void Game::display() {
         enemy->transformAndDraw();
     }
     manager->draw();
+}
 
-    glDisable(GL_DEPTH_TEST);
-
+void Game::drawHUD() {
     // Make the frame fit into NDC
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -265,26 +300,9 @@ void Game::display() {
 
         drawText(text);
     }
+}
 
-    // The minimap need to fit in 1/4 of the frame at the bottom-right position.
-
-    int w = width / 4;
-    int h = height / 4;
-    
-    const float padding = 10;
-
-    glViewport(width - w - padding, padding, w, h);
-
-    float r = arena->getRadius();
-
-    // Make the frame fit into NDC
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(-r, r, r, -r);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
+void Game::drawMap() {
     arena->drawMapElement(miniMapAux);
 
     // draw all of the ground enemies in orange (#FFA500)
@@ -300,12 +318,6 @@ void Game::display() {
     }
 
     player->drawMapElement(miniMapAux);
-
-    glViewport(0, 0, width, height);
-
-    glEnable(GL_DEPTH_TEST);
-
-    glutSwapBuffers();
 }
 
 void Game::mouseDragged(int x, int y) {

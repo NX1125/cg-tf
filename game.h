@@ -86,6 +86,12 @@ private:
 public:
 
     void display();
+    
+    void drawWorld();
+    
+    void drawHUD();
+    
+    void drawMap();
 
     void mouseDragged(int x, int y);
 
