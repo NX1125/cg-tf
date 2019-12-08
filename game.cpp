@@ -44,6 +44,8 @@ Game::Game(app_settings* settings) {
     createEnemies(settings->flyingEnemies, arena->getHeight() / 2, settings->eVel * takeoff->getFinalVelocity());
 
     player->setManager(manager);
+
+    // TODO Add reset listeners 
 }
 
 void Game::createBases(vector<simple_svg_circle*>& bases) {
@@ -71,6 +73,11 @@ void Game::loadModels() {
 }
 
 void Game::display() {
+    // TODO Show score of player on top-right
+    // TODO Print on frame a text of whether the player lost or won
+    // TODO Put light and textures to meshes
+    // TODO Draw mini map of the elements in the arena
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_PROJECTION);
@@ -173,7 +180,8 @@ void Game::display() {
             cameraView == Camera::CANNON_VIEW ||
             cameraView == Camera::THIRD_PERSON_CAMERA,
             cameraView == Camera::CANNON_VIEW ||
-            cameraView == Camera::THIRD_PERSON_CAMERA
+            cameraView == Camera::THIRD_PERSON_CAMERA,
+            cameraView != Camera::CANNON_VIEW
             );
 
     // glDisable(GL_LIGHTING);
@@ -239,6 +247,8 @@ void Game::reshape(int width, int height) {
 }
 
 void Game::idle() {
+    // TODO kill player when he hits an enemy
+
     watch->mark();
 
     int time = watch->getMarkedElaspedTimeMillis();

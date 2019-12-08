@@ -11,6 +11,8 @@
 #include "cube.h"
 #include "enemybase.h"
 
+// TODO Compute acceleration of bomb were it should hit the ground in 2 seconds
+
 float bomb_t::sGravityAcceleration = -10;
 
 bomb_t::bomb_t(const point3f& offset, const vector3f& velocity) :
@@ -25,13 +27,13 @@ void bomb_t::move(float time) {
 void bomb_t::hit(obstacle_t* other) {
     printf("A bomb hit an obstacle\n");
     projectile_t::hit(other);
-    if (enemy_base_t* base = dynamic_cast<enemy_base_t*> (other)) {
+    if (enemy_base_t * base = dynamic_cast<enemy_base_t*> (other)) {
         printf("The bomb fell onto a base\n");
         base->kill();
     }
 }
 
-void bomb_t::setSGravityAcceleration(float acc) {
+void bomb_t::setGravityAcceleration(float acc) {
     bomb_t::sGravityAcceleration = acc;
 }
 

@@ -29,7 +29,7 @@ public:
 
     void hit(obstacle_t* other) override;
 
-    static void setSGravityAcceleration(float acc);
+    static void setGravityAcceleration(float acc);
 
     void draw() const override;
 

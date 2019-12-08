@@ -54,6 +54,8 @@ void keyReleased(unsigned char key, int x, int y);
  * 
  */
 int main(int argc, char** argv) {
+    printf("TODO Create embedded presentation\n");
+    
     glutInit(&argc, argv);
 
     try {

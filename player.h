@@ -105,7 +105,7 @@ public:
         this->velocityFactor = velocityFactor;
     }
 
-    void draw(bool cockpit, bool gun, bool body);
+    void draw(bool cockpit, bool gun, bool body, bool aim);
 
     void keyPress(unsigned char key);
 

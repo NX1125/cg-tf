@@ -71,20 +71,35 @@ float clampAngle(float angle) {
     }
 }
 
-vector3f vector3f::rotateX(float angle) {
+void vector3f::rotateX(float angle) {
     float s, c;
     sincosf(angle, &s, &c);
-    return vector3f(x, y * c - z * s, y * s + z * c);
+
+    float a = y * c - z * s;
+    float b = y * s + z * c;
+
+    y = a;
+    z = b;
 }
 
-vector3f vector3f::rotateY(float angle) {
+void vector3f::rotateY(float angle) {
     float s, c;
     sincosf(angle, &s, &c);
-    return vector3f(x * c + z * s, y, -x * s + z * c);
+
+    float a = x * c + z * s;
+    float b = -x * s + z * c;
+
+    x = a;
+    z = b;
 }
 
-vector3f vector3f::rotateZ(float angle) {
+void vector3f::rotateZ(float angle) {
     float s, c;
     sincosf(angle, &s, &c);
-    return vector3f(x * c - y * s, x * s + y * c, z);
+
+    float a = x * c - y * s;
+    float b = x * s + y * c;
+
+    x = a;
+    y = b;
 }

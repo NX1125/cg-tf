@@ -31,6 +31,9 @@ void flying_enemy_t::setInitialVelocity(float initialVelocity) {
 
 void flying_enemy_t::update(int millis) {
     if (dead) return;
+    
+    // TODO Fire bullet with a frequency defined in the settings
+    
     accumulatedTime += millis;
     if (accumulatedTime > 1000) {
         accumulatedTime = 0;
@@ -79,6 +82,9 @@ void flying_enemy_t::kill() {
 }
 
 void flying_enemy_t::transformAndDraw() {
+    // TODO Draw cannon of enemy
+    // TODO Add propeller to enemy
+    
     if (dead) return;
     glPushMatrix();
     {

@@ -199,11 +199,11 @@ struct vector3f {
         return sqrt(lengthSqr());
     }
 
-    vector3f rotateX(float angle);
+    void rotateX(float angle);
 
-    vector3f rotateY(float angle);
+    void rotateY(float angle);
 
-    vector3f rotateZ(float angle);
+    void rotateZ(float angle);
 };
 
 vector2d make_unitVector(double a);

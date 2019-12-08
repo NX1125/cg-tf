@@ -37,24 +37,28 @@ void player_t::sInit(wf_object_loader_t& loader) {
     sPlayerBodyModel = loader.loadRes("trenoSemHelice");
 }
 
-void player_t::draw(bool cockpit, bool gun, bool body) {
+void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
+    // TODO Add beam of light from the player when it is night mode
+
     glPushMatrix();
     {
-        point3f p = position;
-        vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+        if (aim) {
+            point3f p = position;
+            vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
 
-        v = v.rotateX(horizontalAngularVelocityDrawing);
-        v = v.rotateY(vertical);
-        v = v.rotateZ(horizontal);
+            v.rotateX(horizontalAngularVelocityDrawing);
+            v.rotateY(vertical);
+            v.rotateZ(horizontal);
 
-        p += v;
+            p += v;
 
-        glPushMatrix();
-        {
-            glTranslatef(p.x, p.y, p.z);
-            cube_t::drawBox();
+            glPushMatrix();
+            {
+                glTranslatef(p.x, p.y, p.z);
+                cube_t::drawBox();
+            }
+            glPopMatrix();
         }
-        glPopMatrix();
 
         glTranslatef(position.x, position.y, position.z);
 
@@ -64,7 +68,7 @@ void player_t::draw(bool cockpit, bool gun, bool body) {
         glRotatef(horizontal * degreePerRadians, 0, 0, 1);
         glRotatef(vertical * degreePerRadians, 0, 1, 0);
         glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
-        if (gun) {
+        if (gun && aim) {
             cannon->draw();
         }
         // cockpit
@@ -94,26 +98,26 @@ void player_t::draw(bool cockpit, bool gun, bool body) {
 void player_t::cannonView() {
     vector3f up(0, 0, 1);
 
-    up = up.rotateX(horizontalAngularVelocityDrawing);
-    up = up.rotateY(vertical);
-    up = up.rotateZ(horizontal);
+    up.rotateX(horizontalAngularVelocityDrawing);
+    up.rotateY(vertical);
+    up.rotateZ(horizontal);
 
     // TODO move slight above the cannon
 
     vector3f off = cannon->getOffset();
 
-    off = off.rotateX(horizontalAngularVelocityDrawing);
-    off = off.rotateY(vertical);
-    off = off.rotateZ(horizontal);
+    off.rotateX(horizontalAngularVelocityDrawing);
+    off.rotateY(vertical);
+    off.rotateZ(horizontal);
 
     point3f p = position + off;
 
     point3f ep = position;
     vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
 
-    v = v.rotateX(horizontalAngularVelocityDrawing);
-    v = v.rotateY(vertical);
-    v = v.rotateZ(horizontal);
+    v.rotateX(horizontalAngularVelocityDrawing);
+    v.rotateY(vertical);
+    v.rotateZ(horizontal);
 
     ep += v;
 
@@ -126,19 +130,19 @@ void player_t::cockpitView() {
     vector3f up(0, 0, 1);
     vector3f forward(1, 0, 0);
 
-    up = up.rotateX(horizontalAngularVelocityDrawing);
-    up = up.rotateY(vertical);
-    up = up.rotateZ(horizontal);
+    up.rotateX(horizontalAngularVelocityDrawing);
+    up.rotateY(vertical);
+    up.rotateZ(horizontal);
 
     // forward = forward.rotateX(horizontalAngularVelocityDrawing);
-    forward = forward.rotateY(vertical);
-    forward = forward.rotateZ(horizontal);
+    forward.rotateY(vertical);
+    forward.rotateZ(horizontal);
 
     vector3f ck = cockpitOffset;
 
-    ck = ck.rotateX(horizontalAngularVelocityDrawing);
-    ck = ck.rotateY(vertical);
-    ck = ck.rotateZ(horizontal);
+    ck.rotateX(horizontalAngularVelocityDrawing);
+    ck.rotateY(vertical);
+    ck.rotateZ(horizontal);
 
     point3f p = position + ck;
 
@@ -260,6 +264,8 @@ void player_t::clipZ(float height) {
 }
 
 void player_t::bomb() {
+    // TODO Open frame of bomb view
+
     printf("The player just threw a bomb\n");
     vector3f v = controller->getVelocity();
     v.z = 0;
@@ -274,17 +280,17 @@ void player_t::fire() {
     point3f p = position;
     vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
 
-    v = v.rotateX(horizontalAngularVelocityDrawing);
-    v = v.rotateY(vertical);
-    v = v.rotateZ(horizontal);
+    v.rotateX(horizontalAngularVelocityDrawing);
+    v.rotateY(vertical);
+    v.rotateZ(horizontal);
 
     p += v;
 
-    v = cannon->getDirection();
+    cannon->getDirection();
 
-    v = v.rotateX(horizontalAngularVelocityDrawing);
-    v = v.rotateY(vertical);
-    v = v.rotateZ(horizontal);
+    v.rotateX(horizontalAngularVelocityDrawing);
+    v.rotateY(vertical);
+    v.rotateZ(horizontal);
 
     bullet_t* bullet = new bullet_t(p,
             v * bulletVelocityFactor * controller->getMagnitude(), false);
