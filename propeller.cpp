@@ -15,7 +15,7 @@ propeller_t::propeller_t(vector3f offset) :
 offset(offset) {
 }
 
-void propeller_t::draw() {
+void propeller_t::transformAndDraw() {
     glPushMatrix();
     {
         glTranslatef(offset.x, offset.y, offset.z);

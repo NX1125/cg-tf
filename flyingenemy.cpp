@@ -23,6 +23,8 @@ flying_enemy_t::flying_enemy_t(point3f position, float radius) :
 radius(radius) {
     controller = new airplane_movement_t();
     controller->setPosition(position);
+
+    propeller = new propeller_t(vector3f(0, 0, radius * 1.1f));
 }
 
 void flying_enemy_t::setInitialVelocity(float initialVelocity) {
@@ -65,6 +67,8 @@ void flying_enemy_t::update(int millis) {
     horizontal *= k;
     horizontal += controller->getHorizontalAngularVelocity() * (1 - k);
 
+    propeller->setMagnitude(controller->getMagnitude());
+    propeller->update(millis);
 }
 
 void flying_enemy_t::clipZ(float z) {
@@ -98,7 +102,8 @@ void flying_enemy_t::transformAndDraw() {
         glRotatef(controller->getHorizontalAngle() * degreePerRadians, 0, 0, 1);
         glRotatef(controller->getVerticalAngle() * degreePerRadians, 0, 1, 0);
         glRotatef(horizontal * degreePerRadians, 1, 0, 0);
-        glRotatef(90, 1, 0, 0);
+        // glRotatef(90, 1, 0, 0);
+        propeller->transformAndDraw();
         glScalef(radius, radius, radius);
         drawAxis(radius);
         // glScalef(100, 100, 100);
@@ -143,5 +148,5 @@ vector3f flying_enemy_t::getCannonExit() {
     v.rotateY(controller->getVerticalAngle());
     v.rotateZ(horizontal);
 
-    return  v;
+    return v;
 }

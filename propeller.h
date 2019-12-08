@@ -26,7 +26,7 @@ private:
 public:
     propeller_t(vector3f offset);
 
-    void draw();
+    void transformAndDraw();
 
     void update(int millis);
     

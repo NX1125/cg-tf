@@ -84,8 +84,8 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             glPopMatrix();
         }
         if (body) {
-            propellerLeft->draw();
-            propellerRight->draw();
+            propellerLeft->transformAndDraw();
+            propellerRight->transformAndDraw();
 
             glRotatef(90, 1, 0, 0);
             glScalef(radius, radius, radius);

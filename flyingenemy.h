@@ -15,6 +15,7 @@
 #include "airplanemovement.h"
 #include "projectile.h"
 #include "teleportable.h"
+#include "propeller.h"
 
 class flying_enemy_t : public obstacle_t, public teleportable_t {
 private:
@@ -38,6 +39,8 @@ private:
     int behaviour = 0;
 
     float horizontal;
+    
+    propeller_t* propeller;
 
 public:
 
