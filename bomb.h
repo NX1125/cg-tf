@@ -10,9 +10,12 @@
 #define BOMB_H
 
 #include "projectile.h"
+#include "wfobj.h"
 
 class bomb_t : public projectile_t {
 private:
+
+    static wf_object_t* sBombModel;
 
     static float sGravityAcceleration;
 
@@ -37,6 +40,10 @@ public:
         // TODO Measure bomb radius
         return radius;
     }
+
+public:
+
+    static void init(wf_object_loader_t& loader);
 };
 
 #endif /* BOMB_H */

@@ -35,6 +35,16 @@ private:
     WFCommand commands[5];
     float arguments[5 * 4];
     int n = 0;
+
+    string* texture = NULL;
+
+public:
+
+    wf_material_t() {
+    }
+
+    ~wf_material_t() {
+    }
 };
 
 class wf_object_t;
@@ -103,12 +113,17 @@ private:
 
     file_path* filepath = NULL;
 
+    vector<string*> garbage;
+
 public:
     wf_object_t* load(const char* filename);
 
     void loadResOnly(const char* filename);
 
     wf_object_t* loadRes(const char* name);
+    
+    ~wf_object_loader_t() {
+    }
 
 private:
 

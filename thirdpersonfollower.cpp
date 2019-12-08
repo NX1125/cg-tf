@@ -7,22 +7,18 @@
 
 #include "thirdpersonfollower.h"
 
-third_person_follower_t::third_person_follower_t(const point3f& target, float normalDistance) :
-target(target), camera(target), normalDistance(normalDistance), offset(0, 0, 1) {
-    camera.x += normalDistance;
+third_person_follower_t::third_person_follower_t(const point3f& target, float normalDistance) {
+    this->normalDistance = normalDistance;
 }
 
-void third_person_follower_t::lookAt() {
-    point3f p = getFocus();
+void third_person_follower_t::lookAt(const point3f& target, float h, float v) {
+    point3f camera = target + getCamera(h, v);
     gluLookAt(camera.x, camera.y, camera.z,
-            p.x, p.y, p.z,
+            target.x, target.y, target.z,
             0, 0, 1);
 }
 
 void third_person_follower_t::lookAtDebug() {
-    gluLookAt(target.x + normalDistance, target.y, target.z + normalDistance * 0.1,
-            target.x, target.y, target.z,
-            0, 0, 1);
 }
 
 void third_person_follower_t::setMousePressingPosition(int x, int y) {
@@ -45,21 +41,14 @@ void third_person_follower_t::mouseDragged(int x, int y) {
 }
 
 void third_person_follower_t::move(float dx, float dy) {
-    vector3f v = camera - target;
-
-    float distance = v.normalize();
-
-    // convert the target-camera vector to angles.
-    float horizontal = atan2f(v.y, v.x) + dx * horizontalFactor;
-    float vertical = asinf((camera.z - target.z) / distance);
-
-    vertical += dy * verticalFactor;
-
-    setAngle(horizontal, vertical, distance);
+    setAngle(
+            horizontal + dx * horizontalFactor,
+            vertical + dy * verticalFactor
+            );
 }
 
 void third_person_follower_t::setAngle(float horizontal, float vertical) {
-    setAngle(horizontal, vertical, (camera - target).length());
+    setAngle(horizontal, vertical, normalDistance);
 }
 
 // FIXME Why does the vertical angle doesn't work normally and need to be inverted?
@@ -78,9 +67,17 @@ void third_person_follower_t::setAngle(float horizontal, float vertical,
         vertical = maxVerticalAngle;
     }
 
+    this->horizontal = horizontal;
+    this->vertical = vertical;
+
+    normalDistance = distance;
+}
+
+vector3f third_person_follower_t::getCamera(float h, float v) const {
     // rotate <1,0,0> by vertical around the y axis
-    float r = cosf(vertical);
-    float z = sinf(vertical);
+    float r, z;
+
+    sincosf(vertical + v, &z, &r);
 
     // rotate <x, 0, z> by horizontal around the z axis
     // The z axis continues to be the same.
@@ -88,47 +85,18 @@ void third_person_follower_t::setAngle(float horizontal, float vertical,
     // printf("h = %f, v = %f\n", horizontal, vertical);
 
     // g is from Ground
-    float x = cosf(horizontal) * r;
-    float y = sinf(horizontal) * r;
+    float x, y;
 
-    // <x, y, z> is the vector of the camera
-    camera = target + vector3f(x, y, z) * distance;
-    //     printf("camera = (%f, %f, %f)\n", camera.x, camera.y, camera.z);
+    sincosf(horizontal + h, &y, &x);
+
+    return vector3f(r * x, r * y, z) * normalDistance;
 }
 
 void third_person_follower_t::follow(float dt) {
-    vector3f v = camera - target;
+}
 
-    // convert the target-camera vector to angles.
-    float vertical = asinf((camera.z - target.z) / v.normalize());
+void third_person_follower_t::rotate(vector3f& v) const {
+    v.rotateY(vertical);
+    v.rotateZ(horizontal);
 
-    bool invalidated = true;
-
-    // clamp the vertical angle to -60° and 60°
-    if (vertical < -maxVerticalAngle) {
-        vertical = -maxVerticalAngle;
-    } else if (vertical > maxVerticalAngle) {
-        vertical = maxVerticalAngle;
-    } else {
-        invalidated = false;
-    }
-
-    if (invalidated) {
-        float horizontal = atan2f(v.y, v.x);
-
-        // rotate <1,0,0> by vertical around the y axis
-        float r = cosf(vertical);
-        v.z = sinf(vertical);
-
-        // rotate <x, 0, z> by horizontal around the z axis
-        // The z axis continues to be the same.
-
-        // printf("h = %f, v = %f\n", horizontal, vertical);
-
-        // g is from Ground
-        v.x = cosf(horizontal) * r;
-        v.y = sinf(horizontal) * r;
-    }
-
-    camera = target + v * normalDistance;
 }

@@ -6,6 +6,8 @@
 #include "bomb.h"
 #include "bullet.h"
 
+#define FIXED_THIRD_PERSON_CAMERA
+
 Game::Game(app_settings* settings) {
     glClearColor(0, 0, 0, 0);
 
@@ -59,7 +61,7 @@ Game::Game(app_settings* settings) {
     // 2h / t^2 = a
     const float timeToBombHitGround = 2;
 
-    float a = -2 * arena->getHeight() / (timeToBombHitGround * timeToBombHitGround);
+    float a = -2 * arena->getHeight() / 5 / (timeToBombHitGround * timeToBombHitGround);
 
     printf("The bomb will fall with an acceleration of %f\n", a);
 
@@ -178,7 +180,17 @@ void Game::display() {
 
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
-            follower->lookAt();
+            if (followerOrbitEnabled) {
+                point3f target = player->getPosition();
+                target.z += player->getRadius() / 2;
+                follower->lookAt(target, player->getHorizontal(),
+                        player->getVertical());
+            } else {
+                vector3f v = player->getDirection(0.2f * M_PI / 2) * follower->getNormalDistance();
+                point3f p = player->getPosition();
+                gluLookAt(p.x - v.x, p.y - v.y, p.z - v.z,
+                        p.x, p.y, p.z, 0, 0, 1);
+            }
             break;
         case Camera::CANNON_VIEW:
             gluPerspective(/* field of view in degree */ 40.0,
@@ -347,7 +359,7 @@ void Game::drawMap() {
 }
 
 void Game::mouseDragged(int x, int y) {
-    if (followerMouseEnabled) {
+    if (followerOrbitEnabled) {
         follower->mouseDragged(x, y);
         glutPostRedisplay();
     }
@@ -374,14 +386,17 @@ void Game::mousePressed(int button, int x, int y) {
     if (button == GLUT_RIGHT_BUTTON &&
             player->getBehaviour() == Behaviour::ON_GROUND) {
         follower->setMousePressingPosition(x, y);
-        followerMouseEnabled = true;
+        followerOrbitEnabled = true;
     } else {
+        if (button == GLUT_RIGHT_BUTTON && followerOrbitEnabled) {
+            return;
+        }
         player->mousePress(button);
     }
 }
 
 void Game::mouseReleased(int button, int x, int y) {
-    followerMouseEnabled = false;
+    followerOrbitEnabled = false;
 }
 
 void Game::reshape(int width, int height) {
@@ -416,7 +431,7 @@ void Game::idle() {
     }
 
     manager->collectGarbage();
-    
+
     for (flying_enemy_t* enemy : enemies) {
         enemy->update(time);
         enemy->clipZ(arena->getHeight());
@@ -458,12 +473,9 @@ void Game::idle() {
     if (player->canTeleport()) {
         point3f p = player->getPosition();
         if (player->teleport(arena->getRadius())) {
-            follower->setCamera(follower->getCamera() + (player->getPosition() - p));
+            // follower->setCamera(follower->getCamera() + (player->getPosition() - p));
         }
     }
-
-    follower->setTarget(player->getPosition());
-    follower->follow(time / 1000.0f);
 
     sAccumulatedTime += time;
 
@@ -477,6 +489,9 @@ void Game::idle() {
 
 void Game::keyPressed(unsigned char key, int x, int y) {
     switch (key) {
+        case ' ':
+            followerOrbitEnabled = true;
+            break;
         case 'r':
             reset();
             return;
@@ -513,6 +528,7 @@ void Game::keyPressed(unsigned char key, int x, int y) {
 
 void Game::keyReleased(unsigned char key, int x, int y) {
     player->keyRelease(key);
+    followerOrbitEnabled = false;
 }
 
 void Game::reset() {

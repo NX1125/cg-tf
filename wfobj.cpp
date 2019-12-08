@@ -117,17 +117,30 @@ void wf_object_loader_t::loadMTL(char* line) {
             c.apply = wf_object_t::shininess;
             c.name = "shininess";
             break;
-        case 'n':
-            if (!currentMaterial.name.empty()) {
-                materials[currentMaterial.name] = currentMaterial;
+        case 'm':
+            if (strcmp("map_Kd", name) == 0) {
+                char name[256];
+                sscanf(line, "%*s%s", name);
+                currentMaterial.texture = new string(name);
+                
+                garbage.push_back(currentMaterial.texture);
+                
+                printf("Texture file %s\n", currentMaterial.texture->c_str());
             }
-            currentMaterial.n = 0;
+            return;
+        case 'n':
+            if (strcmp("newmtl", name) == 0) {
+                if (!currentMaterial.name.empty()) {
+                    materials[currentMaterial.name] = currentMaterial;
+                }
+                currentMaterial.n = 0;
 
-            char name[256];
-            sscanf(line, "%*s%s", name);
-            currentMaterial.name = string(name);
+                char name[256];
+                sscanf(line, "%*s%s", name);
+                currentMaterial.name = string(name);
 
-            printf("Loaded material %s\n", name);
+                printf("Loaded material %s\n", name);
+            }
         default:
             return;
     }

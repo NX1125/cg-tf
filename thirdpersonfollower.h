@@ -19,17 +19,8 @@
  */
 class third_person_follower_t {
 private:
-    point3f target;
-    point3f camera;
-    
-    /**
-     * The offset is used to compute the focus point, by adding it with the 
-     * target.
-     */
-    vector3f offset;
 
     float normalDistance = 1;
-    float followFactor = 1.0f;
 
     int previousMousePositionX;
     int previousMousePositionY;
@@ -38,11 +29,14 @@ private:
     float verticalFactor = 0.01f;
 
     float maxVerticalAngle = 60 * M_PI / 180.0f;
+
+    float horizontal = 0;
+    float vertical = 0;
 public:
 
     third_person_follower_t(const point3f& target, float normalDistance);
 
-    void lookAt();
+    void lookAt(const point3f& target, float h, float v);
 
     void lookAtDebug();
 
@@ -77,20 +71,12 @@ public:
      */
     void setAngle(float horizontal, float vertical);
 
-    void setCamera(const point3f& camera) {
-        this->camera = camera;
-    }
-
-    point3f getCamera() const {
-        return camera;
-    }
-
-    void setTarget(const point3f& target) {
-        this->target = target;
-    }
+    void rotate(vector3f& v) const;
     
-    point3f getFocus() const {
-        return target + offset;
+    vector3f getCamera(float h, float v) const;
+
+    float getNormalDistance() const {
+        return normalDistance;
     }
 
 private:

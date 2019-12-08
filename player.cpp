@@ -253,6 +253,15 @@ vector3f player_t::getVelocity() const {
     return controller->getVelocity();
 }
 
+vector3f player_t::getDirection(float vt) const {
+    vector3f v(1, 0, 0);
+
+    v.rotateY(vertical + vt);
+    v.rotateZ(horizontal);
+
+    return v;
+}
+
 void player_t::setPosition(const point3f& p) {
     position = p;
     controller->setPosition(p);

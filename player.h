@@ -152,6 +152,16 @@ public:
         return radius;
     }
 
+    float getHorizontal() const {
+        return horizontal;
+    }
+
+    float getVertical() const {
+        return vertical;
+    }
+    
+    vector3f getDirection(float v) const;
+
     vector3f getVelocity() const;
 
     void update(int millis);

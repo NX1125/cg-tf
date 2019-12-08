@@ -41,7 +41,7 @@ private:
 
     third_person_follower_t* follower = NULL;
 
-    bool followerMouseEnabled = false;
+    bool followerOrbitEnabled = false;
 
     vector<reset_listener_t*> sResetListeners;
 

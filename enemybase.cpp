@@ -38,8 +38,8 @@ void enemy_base_t::transformAndDraw() {
     glPopMatrix();
 }
 
-void enemy_base_t::init(wf_object_loader_t* loader) {
-    // sEnemyModel = loader->loadRes("enemy");
+void enemy_base_t::init(wf_object_loader_t& loader) {
+     sEnemyModel = loader.loadRes("enemy");
 }
 
 void enemy_base_t::drawMapElement(circle_blueprint_t* blueprint) const {

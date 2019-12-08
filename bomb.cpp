@@ -13,6 +13,12 @@
 
 float bomb_t::sGravityAcceleration = -10;
 
+wf_object_t* bomb_t::sBombModel = NULL;
+
+void bomb_t::init(wf_object_loader_t& loader) {
+    // sBombModel = loader.loadRes("bomb");
+}
+
 bomb_t::bomb_t(const point3f& offset, const vector3f& velocity) :
 projectile_t(offset, velocity) {
 }
