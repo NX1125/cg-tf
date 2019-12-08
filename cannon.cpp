@@ -35,8 +35,9 @@ void cannon_t::draw() {
 }
 
 void cannon_t::setInputAxis(float x, float y) {
-    horizontal = -(x * 90 - 45);
-    vertical = -(y * 90 - 45);
+    const float maxAngle = 30;
+    horizontal = -(x * 2 * maxAngle - maxAngle);
+    vertical = -(y * 2 * maxAngle - maxAngle);
 }
 
 vector3f cannon_t::getDirection() {
