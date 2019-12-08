@@ -134,11 +134,11 @@ public:
 
     void draw();
 
+    void collectGarbage();
+
 private:
 
     void hit(obstacle_t* o);
-
-    void removeDeadProjectiles();
 };
 
 

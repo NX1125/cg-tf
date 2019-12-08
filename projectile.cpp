@@ -73,11 +73,11 @@ void projectile_manager_t::update(int millis) {
             hit(obs);
         }
     }
-    removeDeadProjectiles();
+    collectGarbage();
     for (obstacle_t* obs : inanimateObstacles) {
         hit(obs);
     }
-    removeDeadProjectiles();
+    collectGarbage();
 }
 
 void projectile_manager_t::hit(obstacle_t* o) {
@@ -93,10 +93,9 @@ void projectile_manager_t::removeOutsideOfArena(float radius, float height) {
     for (projectile_t* p : projectiles) {
         p->clip(radius, height);
     }
-    removeDeadProjectiles();
 }
 
-void projectile_manager_t::removeDeadProjectiles() {
+void projectile_manager_t::collectGarbage() {
     int n = projectiles.size();
     for (int i = 0; i < projectiles.size(); i++) {
         if (projectiles[i]->isDead()) {

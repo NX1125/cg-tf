@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
 
         // As stated in the spec, the initial frame size is 500x500
         const int initialWidth = 500;
-        const int initialHeight = 500;
+        const int initialHeight = 700;
 
         glutInitWindowSize(initialWidth, initialHeight);
         glutReshapeWindow(initialWidth, initialHeight);

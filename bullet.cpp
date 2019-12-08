@@ -16,7 +16,7 @@ projectile_t(offset, velocity), enemy(enemy) {
 
 void bullet_t::draw() const {
     // TODO Draw bullet model
-    cube_t::drawBox();
+    drawCube();
 }
 
 void bullet_t::hit(obstacle_t* other) {

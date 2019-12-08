@@ -26,7 +26,7 @@ void cannon_t::draw() {
         if (sModel == NULL) {
             glScaled(getLength() / 2, 1, 1);
             glTranslatef(1, 0, 0);
-            cube_t::drawBox();
+            drawCube();
         } else {
             sModel->draw();
         }

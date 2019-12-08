@@ -19,7 +19,7 @@ projectile_t(offset, velocity) {
 
 void bomb_t::move(float time) {
     projectile_t::move(time);
-    getVelocity().z += time * time * sGravityAcceleration * 0.5f;
+    getVelocity().z += time * sGravityAcceleration;
 }
 
 void bomb_t::hit(obstacle_t* other) {
@@ -37,6 +37,6 @@ void bomb_t::setGravityAcceleration(float acc) {
 
 void bomb_t::draw() const {
     // TODO Draw bomb model
-    cube_t::drawBox();
+    drawCube();
 }
 

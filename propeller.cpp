@@ -25,7 +25,7 @@ void propeller_t::transformAndDraw() {
 
         // TODO Draw model
         glScalef(10, 1, 1);
-        cube_t::drawBox();
+        drawCube();
     }
     glPopMatrix();
 }

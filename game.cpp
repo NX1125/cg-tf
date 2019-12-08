@@ -100,9 +100,10 @@ void Game::loadModels() {
 void Game::display() {
     // TODO Put light and textures to meshes
 
+    glEnable(GL_CULL_FACE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    float yOffset = currentBomb == NULL ? 0 : 200;
+    float yOffset = 200;
 
     glViewport(0, yOffset, 500, 500);
 
@@ -173,7 +174,7 @@ void Game::display() {
         case Camera::THIRD_PERSON_CAMERA:
             gluPerspective(/* field of view in degree */ 40.0,
                     /* aspect ratio */ 1.0,
-                    /* Z near */ 1.0, /* Z far */ 500.0);
+                    /* Z near */ 1.0, /* Z far */ 3 * arena->getRadius());
 
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
@@ -182,7 +183,7 @@ void Game::display() {
         case Camera::CANNON_VIEW:
             gluPerspective(/* field of view in degree */ 40.0,
                     /* aspect ratio */ 1.0,
-                    /* Z near */ 1.0, /* Z far */ 500.0);
+                    /* Z near */ 1.0, /* Z far */ 3 * arena->getRadius());
 
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
@@ -191,7 +192,7 @@ void Game::display() {
         case Camera::COCKPIT:
             gluPerspective(/* field of view in degree */ 40.0,
                     /* aspect ratio */ 1.0,
-                    /* Z near */ 1.0, /* Z far */ 500.0);
+                    /* Z near */ 1.0, /* Z far */ 3 * arena->getRadius());
 
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
@@ -203,18 +204,40 @@ void Game::display() {
 
     drawWorld();
 
+    if (currentBomb != NULL) {
+        glViewport(0, 0, 200, 200);
+
+        gluPerspective(/* field of view in degree */ 40.0,
+                /* aspect ratio */ 1.0,
+                /* Z near */ 1.0, /* Z far */ 2 * arena->getRadius());
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        point3f p = currentBomb->getPosition();
+        vector3f& v = currentBomb->getVelocity();
+
+        // Look at its shadow. Shadow of the Bomb
+        gluLookAt(p.x, p.y, p.z,
+                p.x, p.y, 0,
+                v.x, v.y, v.z);
+
+        drawWorld();
+    }
+
+    glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
 
     drawHUD();
 
     // The minimap need to fit in 1/4 of the frame at the bottom-right position.
 
-    int w = width / 4;
-    int h = height / 4;
+    int w = 500 / 4;
+    int h = 500 / 4;
 
     const float padding = 10;
 
-    glViewport(width - w - padding, yOffset + padding, w, h);
+    glViewport(500 - w - padding, yOffset + padding, w, h);
 
     float r = arena->getRadius();
 
@@ -229,10 +252,6 @@ void Game::display() {
     drawMap();
 
     glEnable(GL_DEPTH_TEST);
-
-    if (currentBomb != NULL) {
-        glViewport(0, 0, 200, 200);
-    }
 
     glutSwapBuffers();
 }
@@ -381,12 +400,6 @@ void Game::idle() {
         return;
     }
 
-    if (currentBomb != NULL && currentBomb->isDead()) {
-        currentBomb = NULL;
-        
-        glutReshapeWindow(500,500);
-    }
-
     // printf("Time: %d ms\n", time);
 
     player->update(time);
@@ -396,6 +409,14 @@ void Game::idle() {
 
     manager->removeOutsideOfArena(arena->getRadius(), arena->getHeight());
 
+    if (currentBomb != NULL && currentBomb->isDead()) {
+        currentBomb = NULL;
+
+        glutReshapeWindow(500, 700);
+    }
+
+    manager->collectGarbage();
+    
     for (flying_enemy_t* enemy : enemies) {
         enemy->update(time);
         enemy->clipZ(arena->getHeight());

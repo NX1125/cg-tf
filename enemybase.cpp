@@ -32,7 +32,7 @@ void enemy_base_t::transformAndDraw() {
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
         } else {
-            cube_t::drawBox();
+            drawCube();
         }
     }
     glPopMatrix();

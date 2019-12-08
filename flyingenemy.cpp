@@ -112,14 +112,14 @@ void flying_enemy_t::transformAndDraw() {
         {
             glTranslatef(sCannonOffset.x, sCannonOffset.y, sCannonOffset.z);
             glScalef(2 / radius, 2 / radius, 2 / radius);
-            cube_t::drawBox();
+            drawCube();
         }
         glPopMatrix();
 
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
         } else {
-            cube_t::drawBox();
+            drawCube();
         }
     }
     glPopMatrix();

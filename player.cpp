@@ -208,7 +208,7 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             glPushMatrix();
             {
                 glTranslatef(p.x, p.y, p.z);
-                cube_t::drawBox();
+                drawCube();
             }
             glPopMatrix();
         }
@@ -229,7 +229,7 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             glPushMatrix();
             {
                 glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
-                // cube_t::drawBox();
+                // drawBox();
             }
             glPopMatrix();
         }
@@ -242,7 +242,7 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             drawAxis(radius);
             // glScalef(100, 100, 100);
 
-            cube_t::drawBox();
+            drawCube();
             // sPlayerBodyModel->draw();
         }
     }
