@@ -1,5 +1,5 @@
 # Blender MTL File: 'duende.blend'
-# Material Count: 3
+# Material Count: 4
 
 newmtl Material
 Ns 96.078431
@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd fundo-fotografico-em-tecido-textura-vermelho-2-60x1-50m-fundo-fotografico.jpg
+map_Kd C:\Users\Ricardo\Documents\Ufes\CG\models\textura\fundo-fotografico-em-tecido-textura-vermelho-2-60x1-50m-fundo-fotografico.jpg
 
 newmtl Material.001
 Ns 96.078431
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd 0004abhominal-11-texturas-1.jpg
+map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\0004abhominal-11-texturas-1.jpg
 
 newmtl Material.002
 Ns 96.078431
@@ -32,4 +32,15 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd modern-dark-texture-background_1035-11632.jpg
+map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\modern-dark-texture-background_1035-11632.jpg
+
+newmtl Material_NONE
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\fundo-fotografico-em-tecido-textura-vermelho-2-60x1-50m-fundo-fotografico.jpg
