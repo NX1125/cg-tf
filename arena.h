@@ -10,13 +10,14 @@
 
 #include "shapes.h"
 #include "airstrip.h"
+#include "minimapitem.h"
 
 /**
  * The arena is the environment that the player plays the game. In here, there
  * are decorations, bases for enemies, the airstrip, a roof, a ground and the 
  * walls.
  */
-class arena_t {
+class arena_t : public mini_map_item_t {
 private:
 
     /**
@@ -74,6 +75,7 @@ public:
         return radiusSqr;
     }
 
+    void drawMapElement(circle_blueprint_t* blueprint) const override;
 
 private:
 

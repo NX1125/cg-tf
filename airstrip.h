@@ -10,9 +10,10 @@
 #define AIRSTRIP_H
 
 #include "shapes.h"
+#include "minimapitem.h"
 
 
-class airstrip_t {
+class airstrip_t : public mini_map_item_t {
 private:
     
     point2d start;
@@ -24,7 +25,9 @@ public:
     
     airstrip_t(const point3f& start, const point3f& end, float width);
 
-    void draw();
+    void draw() const;
+    
+    void drawMapElement(circle_blueprint_t* blueprint) const override;
 };
 
 #endif /* AIRSTRIP_H */

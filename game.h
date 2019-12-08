@@ -55,7 +55,7 @@ private:
 
     Camera cameraView = Camera::THIRD_PERSON_CAMERA;
 
-    const float normalDistance = 100;
+    float normalDistance = 100;
 
     std::vector<enemy_base_t*> bases;
     std::vector<flying_enemy_t*> enemies;
@@ -68,6 +68,8 @@ private:
     time_t timeToEnemyFire;
 
     time_t timeSinceLastEnemyFire = 0;
+    
+    circle_blueprint_t* miniMapAux  =NULL;
 
 public:
 

@@ -24,7 +24,16 @@ wf_object_t* wf_object_loader_t::loadRes(const char* name) {
     return load();
 }
 
-wf_object_t* wf_object_loader_t::load() {
+void wf_object_loader_t::loadResOnly(const char* name) {
+    file_path fp("models");
+    string s(name);
+    s += ".obj";
+    fp.append(s);
+    filepath = &fp;
+    loadOnly();
+}
+
+void wf_object_loader_t::loadOnly() {
     arguments.clear();
     commands.clear();
     materials.clear();
@@ -34,6 +43,10 @@ wf_object_t* wf_object_loader_t::load() {
     const char* name = filepath->toString();
     printf("Loading OBJ file: %s\n", name);
     forEachLine(name, loadOBJ);
+}
+
+wf_object_t* wf_object_loader_t::load() {
+    loadOnly();
 
     return build();
 }
@@ -388,4 +401,40 @@ void wf_object_t::begin(const GLfloat* ignore) {
 
 void wf_object_t::end(const GLfloat* ignore) {
     glEnd();
+}
+
+void wf_object_loader_t::scale(float s) {
+    int n = vertices.size() / 4;
+
+    for (int i = 0, k = 0; i < n; i++) {
+        vertices[k++] *= s;
+        vertices[k++] *= s;
+        vertices[k++] *= s;
+        k++;
+    }
+}
+
+vector3f wf_object_loader_t::getMostDistantVertex() const {
+    vector3f p(0, 0, 0);
+    float current = INFINITY;
+
+    int n = vertices.size() / 4;
+
+    for (int i = 0, k = 0; i < n; i++) {
+        float x = vertices[k++];
+        float y = vertices[k++];
+        float z = vertices[k++];
+        float w = vertices[k++];
+
+        float distanceSqr = x * x + y * y + z * z + w * w;
+
+        if (distanceSqr > current) {
+            current = distanceSqr;
+            p.x = x / w;
+            p.y = y / w;
+            p.z = z / w;
+        }
+    }
+
+    return p;
 }

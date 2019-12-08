@@ -13,13 +13,14 @@
 #include "airplanemovement.h"
 #include "wfobj.h"
 #include "projectile.h"
+#include "minimapitem.h"
 
 class base_death_t {
 public:
     virtual void onBaseDeath() = 0;
 };
 
-class enemy_base_t : public obstacle_t {
+class enemy_base_t : public obstacle_t, public mini_map_item_t {
 private:
 
     static wf_object_t* sEnemyModel;
@@ -29,7 +30,7 @@ private:
     float radius;
 
     bool dead = false;
-    
+
     base_death_t* deathListener = NULL;
 
 public:
@@ -42,7 +43,7 @@ public:
 
     void kill() {
         dead = true;
-        
+
         if (deathListener != NULL) {
             deathListener->onBaseDeath();
         }
@@ -63,6 +64,8 @@ public:
     bool isAlive() const override {
         return !dead;
     }
+
+    void drawMapElement(circle_blueprint_t* blueprint) const override;
 };
 
 #endif /* ENEMYBASE_H */

@@ -106,11 +106,15 @@ private:
 public:
     wf_object_t* load(const char* filename);
 
+    void loadResOnly(const char* filename);
+
     wf_object_t* loadRes(const char* name);
 
 private:
 
     wf_object_t* load();
+
+    void loadOnly();
 
     void loadMaterial(const char* filename);
 
@@ -135,6 +139,11 @@ private:
     }
 
     void forEachLine(const char* filename, void (*)(char*, wf_object_loader_t&));
+
+public:
+    vector3f getMostDistantVertex() const;
+
+    void scale(float s);
 
     wf_object_t* build();
 };

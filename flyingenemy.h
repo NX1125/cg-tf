@@ -16,16 +16,18 @@
 #include "projectile.h"
 #include "teleportable.h"
 #include "propeller.h"
+#include "minimapitem.h"
 
-class flying_enemy_t : public obstacle_t, public teleportable_t {
+class flying_enemy_t :
+public obstacle_t, public teleportable_t, public mini_map_item_t {
 private:
 
     static std::default_random_engine sRandomMovement;
 
     static wf_object_t* sEnemyModel;
-    
+
     static vector3f sCannonOffset;
-    
+
     float radius;
 
     airplane_movement_t* controller = NULL;
@@ -33,14 +35,14 @@ private:
     bool dead = false;
 
     float initialVelocity;
-    
+
     time_t accumulatedTime = 0;
-    
+
     int behaviour = 0;
 
-    float horizontal;
-    
-    propeller_t* propeller;
+    float horizontal = 0;
+
+    propeller_t* propeller = NULL;
 
 public:
 
@@ -73,10 +75,12 @@ public:
     void setPosition(const point3f& p) override;
 
     vector3f getCannonExit();
-    
+
     bool isAlive() const override {
         return !dead;
     }
+
+    void drawMapElement(circle_blueprint_t* blueprint) const override;
 };
 
 #endif /* FLYINGENEMY_H */

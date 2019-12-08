@@ -31,3 +31,10 @@ void arena_t::drawRoof() {
     blueprint->draw(true);
     glCullFace(GL_BACK);
 }
+
+void arena_t::drawMapElement(circle_blueprint_t* blueprint) const {
+    // make the outline of the arena as white
+    glColor3f(1,1,1);
+    // Draw the outline with the radius of the arena.
+    blueprint->draw(false, radius);
+}

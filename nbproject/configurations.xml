@@ -16,6 +16,7 @@
       <itemPath>filepath.h</itemPath>
       <itemPath>flyingenemy.h</itemPath>
       <itemPath>game.h</itemPath>
+      <itemPath>minimapitem.h</itemPath>
       <itemPath>player.h</itemPath>
       <itemPath>projectile.h</itemPath>
       <itemPath>propeller.h</itemPath>
@@ -167,6 +168,8 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="minimapitem.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="player.h" ex="false" tool="3" flavor2="0">
@@ -311,6 +314,8 @@
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="minimapitem.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="player.cpp" ex="false" tool="1" flavor2="0">
       </item>

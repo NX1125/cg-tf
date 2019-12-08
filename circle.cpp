@@ -21,7 +21,7 @@ circle_blueprint_t((unsigned int) ceil((M_TWOPI * radius) / maxArcLength)) {
 }
 
 circle_blueprint_t::circle_blueprint_t(unsigned int n) : numOfPoints(n) {
-    points = (vector2d*) malloc(n * sizeof(vector2d));
+    points = (vector2d*) malloc(n * sizeof (vector2d));
 
     double angle = M_TWOPI / n;
 
@@ -86,6 +86,10 @@ void circle::translate() {
 }
 
 void circle_blueprint_t::draw(bool opaque, double r) {
-    glScaled(r, r, 1);
-    draw(opaque);
+    glPushMatrix();
+    {
+        glScaled(r, r, 1);
+        draw(opaque);
+    }
+    glPopMatrix();
 }

@@ -150,3 +150,15 @@ vector3f flying_enemy_t::getCannonExit() {
 
     return v;
 }
+
+void flying_enemy_t::drawMapElement(circle_blueprint_t* blueprint) const {
+    if (dead) return;
+    glPushMatrix();
+    {
+        // Move the system to the enemy
+        point3f p = controller->getPosition();
+        glTranslatef(p.x, p.y, 0);
+        blueprint->draw(true, radius);
+    }
+    glPopMatrix();
+}

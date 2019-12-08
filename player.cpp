@@ -8,6 +8,7 @@
 #include "cube.h"
 
 wf_object_t* player_t::sPlayerBodyModel = NULL;
+float player_t::sPlayerBodyModelRadius = 0;
 
 vector3f player_t::sBombDoor(0, 0, -1);
 
@@ -34,68 +35,12 @@ void player_t::setManager(projectile_manager_t* manager) {
 }
 
 void player_t::sInit(wf_object_loader_t& loader) {
-    sPlayerBodyModel = loader.loadRes("trenoSemHelice");
-}
+    loader.loadResOnly("trenoSemHelice");
 
-void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
-    if (dead) {
-        return;
-    }
-    // TODO Add beam of light from the player when it is night mode
-
-    glPushMatrix();
-    {
-        if (aim) {
-            point3f p = position;
-            vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
-
-            v.rotateX(horizontalAngularVelocityDrawing);
-            v.rotateY(vertical);
-            v.rotateZ(horizontal);
-
-            p += v;
-
-            glPushMatrix();
-            {
-                glTranslatef(p.x, p.y, p.z);
-                cube_t::drawBox();
-            }
-            glPopMatrix();
-        }
-
-        glTranslatef(position.x, position.y, position.z);
-
-        drawAxis(radius);
-        // considering that the front of the airplane is at +x and the back is at -x
-        const float degreePerRadians = 180 / M_PI;
-        glRotatef(horizontal * degreePerRadians, 0, 0, 1);
-        glRotatef(vertical * degreePerRadians, 0, 1, 0);
-        glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
-        if (gun && aim) {
-            cannon->draw();
-        }
-        // cockpit
-        if (cockpit) {
-            glPushMatrix();
-            {
-                glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
-                // cube_t::drawBox();
-            }
-            glPopMatrix();
-        }
-        if (body) {
-            propellerLeft->transformAndDraw();
-            propellerRight->transformAndDraw();
-
-            glRotatef(90, 1, 0, 0);
-            glScalef(radius, radius, radius);
-            drawAxis(radius);
-            // glScalef(100, 100, 100);
-
-            sPlayerBodyModel->draw();
-        }
-    }
-    glPopMatrix();
+    // This is to find the most distant point to the origin of the model
+    sPlayerBodyModelRadius = loader.getMostDistantVertex().length();
+    loader.scale(1.0f / sPlayerBodyModelRadius);
+    sPlayerBodyModel = sPlayerBodyModel = loader.build();
 }
 
 void player_t::cannonView() {
@@ -242,6 +187,67 @@ void player_t::update(int millis) {
     propellerRight->setMagnitude(velocity);
 }
 
+void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
+    if (dead) {
+        return;
+    }
+    // TODO Add beam of light from the player when it is night mode
+
+    glPushMatrix();
+    {
+        if (aim) {
+            point3f p = position;
+            vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+
+            v.rotateX(horizontalAngularVelocityDrawing);
+            v.rotateY(vertical);
+            v.rotateZ(horizontal);
+
+            p += v;
+
+            glPushMatrix();
+            {
+                glTranslatef(p.x, p.y, p.z);
+                cube_t::drawBox();
+            }
+            glPopMatrix();
+        }
+
+        glTranslatef(position.x, position.y, position.z);
+
+        drawAxis(radius);
+        // considering that the front of the airplane is at +x and the back is at -x
+        const float degreePerRadians = 180 / M_PI;
+        glRotatef(horizontal * degreePerRadians, 0, 0, 1);
+        glRotatef(vertical * degreePerRadians, 0, 1, 0);
+        glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
+        if (gun && aim) {
+            cannon->draw();
+        }
+        // cockpit
+        if (cockpit) {
+            glPushMatrix();
+            {
+                glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
+                // cube_t::drawBox();
+            }
+            glPopMatrix();
+        }
+        if (body) {
+            propellerLeft->transformAndDraw();
+            propellerRight->transformAndDraw();
+
+            glRotatef(90, 1, 0, 0);
+            glScalef(radius, radius, radius);
+            drawAxis(radius);
+            // glScalef(100, 100, 100);
+
+            sPlayerBodyModel->draw();
+        }
+    }
+    glPopMatrix();
+}
+
 vector3f player_t::getVelocity() const {
     return controller->getVelocity();
 }
@@ -334,4 +340,17 @@ void player_t::setCannonAxis(float x, float y) {
 
 void player_t::won() {
     mBehaviour = Behaviour::GAME_OVER;
+}
+
+void player_t::drawMapElement(circle_blueprint_t* blueprint) const {
+    if (dead) return;
+    // Make the player green
+    glColor3f(0, 1, 0);
+    glPushMatrix();
+    {
+        // Draw a circle at the player position
+        glTranslatef(position.x, position.y, 0);
+        blueprint->draw(true, radius);
+    }
+    glPopMatrix();
 }

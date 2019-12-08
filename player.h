@@ -15,6 +15,7 @@
 #include "projectile.h"
 #include "cannon.h"
 #include "propeller.h"
+#include "minimapitem.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
@@ -26,9 +27,10 @@ public:
     virtual void onPlayerDeath() = 0;
 };
 
-class player_t : public teleportable_t, public obstacle_t {
+class player_t : public teleportable_t, public obstacle_t, public mini_map_item_t {
 private:
     static wf_object_t* sPlayerBodyModel;
+    static float sPlayerBodyModelRadius;
 
     static vector3f sBombDoor;
 
@@ -179,6 +181,8 @@ public:
     bool isAlive() const override {
         return !dead;
     }
+    
+    void drawMapElement(circle_blueprint_t* blueprint) const override;
 };
 
 #endif /* AIRPLANE_H */

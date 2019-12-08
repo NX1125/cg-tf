@@ -66,6 +66,11 @@ void app_settings::normalize() {
     translate(dx, dy, groundEnemies);
     
     airstrip->translate(dx, dy);
+    
+    // In the previous work, the radius increased until it reaches twice its
+    // original radius. In 3D though, there is none of the increase feature,
+    // so we just use the final radius.
+    player->radius *= 2;
 }
 
 void app_settings::translate(int dx, int dy, vector<simple_svg_circle*>& circles) {

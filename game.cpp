@@ -31,6 +31,8 @@ Game::Game(app_settings* settings) {
 
     arena->setAirstrip(new airstrip_t(start, end, player->getRadius() * 2));
 
+    normalDistance = player->getRadius() * 8;
+    
     follower = new third_person_follower_t(/*point3f(0,0,0)*/
             player->getPosition(), normalDistance);
     follower->setAngle(0, 20 * M_PI / 180.0);
@@ -64,6 +66,8 @@ Game::Game(app_settings* settings) {
 
     timeToEnemyFire = (time_t) (1000.0f / settings->eBulletF);
 
+    miniMapAux = new circle_blueprint_t(16);
+
     // TODO Add reset listeners 
 }
 
@@ -94,7 +98,6 @@ void Game::loadModels() {
 
 void Game::display() {
     // TODO Put light and textures to meshes
-    // TODO Draw mini map of the elements in the arena
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -262,6 +265,43 @@ void Game::display() {
 
         drawText(text);
     }
+
+    // The minimap need to fit in 1/4 of the frame at the bottom-right position.
+
+    int w = width / 4;
+    int h = height / 4;
+    
+    const float padding = 10;
+
+    glViewport(width - w - padding, padding, w, h);
+
+    float r = arena->getRadius();
+
+    // Make the frame fit into NDC
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-r, r, r, -r);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    arena->drawMapElement(miniMapAux);
+
+    // draw all of the ground enemies in orange (#FFA500)
+    glColor3f(0xFF / 255.0, 0xA5 / 255.0, 0x00 / 255.0);
+    for (enemy_base_t* e : bases) {
+        e->drawMapElement(miniMapAux);
+    }
+
+    // Flying enemies have a red color
+    glColor3f(1, 0, 0);
+    for (flying_enemy_t* e : enemies) {
+        e->drawMapElement(miniMapAux);
+    }
+
+    player->drawMapElement(miniMapAux);
+
+    glViewport(0, 0, width, height);
 
     glEnable(GL_DEPTH_TEST);
 
