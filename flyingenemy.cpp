@@ -15,6 +15,7 @@
 #include "cube.h"
 
 wf_object_t* flying_enemy_t::sEnemyModel = NULL;
+vector3f flying_enemy_t::sCannonOffset(1, 0, -1);
 
 std::default_random_engine flying_enemy_t::sRandomMovement;
 
@@ -31,9 +32,9 @@ void flying_enemy_t::setInitialVelocity(float initialVelocity) {
 
 void flying_enemy_t::update(int millis) {
     if (dead) return;
-    
+
     // TODO Fire bullet with a frequency defined in the settings
-    
+
     // TODO Make the enemy follow the player instead
     accumulatedTime += millis;
     if (accumulatedTime > 1000) {
@@ -57,13 +58,13 @@ void flying_enemy_t::update(int millis) {
         behaviour++;
     }
     controller->update(millis);
-    
-    
+
+
     const float k = 0.95f;
 
     horizontal *= k;
     horizontal += controller->getHorizontalAngularVelocity() * (1 - k);
-    
+
 }
 
 void flying_enemy_t::clipZ(float z) {
@@ -85,7 +86,7 @@ void flying_enemy_t::kill() {
 void flying_enemy_t::transformAndDraw() {
     // TODO Draw cannon of enemy
     // TODO Add propeller to enemy
-    
+
     if (dead) return;
     glPushMatrix();
     {
@@ -101,6 +102,14 @@ void flying_enemy_t::transformAndDraw() {
         glScalef(radius, radius, radius);
         drawAxis(radius);
         // glScalef(100, 100, 100);
+
+        glPushMatrix();
+        {
+            glTranslatef(sCannonOffset.x, sCannonOffset.y, sCannonOffset.z);
+            glScalef(2 / radius, 2 / radius, 2 / radius);
+            cube_t::drawBox();
+        }
+        glPopMatrix();
 
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
@@ -125,4 +134,14 @@ vector3f flying_enemy_t::getVelocity() const {
 
 const char* flying_enemy_t::getName() const {
     return "fly";
+}
+
+vector3f flying_enemy_t::getCannonExit() {
+    vector3f v = sCannonOffset * radius;
+
+    v.rotateX(controller->getHorizontalAngularVelocity());
+    v.rotateY(controller->getVerticalAngle());
+    v.rotateZ(horizontal);
+
+    return  v;
 }

@@ -65,6 +65,10 @@ private:
     unsigned int score = 0;
     string scoreText = string("0");
 
+    time_t timeToEnemyFire;
+
+    time_t timeSinceLastEnemyFire = 0;
+
 public:
 
     Game(app_settings* settings);
@@ -102,7 +106,7 @@ public:
     void reset();
 
     void addResetListener(reset_listener_t* l);
-    
+
     void onBaseDeath() override;
 };
 

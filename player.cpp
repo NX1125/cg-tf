@@ -289,7 +289,7 @@ void player_t::fire() {
 
     p += v;
 
-    cannon->getDirection();
+    v = cannon->getDirection();
 
     v.rotateX(horizontalAngularVelocityDrawing);
     v.rotateY(vertical);

@@ -4,6 +4,7 @@
 #include "cube.h"
 #include "textrendering.h"
 #include "bomb.h"
+#include "bullet.h"
 
 Game::Game(app_settings* settings) {
     glClearColor(0, 0, 0, 0);
@@ -54,12 +55,14 @@ Game::Game(app_settings* settings) {
     // 2h = at^2
     // 2h / t^2 = a
     const float timeToBombHitGround = 2;
-    
+
     float a = -2 * arena->getHeight() / (timeToBombHitGround * timeToBombHitGround);
-    
+
     printf("The bomb will fall with an acceleration of %f\n", a);
 
     bomb_t::setGravityAcceleration(a);
+
+    timeToEnemyFire = (time_t) (1000.0f / settings->eBulletF);
 
     // TODO Add reset listeners 
 }
@@ -333,6 +336,24 @@ void Game::idle() {
     for (flying_enemy_t* enemy : enemies) {
         enemy->update(time);
         enemy->clipZ(arena->getHeight());
+    }
+
+    timeSinceLastEnemyFire += time;
+
+    if (timeSinceLastEnemyFire > timeToEnemyFire) {
+        timeSinceLastEnemyFire = 0;
+
+        // All enemies are firing now!
+        for (flying_enemy_t* e : enemies) {
+            if (e->isAlive()) {
+                point3f p = e->getPosition() + e->getCannonExit();
+                vector3f v = e->getVelocity();
+
+                bullet_t* b = new bullet_t(p, v, true);
+                b->setRadius(e->getRadius() / 16);
+                manager->addProjectile(b);
+            }
+        }
     }
 
     if (player->canDie()) {

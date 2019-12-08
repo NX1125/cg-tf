@@ -34,7 +34,7 @@ public:
         return overlaps(o->getPosition(), o->getRadius());
     }
 
-    virtual bool isAlive() {
+    virtual bool isAlive() const {
         return true;
     }
 };

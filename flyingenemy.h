@@ -22,7 +22,9 @@ private:
     static std::default_random_engine sRandomMovement;
 
     static wf_object_t* sEnemyModel;
-
+    
+    static vector3f sCannonOffset;
+    
     float radius;
 
     airplane_movement_t* controller = NULL;
@@ -36,7 +38,7 @@ private:
     int behaviour = 0;
 
     float horizontal;
-    
+
 public:
 
     flying_enemy_t(point3f position, float radius);
@@ -67,6 +69,11 @@ public:
 
     void setPosition(const point3f& p) override;
 
+    vector3f getCannonExit();
+    
+    bool isAlive() const override {
+        return !dead;
+    }
 };
 
 #endif /* FLYINGENEMY_H */

@@ -60,6 +60,9 @@ public:
         return radius;
     }
 
+    bool isAlive() const override {
+        return !dead;
+    }
 };
 
 #endif /* ENEMYBASE_H */

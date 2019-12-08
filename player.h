@@ -175,6 +175,10 @@ public:
      * Both x and y are between 0 and 1.
      */
     void setCannonAxis(float x, float y);
+    
+    bool isAlive() const override {
+        return !dead;
+    }
 };
 
 #endif /* AIRPLANE_H */
