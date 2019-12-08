@@ -267,6 +267,7 @@ void player_t::clipZ(float height) {
     if (position.z < radius) {
         // printf("The player is hitting the ground!\n");
         position.z = radius;
+        kill();
     } else if (position.z > height - radius) {
         // printf("The player is hitting the roof!\n");
         position.z = height - radius;
