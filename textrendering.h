@@ -10,11 +10,9 @@
 
 #include <GL/gl.h>
 
-void rasterChars(GLfloat x, GLfloat y, GLfloat z, const char* text, double r, double g, double b);
+void drawText(const char* text);
 
-void drawText(GLfloat x, GLfloat y, const char* text, double r, double g, double b);
-
-void measureText(const unsigned char* text, int* width, int* height);
+void measureText(const char* text, int* width, int* height);
 
 #endif /* TEXTRENDERING_H */
 

@@ -38,6 +38,9 @@ void player_t::sInit(wf_object_loader_t& loader) {
 }
 
 void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
+    if (dead) {
+        return;
+    }
     // TODO Add beam of light from the player when it is night mode
 
     glPushMatrix();
@@ -313,6 +316,12 @@ void player_t::mousePress(int button) {
 
 void player_t::kill() {
     dead = true;
+
+    mBehaviour = Behaviour::GAME_OVER;
+
+    if (death != NULL) {
+        death->onPlayerDeath();
+    }
 }
 
 bool player_t::canDie() const {
@@ -323,3 +332,6 @@ void player_t::setCannonAxis(float x, float y) {
     cannon->setInputAxis(x, y);
 }
 
+void player_t::won() {
+    mBehaviour = Behaviour::GAME_OVER;
+}

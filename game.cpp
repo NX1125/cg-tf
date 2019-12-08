@@ -2,6 +2,7 @@
 #include "game.h"
 #include "player.h"
 #include "cube.h"
+#include "textrendering.h"
 
 Game::Game(app_settings* settings) {
     glClearColor(0, 0, 0, 0);
@@ -52,6 +53,7 @@ void Game::createBases(vector<simple_svg_circle*>& bases) {
     for (simple_svg_circle* enemy : bases) {
         enemy_base_t* b = new enemy_base_t(point3f(enemy->cx, enemy->cy, enemy->radius), enemy->radius);
         manager->addObstacles(b, false);
+        b->setDeathListener(this);
         this->bases.push_back(b);
     }
 }
@@ -193,8 +195,59 @@ void Game::display() {
     for (flying_enemy_t* enemy : enemies) {
         enemy->transformAndDraw();
     }
-    // TODO Draw projectiles (bombs and bullets)
     manager->draw();
+
+    glDisable(GL_DEPTH_TEST);
+
+    // Make the frame fit into NDC
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, width, height, 0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glPushMatrix();
+    {
+        int w, h;
+
+        measureText(scoreText.c_str(), &w, &h);
+
+        const float padding = 10.0f;
+        
+        // center it at screen:
+        glTranslatef(width - w - padding, padding + h , 0);
+        // text with white color:
+        glColor3f(1, 1, 1);
+
+        drawText(scoreText.c_str());
+    }
+    glPopMatrix();
+
+    if (player->getBehaviour() == Behaviour::GAME_OVER) {
+        const char* text;
+        if (player->isDead()) {
+            // He lost!
+            // TODO Put a sercastic message for the player instead
+            text = "Perdeu... :(";
+        } else {
+            // He won!
+            text = "Ganhou! :D";
+        }
+
+        int w, h;
+
+        measureText(text, &w, &h);
+
+        // center it at screen:
+        glTranslatef((width - w) / 2, (height - h) / 2, 0);
+        // text with white color:
+        glColor3f(1, 1, 1);
+
+        drawText(text);
+    }
+
+    glEnable(GL_DEPTH_TEST);
 
     glutSwapBuffers();
 }
@@ -207,9 +260,9 @@ void Game::mouseDragged(int x, int y) {
 }
 
 void Game::mouseMoved(int x, int y) {
-    //    if (player->getBehaviour() == Behaviour::CONTROLLING) {
-    player->setCannonAxis(x / (GLfloat) width, y / (GLfloat) height);
-    //    }
+    if (player->getBehaviour() == Behaviour::CONTROLLING) {
+        player->setCannonAxis(x / (GLfloat) width, y / (GLfloat) height);
+    }
 }
 
 void Game::mouseButtonEvent(int button, int state, int x, int y) {
@@ -358,3 +411,11 @@ void Game::addResetListener(reset_listener_t* l) {
     sResetListeners.push_back(l);
 }
 
+void Game::onBaseDeath() {
+    score++;
+    scoreText = std::to_string(score);
+    
+    if (score >= bases.size()) {
+        player->won();
+    }
+}

@@ -20,6 +20,12 @@ enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
 };
 
+class player_death_listener_t {
+public:
+    // Bring some flowers, ok?
+    virtual void onPlayerDeath() = 0;
+};
+
 class player_t : public teleportable_t, public obstacle_t {
 private:
     static wf_object_t* sPlayerBodyModel;
@@ -79,21 +85,27 @@ private:
     projectile_manager_t* manager = NULL;
 
     float bulletVelocityFactor = 1.0f;
-    
+
     vector3f cockpitOffset;
+    
+    player_death_listener_t* death = NULL;
 
 public:
 
     player_t(takeoff_t* takeoff, float radius);
 
     void cockpitView();
-    
+
     void cannonView();
-    
+
     void setManager(projectile_manager_t* manager);
 
     void setBulletVelocityFactor(float bulletVelocityFactor) {
         this->bulletVelocityFactor = bulletVelocityFactor;
+    }
+
+    void setDeathListener(player_death_listener_t* death) {
+        this->death = death;
     }
 
     /**
@@ -139,6 +151,10 @@ public:
 
     void setPosition(const point3f& p) override;
 
+    bool isDead() const {
+        return dead;
+    }
+
     /**
      * Throw a bomb.
      */
@@ -150,6 +166,8 @@ public:
     void fire();
 
     void kill();
+    
+    void won();
 
     bool canDie() const;
 

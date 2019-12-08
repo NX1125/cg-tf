@@ -14,6 +14,11 @@
 #include "wfobj.h"
 #include "projectile.h"
 
+class base_death_t {
+public:
+    virtual void onBaseDeath() = 0;
+};
+
 class enemy_base_t : public obstacle_t {
 private:
 
@@ -24,6 +29,8 @@ private:
     float radius;
 
     bool dead = false;
+    
+    base_death_t* deathListener = NULL;
 
 public:
 
@@ -35,6 +42,14 @@ public:
 
     void kill() {
         dead = true;
+        
+        if (deathListener != NULL) {
+            deathListener->onBaseDeath();
+        }
+    }
+
+    void setDeathListener(base_death_t* l) {
+        this->deathListener = l;
     }
 
     point3f getPosition() const override {

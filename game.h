@@ -30,7 +30,7 @@ enum Camera {
 
 /**
  */
-class Game {
+class Game : public base_death_t {
 private:
     // As stated in spec, the size of the window is initially 500x500.
     int width;
@@ -59,8 +59,11 @@ private:
 
     std::vector<enemy_base_t*> bases;
     std::vector<flying_enemy_t*> enemies;
-    
+
     projectile_manager_t* manager;
+
+    unsigned int score = 0;
+    string scoreText = string("0");
 
 public:
 
@@ -99,6 +102,8 @@ public:
     void reset();
 
     void addResetListener(reset_listener_t* l);
+    
+    void onBaseDeath() override;
 };
 
 

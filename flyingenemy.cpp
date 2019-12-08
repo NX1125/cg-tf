@@ -34,6 +34,7 @@ void flying_enemy_t::update(int millis) {
     
     // TODO Fire bullet with a frequency defined in the settings
     
+    // TODO Make the enemy follow the player instead
     accumulatedTime += millis;
     if (accumulatedTime > 1000) {
         accumulatedTime = 0;
