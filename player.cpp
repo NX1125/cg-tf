@@ -242,7 +242,8 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             drawAxis(radius);
             // glScalef(100, 100, 100);
 
-            sPlayerBodyModel->draw();
+            cube_t::drawBox();
+            // sPlayerBodyModel->draw();
         }
     }
     glPopMatrix();
@@ -273,14 +274,16 @@ void player_t::clipZ(float height) {
 }
 
 void player_t::bomb() {
-    // TODO Open frame of bomb view
-
     printf("The player just threw a bomb\n");
     vector3f v = controller->getVelocity();
     v.z = 0;
     bomb_t* b = new bomb_t(position + sBombDoor * radius, v);
     b->setRadius(radius / 8);
     manager->addProjectile(b);
+
+    if (bombListener != NULL) {
+        bombListener->onBombThrow(b);
+    }
 }
 
 void player_t::fire() {
@@ -321,6 +324,8 @@ void player_t::mousePress(int button) {
 }
 
 void player_t::kill() {
+    if (!canDie() || dead) return;
+
     dead = true;
 
     mBehaviour = Behaviour::GAME_OVER;

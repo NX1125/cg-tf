@@ -30,7 +30,7 @@ enum Camera {
 
 /**
  */
-class Game : public base_death_t {
+class Game : public base_death_t, bomb_listener_t {
 private:
     // As stated in spec, the size of the window is initially 500x500.
     int width;
@@ -68,8 +68,14 @@ private:
     time_t timeToEnemyFire;
 
     time_t timeSinceLastEnemyFire = 0;
-    
-    circle_blueprint_t* miniMapAux  =NULL;
+
+    circle_blueprint_t* miniMapAux = NULL;
+
+    /**
+     * The bomb that will be watched in the second section of the frame, in the
+     * bomb view.
+     */
+    bomb_t* currentBomb = NULL;
 
 public:
 
@@ -86,11 +92,11 @@ private:
 public:
 
     void display();
-    
+
     void drawWorld();
-    
+
     void drawHUD();
-    
+
     void drawMap();
 
     void mouseDragged(int x, int y);
@@ -116,6 +122,8 @@ public:
     void addResetListener(reset_listener_t* l);
 
     void onBaseDeath() override;
+    
+    void onBombThrow(bomb_t* b) override;
 };
 
 

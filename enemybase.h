@@ -42,6 +42,8 @@ public:
     static void init(wf_object_loader_t* loader);
 
     void kill() {
+        if (dead) return;
+
         dead = true;
 
         if (deathListener != NULL) {

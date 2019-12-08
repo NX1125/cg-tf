@@ -42,6 +42,7 @@ Game::Game(app_settings* settings) {
     watch = new stopwatch_t();
 
     player->setVelocityFactor(settings->vel);
+    player->setBombListener(this);
 
     manager = new projectile_manager_t();
 
@@ -100,6 +101,10 @@ void Game::display() {
     // TODO Put light and textures to meshes
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    float yOffset = currentBomb == NULL ? 0 : 200;
+
+    glViewport(0, yOffset, 500, 500);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -196,8 +201,6 @@ void Game::display() {
 
     // glEnable(GL_LIGHTING);
 
-    glViewport(0, 0, width, height);
-
     drawWorld();
 
     glDisable(GL_DEPTH_TEST);
@@ -211,7 +214,7 @@ void Game::display() {
 
     const float padding = 10;
 
-    glViewport(width - w - padding, padding, w, h);
+    glViewport(width - w - padding, yOffset + padding, w, h);
 
     float r = arena->getRadius();
 
@@ -226,6 +229,10 @@ void Game::display() {
     drawMap();
 
     glEnable(GL_DEPTH_TEST);
+
+    if (currentBomb != NULL) {
+        glViewport(0, 0, 200, 200);
+    }
 
     glutSwapBuffers();
 }
@@ -362,8 +369,6 @@ void Game::reshape(int width, int height) {
     this->width = width;
     this->height = height;
 
-    glViewport(0, 0, width, height);
-
     printf("Reshape: (%d, %d)\n", width, height);
 }
 
@@ -374,6 +379,12 @@ void Game::idle() {
 
     if (time <= 10) {
         return;
+    }
+
+    if (currentBomb != NULL && currentBomb->isDead()) {
+        currentBomb = NULL;
+        
+        glutReshapeWindow(500,500);
     }
 
     // printf("Time: %d ms\n", time);
@@ -491,7 +502,7 @@ void Game::reset() {
     }
 }
 
-void Game::addResetListener(reset_listener_t* l) {
+void Game::addResetListener(reset_listener_t * l) {
     sResetListeners.push_back(l);
 }
 
@@ -502,4 +513,9 @@ void Game::onBaseDeath() {
     if (score >= bases.size()) {
         player->won();
     }
+}
+
+void Game::onBombThrow(bomb_t * b) {
+    currentBomb = b;
+    glutReshapeWindow(500, 700);
 }

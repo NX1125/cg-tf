@@ -16,6 +16,7 @@
 #include "cannon.h"
 #include "propeller.h"
 #include "minimapitem.h"
+#include "bomb.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
@@ -25,6 +26,12 @@ class player_death_listener_t {
 public:
     // Bring some flowers, ok?
     virtual void onPlayerDeath() = 0;
+};
+
+class bomb_listener_t {
+public:
+
+    virtual void onBombThrow(bomb_t* b) = 0;
 };
 
 class player_t : public teleportable_t, public obstacle_t, public mini_map_item_t {
@@ -91,6 +98,8 @@ private:
     vector3f cockpitOffset;
     
     player_death_listener_t* death = NULL;
+    
+    bomb_listener_t* bombListener = NULL;
 
 public:
 
@@ -108,6 +117,10 @@ public:
 
     void setDeathListener(player_death_listener_t* death) {
         this->death = death;
+    }
+
+    void setBombListener(bomb_listener_t* bombListener) {
+        this->bombListener = bombListener;
     }
 
     /**
