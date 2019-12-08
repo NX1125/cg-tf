@@ -3,6 +3,7 @@
 #include "player.h"
 #include "cube.h"
 #include "textrendering.h"
+#include "bomb.h"
 
 Game::Game(app_settings* settings) {
     glClearColor(0, 0, 0, 0);
@@ -46,6 +47,20 @@ Game::Game(app_settings* settings) {
 
     player->setManager(manager);
 
+    // A time of 2 seconds for the bomb to fall onto the ground.
+    // The time considers that the player is at the roof
+    // s(t) = at^2 / 2
+    // h = at^2 / 2
+    // 2h = at^2
+    // 2h / t^2 = a
+    const float timeToBombHitGround = 2;
+    
+    float a = -2 * arena->getHeight() / (timeToBombHitGround * timeToBombHitGround);
+    
+    printf("The bomb will fall with an acceleration of %f\n", a);
+
+    bomb_t::setGravityAcceleration(a);
+
     // TODO Add reset listeners 
 }
 
@@ -75,8 +90,6 @@ void Game::loadModels() {
 }
 
 void Game::display() {
-    // TODO Show score of player on top-right
-    // TODO Print on frame a text of whether the player lost or won
     // TODO Put light and textures to meshes
     // TODO Draw mini map of the elements in the arena
 
@@ -214,9 +227,9 @@ void Game::display() {
         measureText(scoreText.c_str(), &w, &h);
 
         const float padding = 10.0f;
-        
+
         // center it at screen:
-        glTranslatef(width - w - padding, padding + h , 0);
+        glTranslatef(width - w - padding, padding + h, 0);
         // text with white color:
         glColor3f(1, 1, 1);
 
@@ -300,8 +313,6 @@ void Game::reshape(int width, int height) {
 }
 
 void Game::idle() {
-    // TODO kill player when he hits an enemy
-
     watch->mark();
 
     int time = watch->getMarkedElaspedTimeMillis();
@@ -414,7 +425,7 @@ void Game::addResetListener(reset_listener_t* l) {
 void Game::onBaseDeath() {
     score++;
     scoreText = std::to_string(score);
-    
+
     if (score >= bases.size()) {
         player->won();
     }

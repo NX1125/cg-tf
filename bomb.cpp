@@ -11,8 +11,6 @@
 #include "cube.h"
 #include "enemybase.h"
 
-// TODO Compute acceleration of bomb were it should hit the ground in 2 seconds
-
 float bomb_t::sGravityAcceleration = -10;
 
 bomb_t::bomb_t(const point3f& offset, const vector3f& velocity) :

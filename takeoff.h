@@ -135,6 +135,9 @@ public:
         return start;
     }
 
+    float getHeight() const {
+        return height;
+    }
 
 private:
     void setGround(float k);

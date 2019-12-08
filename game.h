@@ -53,7 +53,7 @@ private:
 
     time_t sAccumulatedTime = 0;
 
-    Camera cameraView = Camera::UP_VIEW;
+    Camera cameraView = Camera::THIRD_PERSON_CAMERA;
 
     const float normalDistance = 100;
 
