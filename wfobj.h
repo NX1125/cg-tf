@@ -85,6 +85,10 @@ public:
     }
 
     void draw();
+    
+    void scale(float s1) {
+        s = s1;
+    }
 
 private:
     // commands

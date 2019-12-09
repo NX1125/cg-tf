@@ -17,8 +17,8 @@ offset(offset) {
 
 void cannon_t::init(wf_object_loader_t& loader) {
     sModel = loader.loadRes("canhao");
+    sModel->scale(1 / loader.getMostDistantVertex().length());
 }
-
 
 void cannon_t::draw() {
     glPushMatrix();
@@ -27,6 +27,10 @@ void cannon_t::draw() {
 
         glRotatef(horizontal, 0, 0, 1);
         glRotatef(-vertical, 0, 1, 0);
+
+//        glScaled(10, 10, 10);
+        glRotatef(-90, 0, 0, 1);
+//        drawAxis(1);
 
         if (sModel == NULL) {
             glScaled(getLength() / 2, 1, 1);
@@ -52,7 +56,7 @@ vector3f cannon_t::getDirection() const {
 vector3f cannon_t::getDirection(float h, float v) const {
     float r;
     float z;
-    
+
     const float dr = M_PI / 180.0f;
 
     sincosf(vertical * dr + v, &z, &r);

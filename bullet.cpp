@@ -20,6 +20,8 @@ void bullet_t::draw() const {
     // TODO Draw bullet model
     //    glRotatef(horizontal, 0, 0, 1);
     //    glRotatef(vertical, 1, 0, 0);
+    glRotatef(90, 1, 0, 0);
+    glScalef(radius, radius, radius);
     if (sModel != NULL) {
         sModel->draw();
     } else {
@@ -45,5 +47,8 @@ void bullet_t::hit(obstacle_t* other) {
 
 void bullet_t::init(wf_object_loader_t& loader) {
     sModel = loader.loadRes("duende");
+    float length = loader.getMostDistantVertex().length();
+
+    sModel->scale(1 / length);
 }
 

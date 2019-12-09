@@ -18,7 +18,7 @@ private:
 
     bool enemy;
 
-    float radius = 1.0f;
+    float radius = 10.0f;
     
     float horizontal = 0;
     float vertical = 0;

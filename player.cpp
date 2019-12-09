@@ -38,9 +38,8 @@ void player_t::setManager(projectile_manager_t* manager) {
 }
 
 void player_t::sInit(wf_object_loader_t& loader) {
-    loader.loadResOnly("trenoSemHelice");
-    loader.normalize();
-    sPlayerBodyModel = sPlayerBodyModel = loader.build();
+    sPlayerBodyModel = loader.loadRes("trenoSemHelice");
+    sPlayerBodyModel->scale(1 / loader.getMostDistantVertex().length());
 }
 
 void player_t::cannonView() {
@@ -49,8 +48,6 @@ void player_t::cannonView() {
     up.rotateX(horizontalAngularVelocityDrawing);
     up.rotateY(vertical);
     up.rotateZ(horizontal);
-
-    // TODO move slight above the cannon
 
     vector3f off = cannon->getOffset();
 
@@ -205,12 +202,12 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             v.rotateY(vertical);
             v.rotateZ(horizontal);
 
-            glPushMatrix();
-            {
-                glTranslatef(p.x + v.x, p.y + v.y, p.z + v.z);
-                glutSolidSphere(2, 8, 8);
-            }
-            glPopMatrix();
+            //            glPushMatrix();
+            //            {
+            //                glTranslatef(p.x + v.x, p.y + v.y, p.z + v.z);
+            //                glutSolidSphere(2, 8, 8);
+            //            }
+            //            glPopMatrix();
 
             v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
 
@@ -280,9 +277,10 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
 
             glRotatef(90, 1, 0, 0);
             glScalef(radius, radius, radius);
+            glutSolidSphere(1, 8, 8);
             drawAxis(radius);
-            const float s = 3;
-            // glScalef(s,s,s);
+            const float s = 1.6;
+             glScalef(s,s,s);
 
             GLfloat color[] = {1, 1, 1, 1};
 
