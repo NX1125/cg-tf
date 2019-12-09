@@ -571,10 +571,10 @@ void Game::keyReleased(unsigned char key, int x, int y) {
 
 void Game::reset() {
     // Game
-    // - Jogador
     // - Inimigos
     // - Casas
     // - Remover os projéteis
+    manager->reset();
     // - Score
     // - Camera
 

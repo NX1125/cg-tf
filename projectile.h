@@ -135,6 +135,13 @@ public:
     void draw();
 
     void collectGarbage();
+    
+    void reset() {
+        for (projectile_t* p : projectiles) {
+            delete p;
+        }
+        projectiles.clear();
+    }
 
 private:
 
