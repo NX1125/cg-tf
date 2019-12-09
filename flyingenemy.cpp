@@ -119,11 +119,8 @@ void flying_enemy_t::transformAndDraw() {
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
         } else {
-    GLfloat mcolor[] = {0, 0.8f, 0, 1.0};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mcolor);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mcolor);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mcolor);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
+            glColor3f(1,0,0);
+            
             drawCube();
         }
     }

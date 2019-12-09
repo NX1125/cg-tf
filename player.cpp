@@ -242,12 +242,6 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             drawAxis(radius);
             // glScalef(100, 100, 100);
 
-    GLfloat mcolor[] = {0, 0.8f, 0, 1.0};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mcolor);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mcolor);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mcolor);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
-    
 //                 glutSolidSphere(2, 32, 32);
 //            drawCube();
              sPlayerBodyModel->draw();

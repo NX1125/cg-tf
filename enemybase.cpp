@@ -32,6 +32,8 @@ void enemy_base_t::transformAndDraw() {
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
         } else {
+            // draw all of the ground enemies in orange (#FFA500)
+            glColor3f(0xFF / 255.0, 0xA5 / 255.0, 0x00 / 255.0);
             drawCube();
         }
     }
@@ -39,12 +41,12 @@ void enemy_base_t::transformAndDraw() {
 }
 
 void enemy_base_t::init(wf_object_loader_t& loader) {
-     sEnemyModel = loader.loadRes("enemy");
+    sEnemyModel = loader.loadRes("enemy");
 }
 
 void enemy_base_t::drawMapElement(circle_blueprint_t* blueprint) const {
     if (dead) return;
-    
+
     glPushMatrix();
     {
         glTranslatef(position.x, position.y, 0);
