@@ -27,14 +27,16 @@ void cannon_t::draw() {
 
         glRotatef(horizontal, 0, 0, 1);
         glRotatef(-vertical, 0, 1, 0);
+        
+        float length = getLength();
 
-        glScaled(4, 4, 4);
-        glRotatef(-90, 0, 0, 1);
-        //        drawAxis(1);
+        glScaled(length, length, length);
+         glRotatef(-90, 0, 0, 1);
+                drawAxis(1);
 
         if (sModel == NULL) {
-            glScaled(getLength() / 2, 1, 1);
-            glTranslatef(1, 0, 0);
+//            glScaled(getLength() / 2, 1, 1);
+//            glTranslatef(1, 0, 0);
             drawCube();
         } else {
             sModel->draw();

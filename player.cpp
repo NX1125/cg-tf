@@ -16,7 +16,7 @@ player_t::player_t(takeoff_t* takeoff, float radius) :
 takeoff(takeoff), radius(radius) {
     position = takeoff->getStart();
     controller = new airplane_movement_t();
-    cannon = new cannon_t(vector3f(radius, 0, -radius * 0.2f));
+    cannon = new cannon_t(vector3f(radius * 0.8f, 0, -radius * 0.2f));
 
     propellerLeft = new propeller_t(vector3f(0, radius, radius));
     propellerRight = new propeller_t(vector3f(0, -radius, radius));
@@ -26,7 +26,7 @@ takeoff(takeoff), radius(radius) {
     propellerLeft->setScaleFactor(factor);
     propellerRight->setScaleFactor(factor);
 
-    cockpitOffset = vector3f(radius * 0.4f, 0, 0 );
+    cockpitOffset = vector3f(radius * 0.4f, 0, 0);
 
     horizontal = takeoff->getHorizontalAngle();
     vertical = takeoff->getVerticalAngle();
@@ -44,8 +44,8 @@ void player_t::sInit(wf_object_loader_t& loader) {
 
 void player_t::cannonView() {
     vector3f off = cannon->getOffset();
-    
-    off.x -= radius * 0.1f;
+
+    // off.x -= radius * 0.35f;
 
     off.rotateX(horizontalAngularVelocityDrawing);
     off.rotateY(vertical);
@@ -62,8 +62,10 @@ void player_t::cannonView() {
 
     ep += v;
 
-    gluLookAt(p.x, p.y, p.z,
-            ep.x, ep.y, ep.z ,
+    float h = radius * 0.3f;
+
+    gluLookAt(p.x, p.y, p.z + h,
+            ep.x, ep.y, ep.z + h,
             0, 0, 1);
 }
 
