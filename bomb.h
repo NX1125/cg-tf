@@ -42,17 +42,6 @@ public:
         // TODO Measure bomb radius
         return radius;
     }
-
-    static void draw0() {
-        glColor3f(1,1,1);
-        glPushMatrix();
-        {
-            glScalef(10, 10, 10);
-            sBombModel->draw();
-        }
-        glPopMatrix();
-    }
-
 public:
 
     static void init(wf_object_loader_t& loader);

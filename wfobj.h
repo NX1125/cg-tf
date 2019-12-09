@@ -30,14 +30,16 @@ struct WFCommand {
 
 class wf_object_loader_t;
 
+#define MATERIAL_COMMANDS_COUNT 6
+
 struct wf_material_t {
 private:
     friend wf_object_loader_t;
 
     string name;
 
-    WFCommand commands[5];
-    float arguments[5 * 4];
+    WFCommand commands[MATERIAL_COMMANDS_COUNT];
+    float arguments[MATERIAL_COMMANDS_COUNT * 4];
     int n = 0;
 
     string* texture = NULL;

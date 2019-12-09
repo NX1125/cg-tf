@@ -205,6 +205,7 @@ GLuint loadTextureRAW(const char * filename) {
             image->pixels); //The actual pixel data
     delete image;
 
+    glBindTexture(GL_TEXTURE_2D, 0);
     return texture;
 }
 

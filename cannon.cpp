@@ -15,6 +15,11 @@ cannon_t::cannon_t(const vector3f& offset) :
 offset(offset) {
 }
 
+void cannon_t::init(wf_object_loader_t& loader) {
+    sModel = loader.loadRes("canhao");
+}
+
+
 void cannon_t::draw() {
     glPushMatrix();
     {

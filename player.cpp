@@ -278,7 +278,8 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             glRotatef(90, 1, 0, 0);
             glScalef(radius, radius, radius);
             drawAxis(radius);
-            // glScalef(2,2,2);
+            const float s = 3;
+             glScalef(s,s,s);
 
             GLfloat color[] = {1, 1, 1, 1};
 

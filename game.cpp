@@ -101,6 +101,7 @@ void Game::loadModels(wf_object_loader_t& loader) {
     bomb_t::init(loader);
     enemy_base_t::init(loader);
     flying_enemy_t::init(loader);
+    cannon_t::init(loader);
 
     loadCube(loader);
 }
@@ -185,7 +186,7 @@ void Game::display() {
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
         {
-            // point3f target = player->getPosition();
+//             point3f target = player->getPosition();
             point3f target(0, 0, 0);
             if (followerOrbitEnabled) {
                 target.z += player->getRadius() / 2;
@@ -274,7 +275,7 @@ void Game::display() {
 }
 
 void Game::drawWorld() {
-    bomb_t::draw0();
+    cannon_t::draw0();
 
     GLfloat blue[] = {0, 0, 0.5f, 1.0f};
     glMaterialfv(GL_FRONT, GL_AMBIENT, blue);
