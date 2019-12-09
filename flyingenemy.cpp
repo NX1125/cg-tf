@@ -27,7 +27,7 @@ radius(radius) {
     controller->setPosition(position);
 
     propeller = new propeller_t(vector3f(1, 0, 0));
-    propeller->setScaleFactor(0.05f / radius);
+    propeller->setScaleFactor(1.0f / radius);
 
     initialPosition = position;
 }
