@@ -1,0 +1,46 @@
+# Blender MTL File: 'trenoSemHelice.blend'
+# Material Count: 4
+
+newmtl Material.001
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd papel-de-parede-textura-de-ouro_53876-47133.bmp
+
+newmtl Material.002
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /home/2016101741/Documentos/cg/testeTF/depositphotos_113549684-stock-photo-red-jeans-texture-background.jpg
+
+newmtl Material.002_NONE
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd fundo-fotografico-em-tecido-textura-vermelho-2-60x1-50m-fundo-fotografico.bmp
+
+newmtl Material.003
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /home/2016101741/Documentos/cg/testeTF/depositphotos_113549684-stock-photo-red-jeans-texture-background.jpg
