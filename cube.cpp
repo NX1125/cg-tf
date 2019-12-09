@@ -72,9 +72,9 @@ void drawCube(void) {
     // glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mcolor);
     // glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 50.0);
 
-//    sCubeModel->draw();
+    sCubeModel->draw();
 
-        glutSolidCube(2);
+    //        glutSolidCube(2);
 
     //    glPushMatrix();
     //    {

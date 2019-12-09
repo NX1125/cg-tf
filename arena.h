@@ -11,6 +11,7 @@
 #include "shapes.h"
 #include "airstrip.h"
 #include "minimapitem.h"
+#include "wfobj.h"
 
 /**
  * The arena is the environment that the player plays the game. In here, there
@@ -46,10 +47,12 @@ private:
     float radiusSqr;
 
     airstrip_t* airstrip = NULL;
+    
+    wf_object_t* ground = NULL;
 
 public:
 
-    arena_t(float height, float radius);
+    arena_t(float height, float radius, wf_object_loader_t& loader);
 
     /**
      * The drawing of an arena counts the bases of the enemies, decorations such
@@ -61,6 +64,10 @@ public:
 
     void setAirstrip(airstrip_t* airstrip) {
         this->airstrip = airstrip;
+    }
+
+    airstrip_t* getAirstrip() const {
+        return airstrip;
     }
 
     float getHeight() const {

@@ -119,7 +119,7 @@ void flying_enemy_t::transformAndDraw() {
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
         } else {
-            glColor3f(1,0,0);
+            //glColor3f(1,0,0);
             
             drawCube();
         }

@@ -107,6 +107,8 @@ void wf_object_loader_t::loadMTL(char* line) {
                     c.apply = wf_object_t::specular;
                     c.name = "specular";
                     break;
+                default:
+                    return;
             }
             break;
         case 'N':
@@ -122,9 +124,9 @@ void wf_object_loader_t::loadMTL(char* line) {
                 char name[256];
                 sscanf(line, "%*s%s", name);
                 currentMaterial.texture = new string(name);
-                
+
                 garbage.push_back(currentMaterial.texture);
-                
+
                 printf("Texture file %s\n", currentMaterial.texture->c_str());
             }
             return;
@@ -393,19 +395,19 @@ void wf_object_loader_t::forEachLine(const char* filename, void (*c)(char*, wf_o
 }
 
 void wf_object_t::ambient(const GLfloat* coords) {
-    glMaterialfv(GL_FRONT, GL_AMBIENT, coords);
+    //glMaterialfv(GL_FRONT, GL_AMBIENT, coords);
 }
 
 void wf_object_t::diffuse(const GLfloat* coords) {
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, coords);
+    // glMaterialfv(GL_FRONT, GL_DIFFUSE, coords);
 }
 
 void wf_object_t::specular(const GLfloat* coords) {
-    glMaterialfv(GL_FRONT, GL_SPECULAR, coords);
+    //glMaterialfv(GL_FRONT, GL_SPECULAR, coords);
 }
 
 void wf_object_t::shininess(const GLfloat* coords) {
-    glMaterialfv(GL_FRONT, GL_SHININESS, coords);
+    //glMaterialfv(GL_FRONT, GL_SHININESS, coords);
 }
 
 void wf_object_t::begin(const GLfloat* ignore) {

@@ -9,11 +9,13 @@
 #define FIXED_THIRD_PERSON_CAMERA
 
 Game::Game(app_settings* settings) {
-    glClearColor(0, 0, 0, 0);
+    glClearColor(0.9f, 0.9f, 1.0f, 1);
+
+    wf_object_loader_t loader;
 
     // as stated in the spec, the height of the arena is 8 times the player's
     // diameter. We have the radius, that's why 2 * 8
-    arena = new arena_t(settings->player->radius * 2 * 8, settings->arena->radius);
+    arena = new arena_t(settings->player->radius * 2 * 8, settings->arena->radius, loader);
 
     simple_svg_line* airstrip = settings->airstrip;
 
@@ -32,7 +34,7 @@ Game::Game(app_settings* settings) {
             player->getPosition(), normalDistance);
     follower->setAngle(0, 20 * M_PI / 180.0);
 
-    loadModels();
+    loadModels(loader);
 
     watch = new stopwatch_t();
 
@@ -92,9 +94,7 @@ void Game::createEnemies(vector<simple_svg_circle*>& enemies, float height, floa
     }
 }
 
-void Game::loadModels() {
-    wf_object_loader_t loader;
-
+void Game::loadModels(wf_object_loader_t& loader) {
     player_t::sInit(loader);
 
     loadCube(loader);
@@ -105,8 +105,6 @@ void Game::display() {
 
     glEnable(GL_CULL_FACE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    float yOffset = 200;
 
     glViewport(0, height - 500, 500, 500);
 
@@ -213,45 +211,63 @@ void Game::display() {
             break;
     }
 
-    //glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHTING);
+
+    glShadeModel(GL_SMOOTH);
+
+    point3f p = player->getPosition();
+    GLfloat playerPosition[] = {0, 0, 1, 1};
+    GLfloat white[] = {1, 1, 1, 1};
+
+    glColor3f(0, 0, 0);
+
+    glLightfv(GL_LIGHT0, GL_POSITION, playerPosition);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+    glEnable(GL_LIGHT0);
+    
+    arena->getAirstrip()->putLight();
 
     drawWorld();
 
-    if (currentBomb != NULL) {
-        glViewport(0, 0, 200, 200);
-
-        gluPerspective(/* field of view in degree */ 40.0,
-                /* aspect ratio */ 1.0,
-                /* Z near */ 1.0, /* Z far */ 2 * arena->getRadius());
-
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-
-        point3f p = currentBomb->getPosition();
-        vector3f& v = currentBomb->getVelocity();
-
-        // Look at its shadow. Shadow of the Bomb
-        gluLookAt(p.x, p.y, p.z,
-                p.x, p.y, 0,
-                v.x, v.y, v.z);
-
-        drawWorld();
-    }
-
-    //glDisable(GL_LIGHTING);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-
-    drawHUD();
-
-    drawMap();
-
+    //    if (currentBomb != NULL) {
+    //        glViewport(0, 0, 200, 200);
+    //
+    //        gluPerspective(/* field of view in degree */ 40.0,
+    //                /* aspect ratio */ 1.0,
+    //                /* Z near */ 1.0, /* Z far */ 2 * arena->getRadius());
+    //
+    //        glMatrixMode(GL_MODELVIEW);
+    //        glLoadIdentity();
+    //
+    //        point3f p = currentBomb->getPosition();
+    //        vector3f& v = currentBomb->getVelocity();
+    //
+    //        // Look at its shadow. Shadow of the Bomb
+    //        gluLookAt(p.x, p.y, p.z,
+    //                p.x, p.y, 0,
+    //                v.x, v.y, v.z);
+    //
+    //        drawWorld();
+    //    }
+    //
+    //    glDisable(GL_LIGHTING);
+    //    glDisable(GL_CULL_FACE);
+    //    glDisable(GL_DEPTH_TEST);
+    //
+    //    drawHUD();
+    //
+    //    drawMap();
+    //
     glEnable(GL_DEPTH_TEST);
 
     glutSwapBuffers();
 }
 
 void Game::drawWorld() {
+    GLfloat blue[] = {0, 0, 0.5f, 1.0f};
+    glMaterialfv(GL_FRONT, GL_AMBIENT, blue);
+
     player->draw(
             cameraView == Camera::COCKPIT,
             cameraView == Camera::CANNON_VIEW ||
@@ -262,13 +278,13 @@ void Game::drawWorld() {
             );
 
     arena->draw();
-    for (enemy_base_t* base : bases) {
-        base->transformAndDraw();
-    }
-    for (flying_enemy_t* enemy : enemies) {
-        enemy->transformAndDraw();
-    }
-    manager->draw();
+    //    for (enemy_base_t* base : bases) {
+    //        base->transformAndDraw();
+    //    }
+    //    for (flying_enemy_t* enemy : enemies) {
+    //        enemy->transformAndDraw();
+    //    }
+    //    manager->draw();
 }
 
 void Game::drawHUD() {
@@ -418,6 +434,8 @@ void Game::idle() {
 
     // printf("Time: %d ms\n", time);
 
+    arena->getAirstrip()->update(time);
+    
     player->update(time);
     player->clipZ(arena->getHeight());
 

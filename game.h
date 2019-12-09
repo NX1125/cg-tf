@@ -83,7 +83,7 @@ public:
 
 private:
 
-    void loadModels();
+    void loadModels(wf_object_loader_t& loader);
 
     void createBases(vector<simple_svg_circle*>& bases);
 

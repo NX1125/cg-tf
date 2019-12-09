@@ -20,9 +20,22 @@ private:
     point2d end;
 
     float width;
+
+    time_t accumulatedTime = 0;
+    
+    time_t timePerLight = 500;
+
+    int currentLight = 0;
+
+    int lightCount = 8;
+
 public:
 
     airstrip_t(const point3f& start, const point3f& end, float width);
+
+    void update(int millis);
+    
+    void putLight() const;
 
     void draw() const;
 
