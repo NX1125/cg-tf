@@ -9,7 +9,7 @@
 #define FIXED_THIRD_PERSON_CAMERA
 
 Game::Game(app_settings* settings) {
-    glClearColor(0.9f, 0.9f, 1.0f, 1);
+    glClearColor(0, 0, 0, 0);
 
     wf_object_loader_t loader;
 
@@ -39,6 +39,7 @@ Game::Game(app_settings* settings) {
     watch = new stopwatch_t();
 
     player->setVelocityFactor(settings->vel);
+    player->setBulletVelocityFactor(settings->bulletVel);
     player->setBombListener(this);
 
     manager = new projectile_manager_t();

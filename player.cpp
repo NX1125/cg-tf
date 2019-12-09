@@ -328,7 +328,7 @@ void player_t::fire() {
     v.rotateZ(horizontal);
 
     bullet_t* bullet = new bullet_t(p,
-            v * bulletVelocityFactor * controller->getMagnitude(), false);
+            v * (bulletVelocityFactor * controller->getMagnitude()), false);
     bullet->setRadius(radius / 16);
     manager->addProjectile(bullet);
 }

@@ -16,6 +16,8 @@ projectile_t(offset, velocity), enemy(enemy) {
 
 void bullet_t::draw() const {
     // TODO Draw bullet model
+//    glRotatef(horizontal, 0, 0, 1);
+//    glRotatef(vertical, 1, 0, 0);
     drawCube();
 }
 
@@ -23,10 +25,10 @@ void bullet_t::hit(obstacle_t* other) {
     printf("A bullet hit an obstacle\n");
     projectile_t::hit(other);
     if (enemy) {
-        if (player_t* p = dynamic_cast<player_t*> (other)) {
+        if (player_t * p = dynamic_cast<player_t*> (other)) {
             printf("The bullet hit the player\n");
             p->kill();
-        } 
+        }
     } else {
         if (flying_enemy_t * base = dynamic_cast<flying_enemy_t*> (other)) {
             printf("The bullet hit an enemy\n");

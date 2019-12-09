@@ -40,17 +40,21 @@ void cannon_t::setInputAxis(float x, float y) {
     vertical = -(y * 2 * maxAngle - maxAngle);
 }
 
-vector3f cannon_t::getDirection() {
+vector3f cannon_t::getDirection() const {
+    return getDirection(0, 0);
+}
+
+vector3f cannon_t::getDirection(float h, float v) const {
     float r;
     float z;
 
     const float dr = M_PI / 180.0f;
 
-    sincosf(vertical * dr, &z, &r);
+    sincosf(vertical * dr + v, &z, &r);
 
     float x, y;
 
-    sincosf(horizontal * dr, &y, &x);
+    sincosf(horizontal * dr + h, &y, &x);
 
     return vector3f(r * x, r * y, z);
 }

@@ -88,9 +88,6 @@ void flying_enemy_t::kill() {
 }
 
 void flying_enemy_t::transformAndDraw() {
-    // TODO Draw cannon of enemy
-    // TODO Add propeller to enemy
-
     if (dead) return;
     glPushMatrix();
     {
@@ -102,8 +99,12 @@ void flying_enemy_t::transformAndDraw() {
         glRotatef(controller->getHorizontalAngle() * degreePerRadians, 0, 0, 1);
         glRotatef(controller->getVerticalAngle() * degreePerRadians, 0, 1, 0);
         glRotatef(horizontal * degreePerRadians, 1, 0, 0);
-        // glRotatef(90, 1, 0, 0);
-        propeller->transformAndDraw();
+        glPushMatrix();
+        {
+            glRotatef(90, 0, 1, 0);
+            propeller->transformAndDraw();
+        }
+        glPopMatrix();
         glScalef(radius, radius, radius);
         drawAxis(radius);
         // glScalef(100, 100, 100);
@@ -119,8 +120,7 @@ void flying_enemy_t::transformAndDraw() {
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
         } else {
-            glColor3f(1,0,0);
-            
+            glColor3f(1, 0, 0);
             drawCube();
         }
     }

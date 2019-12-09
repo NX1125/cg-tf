@@ -17,6 +17,9 @@ private:
 
     float radius = 1.0f;
     
+    float horizontal = 0;
+    float vertical = 0;
+    
 public:
 
     bullet_t(const point3f& offset, const vector3f& velocity, bool enemy);
