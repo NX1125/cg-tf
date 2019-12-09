@@ -36,6 +36,11 @@ public:
 
     third_person_follower_t(const point3f& target, float normalDistance);
 
+    void reset() {
+        horizontal = 0;
+        vertical = 0;
+    }
+
     void lookAt(const point3f& target, float h, float v);
 
     void lookAtDebug();
@@ -72,7 +77,7 @@ public:
     void setAngle(float horizontal, float vertical);
 
     void rotate(vector3f& v) const;
-    
+
     vector3f getCamera(float h, float v) const;
 
     float getNormalDistance() const {

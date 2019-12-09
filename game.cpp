@@ -38,7 +38,7 @@ Game::Game(app_settings* settings) {
 
     follower = new third_person_follower_t(/*point3f(0,0,0)*/
             player->getPosition(), normalDistance);
-    follower->setAngle(0, 20 * M_PI / 180.0);
+    follower->setAngle(M_PI, 20 * M_PI / 180.0);
 
     loadModels(loader);
 
@@ -579,7 +579,9 @@ void Game::reset() {
     manager->reset();
     score = 0;
     scoreText = "Score: 0";
-    // - Camera
+    this->cameraView = Camera::THIRD_PERSON_CAMERA;
+    follower->reset();
+    follower->setAngle(M_PI, 20 * M_PI / 180.0);
 
     printf("Resetting game\n");
 
