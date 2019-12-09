@@ -26,7 +26,7 @@ takeoff(takeoff), radius(radius) {
     propellerLeft->setScaleFactor(factor);
     propellerRight->setScaleFactor(factor);
 
-    cockpitOffset = vector3f(radius, 0, radius);
+    cockpitOffset = vector3f(radius * 0.1f, 0, radius * 0.2f);
 
     horizontal = takeoff->getHorizontalAngle();
     vertical = takeoff->getVerticalAngle();
@@ -263,6 +263,12 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             }
             glPopMatrix();
         }
+        glPushMatrix();
+        {
+            glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
+            glutSolidSphere(1, 8, 8);
+        }
+        glPopMatrix();
         if (body) {
             glPushMatrix();
             {

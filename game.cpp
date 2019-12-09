@@ -187,8 +187,8 @@ void Game::display() {
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
         {
-//             point3f target = player->getPosition();
-            point3f target(0, 0, 0);
+            point3f target = player->getPosition();
+            //            point3f target(0, 0, 0);
             if (followerOrbitEnabled) {
                 target.z += player->getRadius() / 2;
                 follower->lookAt(target, player->getHorizontal(),
@@ -237,8 +237,8 @@ void Game::display() {
 
     arena->getAirstrip()->putLight();
 
-   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-   
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+
     drawWorld();
 
     if (currentBomb != NULL) {
@@ -279,19 +279,12 @@ void Game::drawWorld() {
     GLfloat blue[] = {0, 0, 0.5f, 1.0f};
     glMaterialfv(GL_FRONT, GL_AMBIENT, blue);
 
-    player->draw(
-            cameraView == Camera::COCKPIT,
-            cameraView == Camera::CANNON_VIEW ||
-            cameraView == Camera::THIRD_PERSON_CAMERA,
-            cameraView == Camera::CANNON_VIEW ||
-            cameraView == Camera::THIRD_PERSON_CAMERA,
-            cameraView != Camera::CANNON_VIEW
-            );
+    player->draw(true, true, true, true);
 
     arena->draw();
-//    for (enemy_base_t* base : bases) {
-//        base->transformAndDraw();
-//    }
+    for (enemy_base_t* base : bases) {
+        base->transformAndDraw();
+    }
     for (flying_enemy_t* enemy : enemies) {
         enemy->transformAndDraw();
     }
