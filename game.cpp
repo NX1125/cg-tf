@@ -193,8 +193,8 @@ void Game::display() {
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
         {
-            point3f target = player->getPosition();
-            //                        point3f target(0, 0, 0);;
+//            point3f target = player->getPosition();
+                                    point3f target(0, 0, 0);;
             if (followerOrbitEnabled) {
                 target.z += player->getRadius() / 2;
                 follower->lookAt(target, player->getHorizontal(),

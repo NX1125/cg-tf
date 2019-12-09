@@ -16,6 +16,7 @@
 #include "cube.h"
 
 wf_object_t* flying_enemy_t::sEnemyModel = NULL;
+wf_object_t* flying_enemy_t::sWingModel = NULL;
 vector3f flying_enemy_t::sCannonOffset(1, 0, -1);
 
 std::default_random_engine flying_enemy_t::sRandomMovement;
@@ -27,7 +28,7 @@ radius(radius) {
 
     propeller = new propeller_t(vector3f(1, 0, 0));
     propeller->setScaleFactor(0.05f / radius);
-    
+
     initialPosition = position;
 }
 
@@ -39,8 +40,8 @@ void flying_enemy_t::setInitialVelocity(float initialVelocity) {
 void flying_enemy_t::update(int millis) {
     if (dead) return;
 
-    // TODO Fire bullet with a frequency defined in the settings
-
+    wing.update(millis);
+    
     // TODO Make the enemy follow the player instead
     accumulatedTime += millis;
     if (accumulatedTime > 1000) {
@@ -95,20 +96,29 @@ void flying_enemy_t::transformAndDraw() {
     if (dead) return;
     glPushMatrix();
     {
-        point3f p = controller->getPosition();
-        glTranslatef(p.x, p.y, p.z);
+        //        point3f p = controller->getPosition();
+        //        glTranslatef(p.x, p.y, p.z);
         drawAxis(radius);
         // considering that the front of the airplane is at +x and the back is at -x
         const float degreePerRadians = 180 / M_PI;
-        glRotatef(controller->getHorizontalAngle() * degreePerRadians, 0, 0, 1);
-        glRotatef(controller->getVerticalAngle() * degreePerRadians, 0, 1, 0);
-        glRotatef(horizontal * degreePerRadians, 1, 0, 0);
+        //        glRotatef(controller->getHorizontalAngle() * degreePerRadians, 0, 0, 1);
+        //        glRotatef(controller->getVerticalAngle() * degreePerRadians, 0, 1, 0);
+        //        glRotatef(horizontal * degreePerRadians, 1, 0, 0);
         const float s = 1.5f;
         // glutWireSphere(radius, 8, 8);
         glScalef(radius, radius, radius);
         glPushMatrix();
         {
             propeller->transformAndDraw(0.7);
+        }
+        glPopMatrix();
+        glPushMatrix();
+        {
+            glRotatef(-wing.getAngle(), 1, 0, 0);
+            glTranslated(0, 0, 1);
+
+            glScaled(1, 0.1f, 1);
+            glutSolidCube(1);
         }
         glPopMatrix();
         glScalef(s, s, s);

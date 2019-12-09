@@ -17,6 +17,7 @@
 #include "teleportable.h"
 #include "propeller.h"
 #include "minimapitem.h"
+#include "wings.h"
 
 class flying_enemy_t :
 public obstacle_t, public teleportable_t, public mini_map_item_t {
@@ -25,6 +26,7 @@ private:
     static std::default_random_engine sRandomMovement;
 
     static wf_object_t* sEnemyModel;
+    static wf_object_t* sWingModel;
 
     static vector3f sCannonOffset;
 
@@ -45,6 +47,8 @@ private:
     propeller_t* propeller = NULL;
     
     point3f initialPosition;
+    
+    wing_t wing;
 
 public:
 
