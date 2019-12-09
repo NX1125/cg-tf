@@ -1,16 +1,5 @@
 # Blender MTL File: 'mosquitoSemHelice.blend'
-# Material Count: 4
-
-newmtl asas
-Ns 96.078431
-Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 2
-map_Kd bege.bmp
+# Material Count: 3
 
 newmtl corpo_cinza
 Ns 96.078431
@@ -21,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd preto.bmp
+map_Kd /home/2016101741/Documentos/cg/modelosFinais/texturas/preto.jpg
 
 newmtl corpo_preto
 Ns 96.078431
@@ -32,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd preto.bmp
+map_Kd /home/2016101741/Documentos/cg/modelosFinais/texturas/preto.jpg
 
 newmtl olhos
 Ns 96.078431
@@ -43,4 +32,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd azul.bmp
+map_Kd /home/2016101741/Documentos/cg/modelosFinais/texturas/azul.jpg
