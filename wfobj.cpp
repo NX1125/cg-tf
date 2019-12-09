@@ -3,11 +3,13 @@
 #include "imageloader.h"
 
 void wf_object_t::draw() {
+    glEnable(GL_TEXTURE_2D);
     float* k = arguments;
     for (int i = 0; i < n; i++, k += 4) {
         // printf("c(%f, %f, %f, %f)\n", k[0], k[1], k[2], k[3]);
         commands[i].apply(k, &commands[i]);
     }
+    glDisable(GL_TEXTURE_2D);
 }
 
 wf_object_t* wf_object_loader_t::load(const char* filename) {
@@ -125,6 +127,8 @@ void wf_object_loader_t::loadMTL(char* line) {
                 char name[256];
                 sscanf(line, "%*s%s", name);
                 currentMaterial.texture = new string(name);
+
+                *currentMaterial.texture = string("models/") + *currentMaterial.texture;
 
                 garbage.push_back(currentMaterial.texture);
 
@@ -427,6 +431,18 @@ void wf_object_t::end(const GLfloat* ignore, WFCommand* data) {
 
 void wf_object_t::bindTexture(const GLfloat* ignore, WFCommand* data) {
     glBindTexture(GL_TEXTURE_2D, data->texture);
+}
+
+void wf_object_t::vertex(const GLfloat* coords, WFCommand* data) {
+    glVertex4fv(coords);
+}
+
+void wf_object_t::normal(const GLfloat* coords, WFCommand* data) {
+    glNormal3fv(coords);
+}
+
+void wf_object_t::tex(const GLfloat* coords, WFCommand* data) {
+    glTexCoord2fv(coords);
 }
 
 void wf_object_loader_t::scale(float s) {

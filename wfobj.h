@@ -94,17 +94,11 @@ private:
 
     static void shininess(const GLfloat* coords, WFCommand* data);
 
-    static void vertex(const GLfloat* coords, WFCommand* data) {
-        glVertex4fv(coords);
-    }
+    static void vertex(const GLfloat* coords, WFCommand* data);
 
-    static void normal(const GLfloat* coords, WFCommand* data) {
-        glNormal3fv(coords);
-    }
+    static void normal(const GLfloat* coords, WFCommand* data);
 
-    static void tex(const GLfloat* coords, WFCommand* data) {
-        glTexCoord4fv(coords);
-    }
+    static void tex(const GLfloat* coords, WFCommand* data);
 
     static void begin(const GLfloat* ignore, WFCommand* data);
 

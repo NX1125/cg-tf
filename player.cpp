@@ -279,7 +279,7 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             drawAxis(radius);
             // glScalef(100, 100, 100);
             //
-            GLfloat color[] = {0, 0.5f, 0, 1};
+            GLfloat color[] = {1, 1, 1, 1};
             //
             glColor3fv(color);
             //            glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
