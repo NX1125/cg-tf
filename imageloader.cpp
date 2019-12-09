@@ -184,7 +184,7 @@ Image* loadBMP(const char* filename) {
 
 GLuint loadTextureRAW(const char * filename) {
     printf("Creating texture from %s\n", filename);
-    
+
     GLuint texture;
 
     Image* image = loadBMP(filename);
