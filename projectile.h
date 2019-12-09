@@ -72,6 +72,10 @@ public:
 
     point3f getPosition() const override;
 
+    const vector3f& getVelocity() const {
+        return velocity;
+    }
+
     vector3f& getVelocity() {
         return velocity;
     }

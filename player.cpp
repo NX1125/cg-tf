@@ -354,8 +354,8 @@ void player_t::fire() {
     vector3f v = cannon->getOffset();
 
     v.rotateX(horizontalAngularVelocityDrawing);
-    v.rotateY(vertical);
-    v.rotateZ(horizontal);
+    v.rotateY(controller->getVerticalAngle());
+    v.rotateZ(controller->getHorizontalAngle());
 
     point3f p1 = p + v;
 

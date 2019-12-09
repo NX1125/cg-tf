@@ -32,11 +32,7 @@ void projectile_t::move(float time) {
 void projectile_t::transformAndDraw() const {
     glPushMatrix();
     {
-        point3f v = position + velocity;
         glTranslatef(position.x, position.y, position.z);
-//        gluLookAt(position.x, position.y, position.z,
-//                v.x, v.y, v.z,
-//                0.0f, 0.0f, 1.0f);
 
         draw();
     }

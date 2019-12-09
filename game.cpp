@@ -194,7 +194,7 @@ void Game::display() {
             glLoadIdentity();
         {
             point3f target = player->getPosition();
-            //            point3f target(0, 0, 0);
+            //                        point3f target(0, 0, 0);;
             if (followerOrbitEnabled) {
                 target.z += player->getRadius() / 2;
                 follower->lookAt(target, player->getHorizontal(),
@@ -282,15 +282,24 @@ void Game::display() {
 }
 
 void Game::drawWorld() {
+    //    glPushMatrix();
+    //    {
+    //        glScalef(50, 50, 50);
+    //        glRotatef(90, 1, 0, 0);
+    //        drawAxis(1);
+    //        bullet_t::draw0();
+    //    }
+    //    glPopMatrix();
+
     GLfloat blue[] = {0, 0, 0.5f, 1.0f};
     glMaterialfv(GL_FRONT, GL_AMBIENT, blue);
 
     player->draw(true, true, true, true);
 
     arena->draw();
-    for (enemy_base_t* base : bases) {
-        base->transformAndDraw();
-    }
+    //    for (enemy_base_t* base : bases) {
+    //        base->transformAndDraw();
+    //    }
     for (flying_enemy_t* enemy : enemies) {
         enemy->transformAndDraw();
     }
@@ -403,7 +412,11 @@ void Game::mouseDragged(int x, int y) {
 
 void Game::mouseMoved(int x, int y) {
     if (player->getBehaviour() == Behaviour::CONTROLLING) {
-        player->setCannonAxis(x / (GLfloat) width, y / (GLfloat) height);
+        float k = y / (GLfloat) 500;
+        if (k > 1) {
+            k = 1;
+        }
+        player->setCannonAxis(x / (GLfloat) 500, k);
     }
 }
 

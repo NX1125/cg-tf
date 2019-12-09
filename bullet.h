@@ -40,6 +40,10 @@ public:
     }
     
     static void init(wf_object_loader_t& loader);
+    
+    static void draw0() {
+        sModel->draw();
+    }
 };
 
 #endif /* BULLET_H */

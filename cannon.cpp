@@ -31,6 +31,7 @@ void cannon_t::draw() {
         float length = getLength();
 
         glScaled(length, length, length);
+        // glScaled(10, 10, 10);
          glRotatef(-90, 0, 0, 1);
                 drawAxis(1);
 
