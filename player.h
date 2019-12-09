@@ -96,9 +96,9 @@ private:
     float bulletVelocityFactor = 1.0f;
 
     vector3f cockpitOffset;
-    
+
     player_death_listener_t* death = NULL;
-    
+
     bomb_listener_t* bombListener = NULL;
 
 public:
@@ -159,7 +159,7 @@ public:
     float getVertical() const {
         return vertical;
     }
-    
+
     vector3f getDirection(float v) const;
 
     vector3f getVelocity() const;
@@ -191,7 +191,7 @@ public:
     void fire();
 
     void kill();
-    
+
     void won();
 
     bool canDie() const;
@@ -200,11 +200,11 @@ public:
      * Both x and y are between 0 and 1.
      */
     void setCannonAxis(float x, float y);
-    
+
     bool isAlive() const override {
         return !dead;
     }
-    
+
     void drawMapElement(circle_blueprint_t* blueprint) const override;
 };
 

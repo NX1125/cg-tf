@@ -36,8 +36,8 @@ private:
     int width;
     int height;
 
-    GLfloat lightDiffuse[4] = {1.0, 0.0, 0.0, 1.0}; /* Red diffuse light. */
-    GLfloat sLightPosition[4] = {1.0, 1.0, 1.0, 0.0}; /* Infinite light location. */
+    GLfloat lightDiffuse[4] = {1.0, 1.0, 1.0, 1.0}; 
+    GLfloat sLightPosition[4] = {0, 0, 20, 1}; /* Infinite light location. */
 
     third_person_follower_t* follower = NULL;
 
@@ -122,7 +122,7 @@ public:
     void addResetListener(reset_listener_t* l);
 
     void onBaseDeath() override;
-    
+
     void onBombThrow(bomb_t* b) override;
 };
 

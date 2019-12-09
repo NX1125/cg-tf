@@ -40,6 +40,7 @@ circle_blueprint_t::circle_blueprint_t(unsigned int n) : numOfPoints(n) {
 void circle_blueprint_t::draw(bool opaque) {
     glBegin(opaque ? GL_TRIANGLE_FAN : GL_LINE_LOOP);
     {
+        glNormal3f(0, 0, 1);
         if (opaque) {
             // makes all of the following points to
             // fan out of the center.

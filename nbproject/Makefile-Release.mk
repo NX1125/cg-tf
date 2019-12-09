@@ -49,6 +49,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/game.o \
 	${OBJECTDIR}/lines.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/matrix.o \
 	${OBJECTDIR}/player.o \
 	${OBJECTDIR}/projectile.o \
 	${OBJECTDIR}/propeller.o \
@@ -161,6 +162,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/matrix.o: matrix.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/matrix.o matrix.cpp
 
 ${OBJECTDIR}/player.o: player.cpp
 	${MKDIR} -p ${OBJECTDIR}

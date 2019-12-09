@@ -1,72 +1,102 @@
 
 #include <GL/gl.h>
+#include <GL/freeglut_std.h>
 
 #include "cube.h"
+#include "wfobj.h"
 
 // https://www.opengl.org/archives/resources/code/samples/glut_examples/examples/cube.c
 
-void drawCubeX(GLfloat x) {
+wf_object_t* sCubeModel = NULL;
+
+void loadCube(wf_object_loader_t& loader) {
+    sCubeModel = loader.loadRes("cube-test");
+}
+
+void drawCubeX(GLfloat r, GLfloat g, GLfloat b) {
+    GLfloat mcolor[] = {r, g, b, 1.0};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mcolor);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mcolor);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 50.0);
+
     glBegin(GL_QUADS);
     {
-        glNormal3f(x, 0, 0);
+        glNormal3f(1, 0, 0);
 
-        glVertex3f(x, -1, -1);
-        glVertex3f(x, +1, -1);
-        glVertex3f(x, +1, +1);
-        glVertex3f(x, -1, +1);
+        glVertex3f(1, -1, -1);
+        glVertex3f(1, +1, -1);
+        glVertex3f(1, +1, +1);
+        glVertex3f(1, -1, +1);
     }
     glEnd();
 }
 
-void drawCubeY(GLfloat y) {
+void drawCubeY(GLfloat r, GLfloat g, GLfloat b) {
+    GLfloat mcolor[] = {r, g, b, 1.0};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mcolor);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mcolor);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 50.0);
+
     glBegin(GL_QUADS);
     {
-        glNormal3f(0, y, 0);
+        glNormal3f(0, 1, 0);
 
-        glVertex3f(+1, y, -1);
-        glVertex3f(-1, y, -1);
-        glVertex3f(-1, y, +1);
-        glVertex3f(+1, y, +1);
+        glVertex3f(+1, 1, -1);
+        glVertex3f(-1, 1, -1);
+        glVertex3f(-1, 1, +1);
+        glVertex3f(+1, 1, +1);
     }
     glEnd();
 }
 
-void drawCubeZ(GLfloat z) {
+void drawCubeZ(GLfloat r, GLfloat g, GLfloat b) {
+    GLfloat mcolor[] = {r, g, b, 1.0};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mcolor);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mcolor);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 50.0);
+
     glBegin(GL_QUADS);
     {
-        glNormal3f(0, 0, z);
-        glVertex3f(-1, -1, z);
-        glVertex3f(+1, -1, z);
-        glVertex3f(+1, +1, z);
-        glVertex3f(-1, +1, z);
+        glNormal3f(0, 0, 1);
+        glVertex3f(-1, -1, 1);
+        glVertex3f(+1, -1, 1);
+        glVertex3f(+1, +1, 1);
+        glVertex3f(-1, +1, 1);
     }
     glEnd();
 }
 
 void drawCube(void) {
-    glColor3f(1, 0, 0);
-    glCullFace(GL_BACK);
-    drawCubeX(1);
+    // GLfloat mcolor[] = {1, 0, 0, 1.0};
+    // glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mcolor);
+    // glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mcolor);
+    // glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 50.0);
 
-    glColor3f(0, 1, 1);
-    glCullFace(GL_FRONT);
-    drawCubeX(-1);
+//    sCubeModel->draw();
 
-    glColor3f(0, 1, 0);
-    glCullFace(GL_BACK);
-    drawCubeY(1);
+        glutSolidCube(2);
 
-    glColor3f(1, 0, 1);
-    glCullFace(GL_FRONT);
-    drawCubeY(-1);
-
-    glColor3f(0, 0, 1);
-    glCullFace(GL_BACK);
-    drawCubeZ(1);
-
-    glColor3f(1, 1, 0);
-    glCullFace(GL_FRONT);
-    drawCubeZ(-1);
-
-    glCullFace(GL_BACK);
+    //    glPushMatrix();
+    //    {
+    //        drawCubeX(1, 0, 0);
+    //        glRotatef(180, 0, 1, 0);
+    //        drawCubeX(0, 1, 1);
+    //    }
+    //    glPopMatrix();
+    //
+    //    glPushMatrix();
+    //    {
+    //        drawCubeY(0, 1, 0);
+    //        glRotatef(180, 1, 0, 0);
+    //        drawCubeY(1, 0, 1);
+    //    }
+    //    glPopMatrix();
+    //
+    //    glPushMatrix();
+    //    {
+    //        drawCubeZ(0, 0, 1);
+    //        glRotatef(180, 0, 1, 0);
+    //        drawCubeZ(1, 1, 0);
+    //    }
+    //    glPopMatrix();
 }

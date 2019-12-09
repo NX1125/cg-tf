@@ -11,13 +11,6 @@
 Game::Game(app_settings* settings) {
     glClearColor(0, 0, 0, 0);
 
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-    glLightfv(GL_LIGHT0, GL_POSITION, sLightPosition);
-
-    glEnable(GL_LIGHT0);
-
-    glEnable(GL_DEPTH_TEST);
-
     // as stated in the spec, the height of the arena is 8 times the player's
     // diameter. We have the radius, that's why 2 * 8
     arena = new arena_t(settings->player->radius * 2 * 8, settings->arena->radius);
@@ -71,7 +64,13 @@ Game::Game(app_settings* settings) {
 
     miniMapAux = new circle_blueprint_t(16);
 
+    point3f p = player->getPosition();
+
+    player->setPosition(point3f(30, 30, 30));
+
     // TODO Add reset listeners 
+
+    glEnable(GL_NORMALIZE);
 }
 
 void Game::createBases(vector<simple_svg_circle*>& bases) {
@@ -97,6 +96,8 @@ void Game::loadModels() {
     wf_object_loader_t loader;
 
     player_t::sInit(loader);
+
+    loadCube(loader);
 }
 
 void Game::display() {
@@ -212,7 +213,23 @@ void Game::display() {
             break;
     }
 
-    // glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHTING);
+
+    {
+        GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
+        GLfloat mat_shininess[] = {50.0};
+        GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};
+
+        glShadeModel(GL_SMOOTH);
+
+        glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+        glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glEnable(GL_DEPTH_TEST);
+    }
 
     drawWorld();
 
@@ -237,6 +254,7 @@ void Game::display() {
         drawWorld();
     }
 
+    glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
 
@@ -277,8 +295,6 @@ void Game::drawWorld() {
             cameraView == Camera::THIRD_PERSON_CAMERA,
             cameraView != Camera::CANNON_VIEW
             );
-
-    // glDisable(GL_LIGHTING);
 
     arena->draw();
     for (enemy_base_t* base : bases) {
