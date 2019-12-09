@@ -29,9 +29,11 @@ void enemy_base_t::transformAndDraw() {
         glScalef(radius, radius, radius);
         // glScalef(100, 100, 100);
 
+        GLfloat color[] = {1, 0, 0, 1.0f};
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
+        glRotatef(90, 1, 0, 0);
         glColor3f(1, 1, 1);
         if (sEnemyModel != NULL) {
-            glRotatef(90, 1, 0, 0);
             sEnemyModel->draw();
         } else {
             // draw all of the ground enemies in orange (#FFA500)

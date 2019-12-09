@@ -20,9 +20,11 @@ private:
     static float sGravityAcceleration;
 
     float radius = 1;
+
+    float horizontal = 0;
 public:
 
-    bomb_t(const point3f& offset, const vector3f& velocity);
+    bomb_t(const point3f& offset, const vector3f& velocity, float h);
 
     void setRadius(float radius) {
         this->radius = radius;
@@ -39,6 +41,16 @@ public:
     float getRadius() const override {
         // TODO Measure bomb radius
         return radius;
+    }
+
+    static void draw0() {
+        glColor3f(1,1,1);
+        glPushMatrix();
+        {
+            glScalef(10, 10, 10);
+            sBombModel->draw();
+        }
+        glPopMatrix();
     }
 
 public:

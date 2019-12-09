@@ -274,22 +274,24 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
                 propellerRight->transformAndDraw();
             }
             glPopMatrix();
-            //
+
             glRotatef(90, 1, 0, 0);
             glScalef(radius, radius, radius);
             drawAxis(radius);
-             glScalef(2,2,2);
-            //
+            // glScalef(2,2,2);
+
             GLfloat color[] = {1, 1, 1, 1};
-            //
+
             glColor3fv(color);
             //            glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
             //             glMaterialfv(GL_FRONT, GL_SPECULAR, color);
             //             glMaterialf(GL_FRONT, GL_SHININESS, 50.0f);
 
-            //            glutSolidSphere(2, 32, 32);
-            //                        drawCube();
-            sPlayerBodyModel->draw();
+            if (sPlayerBodyModel == NULL) {
+                glutSolidSphere(2, 32, 32);
+            } else {
+                sPlayerBodyModel->draw();
+            }
         }
     }
     glPopMatrix();
@@ -333,7 +335,7 @@ void player_t::bomb() {
     printf("The player just threw a bomb\n");
     vector3f v = controller->getVelocity();
     v.z = 0;
-    bomb_t* b = new bomb_t(position + sBombDoor * radius, v);
+    bomb_t* b = new bomb_t(position + sBombDoor * radius, v, horizontal * 180 / M_PI);
     b->setRadius(radius / 8);
     manager->addProjectile(b);
 

@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd f2u_christmas_present_texture_by_hollena_d872dka-fullview.jpg
+map_Kd f2u.bmp
 
 newmtl Material.002
 Ns 96.078431
@@ -21,4 +21,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd bela-textura-verde-com-pingos-de-chuva_24972-155.jpg
+map_Kd bela-textura-verde-com-pingos-de-chuva_24972-155.bmp

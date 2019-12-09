@@ -98,6 +98,7 @@ void Game::createEnemies(vector<simple_svg_circle*>& enemies, float height, floa
 void Game::loadModels(wf_object_loader_t& loader) {
     player_t::sInit(loader);
     bullet_t::init(loader);
+    bomb_t::init(loader);
     enemy_base_t::init(loader);
     flying_enemy_t::init(loader);
 
@@ -183,17 +184,19 @@ void Game::display() {
 
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
+        {
+            // point3f target = player->getPosition();
+            point3f target(0, 0, 0);
             if (followerOrbitEnabled) {
-                point3f target = player->getPosition();
                 target.z += player->getRadius() / 2;
                 follower->lookAt(target, player->getHorizontal(),
                         player->getVertical());
             } else {
                 vector3f v = player->getDirection(0.2f * M_PI / 2) * follower->getNormalDistance();
-                point3f p = player->getPosition();
-                gluLookAt(p.x - v.x, p.y - v.y, p.z - v.z,
-                        p.x, p.y, p.z, 0, 0, 1);
+                gluLookAt(target.x - v.x, target.y - v.y, target.z - v.z,
+                        target.x, target.y, target.z, 0, 0, 1);
             }
+        }
             break;
         case Camera::CANNON_VIEW:
             gluPerspective(/* field of view in degree */ 40.0,
@@ -232,6 +235,8 @@ void Game::display() {
 
     arena->getAirstrip()->putLight();
 
+   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+   
     drawWorld();
 
     if (currentBomb != NULL) {
@@ -269,6 +274,8 @@ void Game::display() {
 }
 
 void Game::drawWorld() {
+    bomb_t::draw0();
+
     GLfloat blue[] = {0, 0, 0.5f, 1.0f};
     glMaterialfv(GL_FRONT, GL_AMBIENT, blue);
 
