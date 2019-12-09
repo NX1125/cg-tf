@@ -16,6 +16,7 @@
       <itemPath>filepath.h</itemPath>
       <itemPath>flyingenemy.h</itemPath>
       <itemPath>game.h</itemPath>
+      <itemPath>imageloader.h</itemPath>
       <itemPath>matrix.h</itemPath>
       <itemPath>minimapitem.h</itemPath>
       <itemPath>player.h</itemPath>
@@ -54,6 +55,7 @@
       <itemPath>filepath.cpp</itemPath>
       <itemPath>flyingenemy.cpp</itemPath>
       <itemPath>game.cpp</itemPath>
+      <itemPath>imageloader.cpp</itemPath>
       <itemPath>lines.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>matrix.cpp</itemPath>
@@ -165,6 +167,10 @@
       <item path="game.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="imageloader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="imageloader.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -316,6 +322,10 @@
       <item path="game.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="imageloader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="imageloader.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="lines.cpp" ex="false" tool="1" flavor2="0">
       </item>

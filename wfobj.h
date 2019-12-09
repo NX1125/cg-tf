@@ -17,11 +17,15 @@
 
 using namespace std;
 
-typedef void (*WFFunction)(const GLfloat*);
+struct WFCommand;
+
+typedef void (*WFFunction)(const GLfloat*, WFCommand*);
 
 struct WFCommand {
     WFFunction apply;
     const char* name;
+    
+    GLuint texture;
 };
 
 class wf_object_loader_t;
@@ -72,7 +76,7 @@ private:
 public:
 
     ~wf_object_t() {
-        free(commands);
+        delete (commands);
         free(arguments);
     }
 
@@ -82,17 +86,31 @@ private:
     // commands
     friend wf_object_loader_t;
 
-    static void ambient(const GLfloat* coords);
+    static void ambient(const GLfloat* coords, WFCommand* data);
 
-    static void diffuse(const GLfloat* coords);
+    static void diffuse(const GLfloat* coords, WFCommand* data);
 
-    static void specular(const GLfloat* coords);
+    static void specular(const GLfloat* coords, WFCommand* data);
 
-    static void shininess(const GLfloat* coords);
+    static void shininess(const GLfloat* coords, WFCommand* data);
 
-    static void begin(const GLfloat* ignore);
+    static void vertex(const GLfloat* coords, WFCommand* data) {
+        glVertex4fv(coords);
+    }
 
-    static void end(const GLfloat* ignore);
+    static void normal(const GLfloat* coords, WFCommand* data) {
+        glNormal3fv(coords);
+    }
+
+    static void tex(const GLfloat* coords, WFCommand* data) {
+        glTexCoord4fv(coords);
+    }
+
+    static void begin(const GLfloat* ignore, WFCommand* data);
+
+    static void end(const GLfloat* ignore, WFCommand* data);
+    
+    static void bindTexture(const GLfloat* ignore, WFCommand* data);
 };
 
 /**
@@ -121,7 +139,7 @@ public:
     void loadResOnly(const char* filename);
 
     wf_object_t* loadRes(const char* name);
-    
+
     ~wf_object_loader_t() {
     }
 

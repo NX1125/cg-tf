@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\adesivo-para-porta-textura-de-madeirapex012k19.jpg
+map_Kd models/adesivo-para-porta-textura-de-madeirapex012k19.bmp
 
 newmtl Material.003
 Ns 96.078431
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\parede-de-tijolo-vintage-marrom-vermelho-com-estrutura-pobre-fundo-widewall-de-largura-horizontal-textura-de-parede-em-branco-de-tijolo-vermelho-sujo-fachada-retro-da-casa-banner-panoramico.jpg
+map_Kd models/parede-de-tijolo.bmp
 
 newmtl Material.004
 Ns 96.078431
@@ -32,7 +32,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\old-glass-windows-window-texture-7566.jpg
+map_Kd models/old-glass-windows-window-texture-7566.bmp
 
 newmtl Material.006
 Ns 96.078431
@@ -43,4 +43,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\padrao-sem-emenda-de-telha_98292-3529.jpg
+map_Kd models/padrao-sem-emenda-de-telha_98292-3529.bmp

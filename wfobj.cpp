@@ -1,11 +1,12 @@
 
 #include "wfobj.h"
+#include "imageloader.h"
 
 void wf_object_t::draw() {
     float* k = arguments;
     for (int i = 0; i < n; i++, k += 4) {
         // printf("c(%f, %f, %f, %f)\n", k[0], k[1], k[2], k[3]);
-        commands[i].apply(k);
+        commands[i].apply(k, &commands[i]);
     }
 }
 
@@ -128,6 +129,12 @@ void wf_object_loader_t::loadMTL(char* line) {
                 garbage.push_back(currentMaterial.texture);
 
                 printf("Texture file %s\n", currentMaterial.texture->c_str());
+
+                c.apply = wf_object_t::bindTexture;
+                c.texture = loadTextureRAW(currentMaterial.texture->c_str());
+                c.name = "bind texture";
+
+                currentMaterial.commands[currentMaterial.n++] = c;
             }
             return;
         case 'n':
@@ -331,12 +338,12 @@ void wf_object_loader_t::parseFace(char* line) {
         wf_face_vertex_t vertex = faceVertices[i];
 
         if (vertex.texture != 0) {
-            put(glTexCoord3fv, "texture", textures, vertex.texture);
+            put(wf_object_t::tex, "texture", textures, vertex.texture);
         }
         if (vertex.normal != 0) {
-            put(glNormal3fv, "normal", normals, vertex.normal);
+            put(wf_object_t::normal, "normal", normals, vertex.normal);
         }
-        put(glVertex4fv, "vertex", vertices, vertex.vertex);
+        put(wf_object_t::vertex, "vertex", vertices, vertex.vertex);
     }
 
     put(wf_object_t::end, "end");
@@ -394,28 +401,32 @@ void wf_object_loader_t::forEachLine(const char* filename, void (*c)(char*, wf_o
     fclose(file);
 }
 
-void wf_object_t::ambient(const GLfloat* coords) {
+void wf_object_t::ambient(const GLfloat* coords, WFCommand* data) {
     //glMaterialfv(GL_FRONT, GL_AMBIENT, coords);
 }
 
-void wf_object_t::diffuse(const GLfloat* coords) {
+void wf_object_t::diffuse(const GLfloat* coords, WFCommand* data) {
     // glMaterialfv(GL_FRONT, GL_DIFFUSE, coords);
 }
 
-void wf_object_t::specular(const GLfloat* coords) {
+void wf_object_t::specular(const GLfloat* coords, WFCommand* data) {
     //glMaterialfv(GL_FRONT, GL_SPECULAR, coords);
 }
 
-void wf_object_t::shininess(const GLfloat* coords) {
+void wf_object_t::shininess(const GLfloat* coords, WFCommand* data) {
     //glMaterialfv(GL_FRONT, GL_SHININESS, coords);
 }
 
-void wf_object_t::begin(const GLfloat* ignore) {
+void wf_object_t::begin(const GLfloat* ignore, WFCommand* data) {
     glBegin(GL_POLYGON);
 }
 
-void wf_object_t::end(const GLfloat* ignore) {
+void wf_object_t::end(const GLfloat* ignore, WFCommand* data) {
     glEnd();
+}
+
+void wf_object_t::bindTexture(const GLfloat* ignore, WFCommand* data) {
+    glBindTexture(GL_TEXTURE_2D, data->texture);
 }
 
 void wf_object_loader_t::scale(float s) {

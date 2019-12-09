@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/filepath.o \
 	${OBJECTDIR}/flyingenemy.o \
 	${OBJECTDIR}/game.o \
+	${OBJECTDIR}/imageloader.o \
 	${OBJECTDIR}/lines.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/matrix.o \
@@ -152,6 +153,11 @@ ${OBJECTDIR}/game.o: game.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/game.o game.cpp
+
+${OBJECTDIR}/imageloader.o: imageloader.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/imageloader.o imageloader.cpp
 
 ${OBJECTDIR}/lines.o: lines.cpp
 	${MKDIR} -p ${OBJECTDIR}

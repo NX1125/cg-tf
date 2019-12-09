@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd C:\Users\Ricardo\Documents\Ufes\CG\models\textura\fundo-fotografico-em-tecido-textura-vermelho-2-60x1-50m-fundo-fotografico.jpg
+map_Kd models/fundo-fotografico-em-tecido-textura-vermelho-2-60x1-50m-fundo-fotografico.bmp
 
 newmtl Material.001
 Ns 96.078431
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\0004abhominal-11-texturas-1.jpg
+map_Kd models/0004abhominal-11-texturas-1.bmp
 
 newmtl Material.002
 Ns 96.078431
@@ -32,7 +32,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\modern-dark-texture-background_1035-11632.jpg
+map_Kd models/modern-dark-texture-background_1035-11632.bmp
 
 newmtl Material_NONE
 Ns 96.078431
@@ -43,4 +43,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Ricardo\\Documents\\Ufes\\CG\\models\\textura\\fundo-fotografico-em-tecido-textura-vermelho-2-60x1-50m-fundo-fotografico.jpg
+map_Kd models/fundo-fotografico-em-tecido-textura-vermelho-2-60x1-50m-fundo-fotografico.bmp
