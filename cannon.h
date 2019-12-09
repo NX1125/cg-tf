@@ -41,7 +41,7 @@ public:
     void setManager(projectile_manager_t* manager) {
         this->manager = manager;
     }
-    
+
     static void init(wf_object_loader_t& loader);
 
     void draw();
@@ -65,7 +65,7 @@ public:
     }
 
     float getAim() const {
-        return width / 2;
+        return width;
     }
 
     static void draw0() {

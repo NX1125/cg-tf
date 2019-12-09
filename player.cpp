@@ -16,7 +16,7 @@ player_t::player_t(takeoff_t* takeoff, float radius) :
 takeoff(takeoff), radius(radius) {
     position = takeoff->getStart();
     controller = new airplane_movement_t();
-    cannon = new cannon_t(vector3f(radius, 0, 0));
+    cannon = new cannon_t(vector3f(radius, 0, -radius * 0.2f));
 
     propellerLeft = new propeller_t(vector3f(0, radius, radius));
     propellerRight = new propeller_t(vector3f(0, -radius, radius));
@@ -26,7 +26,7 @@ takeoff(takeoff), radius(radius) {
     propellerLeft->setScaleFactor(factor);
     propellerRight->setScaleFactor(factor);
 
-    cockpitOffset = vector3f(radius * 0.1f, 0, radius * 0.2f);
+    cockpitOffset = vector3f(radius * 0.1f, 0, radius * 0.1f);
 
     horizontal = takeoff->getHorizontalAngle();
     vertical = takeoff->getVerticalAngle();
@@ -43,13 +43,9 @@ void player_t::sInit(wf_object_loader_t& loader) {
 }
 
 void player_t::cannonView() {
-    vector3f up(0, 0, 1);
-
-    up.rotateX(horizontalAngularVelocityDrawing);
-    up.rotateY(vertical);
-    up.rotateZ(horizontal);
-
     vector3f off = cannon->getOffset();
+    
+    off.x -= radius * 0.1f;
 
     off.rotateX(horizontalAngularVelocityDrawing);
     off.rotateY(vertical);
@@ -66,9 +62,9 @@ void player_t::cannonView() {
 
     ep += v;
 
-    gluLookAt(p.x, p.y, p.z + cannon->getWidth(),
-            ep.x, ep.y, ep.z + cannon->getAim(),
-            up.x, up.y, up.z);
+    gluLookAt(p.x, p.y, p.z,
+            ep.x, ep.y, ep.z ,
+            0, 0, 1);
 }
 
 void player_t::cockpitView() {
@@ -277,10 +273,10 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
 
             glRotatef(90, 1, 0, 0);
             glScalef(radius, radius, radius);
-            glutSolidSphere(1, 8, 8);
+            // glutSolidSphere(1, 8, 8);
             drawAxis(radius);
-            const float s = 1.6;
-             glScalef(s,s,s);
+            const float s = 1.3;
+            glScalef(s, s, s);
 
             GLfloat color[] = {1, 1, 1, 1};
 

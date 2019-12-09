@@ -96,7 +96,7 @@ void takeoff_t::setTakeoff(float k, float distance) {
     verticalAngle = -atanf(height * getTakeoffTangent(k2) / (length / 2));
 
     //     printf("z = %f\n", direction.z);
-    printf("v = %f\n", verticalAngle);
+    // printf("v = %f\n", verticalAngle);
     // printf("k2 = %f\n", k2);
 }
 
