@@ -21,7 +21,7 @@ takeoff(takeoff), radius(radius) {
     float x = 1.0f * radius;
     float y = 0.6f * radius;
     float z = -0.19f * radius;
-    
+
     propellerLeft = new propeller_t(vector3f(x, y, z));
     propellerRight = new propeller_t(vector3f(x, -y, z));
 
@@ -195,52 +195,52 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
     // glDisable(GL_CULL_FACE);
     glPushMatrix();
     {
-        if (aim) {
-            point3f p = position;
-
-            vector3f v = cannon->getOffset();
-
-            v.rotateX(horizontalAngularVelocityDrawing);
-            v.rotateY(vertical);
-            v.rotateZ(horizontal);
-
-            //            glPushMatrix();
-            //            {
-            //                glTranslatef(p.x + v.x, p.y + v.y, p.z + v.z);
-            //                glutSolidSphere(2, 8, 8);
-            //            }
-            //            glPopMatrix();
-
-            v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
-
-            v.rotateX(horizontalAngularVelocityDrawing);
-            v.rotateY(vertical);
-            v.rotateZ(horizontal);
-
-            p += v;
-
-            glPushMatrix();
-            {
-                glTranslatef(p.x, p.y, p.z);
-                glutSolidSphere(2, 8, 8);
-            }
-            glPopMatrix();
-
-            v = cannon->getDirection();
-
-            v.rotateX(horizontalAngularVelocityDrawing);
-            v.rotateY(vertical);
-            v.rotateZ(horizontal);
-
-            p += v * 5;
-
-            glPushMatrix();
-            {
-                glTranslatef(p.x, p.y, p.z);
-                glutSolidSphere(2, 8, 8);
-            }
-            glPopMatrix();
-        }
+        //        if (aim) {
+        //            point3f p = position;
+        //
+        //            vector3f v = cannon->getOffset();
+        //
+        //            v.rotateX(horizontalAngularVelocityDrawing);
+        //            v.rotateY(vertical);
+        //            v.rotateZ(horizontal);
+        //
+        //            //            glPushMatrix();
+        //            //            {
+        //            //                glTranslatef(p.x + v.x, p.y + v.y, p.z + v.z);
+        //            //                glutSolidSphere(2, 8, 8);
+        //            //            }
+        //            //            glPopMatrix();
+        //
+        //            v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+        //
+        //            v.rotateX(horizontalAngularVelocityDrawing);
+        //            v.rotateY(vertical);
+        //            v.rotateZ(horizontal);
+        //
+        //            p += v;
+        //
+        //            glPushMatrix();
+        //            {
+        //                glTranslatef(p.x, p.y, p.z);
+        //                glutSolidSphere(2, 8, 8);
+        //            }
+        //            glPopMatrix();
+        //
+        //            v = cannon->getDirection();
+        //
+        //            v.rotateX(horizontalAngularVelocityDrawing);
+        //            v.rotateY(vertical);
+        //            v.rotateZ(horizontal);
+        //
+        //            p += v * 5;
+        //
+        //            glPushMatrix();
+        //            {
+        //                glTranslatef(p.x, p.y, p.z);
+        //                glutSolidSphere(2, 8, 8);
+        //            }
+        //            glPopMatrix();
+        //        }
 
         glTranslatef(position.x, position.y, position.z);
 
@@ -262,12 +262,12 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             }
             glPopMatrix();
         }
-        glPushMatrix();
-        {
-            glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
-            glutSolidSphere(1, 8, 8);
-        }
-        glPopMatrix();
+//        glPushMatrix();
+//        {
+//            glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
+//            glutSolidSphere(1, 8, 8);
+//        }
+//        glPopMatrix();
         if (body) {
             glPushMatrix();
             {

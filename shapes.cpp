@@ -46,20 +46,20 @@ void drawAxisPart(float x, float y, float z) {
 }
 
 void drawAxis(float s) {
-    GLboolean b = glIsEnabled(GL_LIGHTING);
-    if (b) {
-        glDisable(GL_LIGHTING);
-    }
-    glPushMatrix();
-    {
-        drawAxisPart(s, 0, 0);
-        drawAxisPart(0, s, 0);
-        drawAxisPart(0, 0, s);
-    }
-    glPopMatrix();
-    if (b) {
-        glEnable(GL_LIGHTING);
-    }
+    //    GLboolean b = glIsEnabled(GL_LIGHTING);
+    //    if (b) {
+    //        glDisable(GL_LIGHTING);
+    //    }
+    //    glPushMatrix();
+    //    {
+    //        drawAxisPart(s, 0, 0);
+    //        drawAxisPart(0, s, 0);
+    //        drawAxisPart(0, 0, s);
+    //    }
+    //    glPopMatrix();
+    //    if (b) {
+    //        glEnable(GL_LIGHTING);
+    //    }
 }
 
 float clampAngle(float angle) {

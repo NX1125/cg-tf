@@ -45,9 +45,9 @@ private:
     float horizontal = 0;
 
     propeller_t* propeller = NULL;
-    
+
     point3f initialPosition;
-    
+
     wing_t wing;
 
 public:
@@ -97,6 +97,9 @@ public:
     }
 
     void drawMapElement(circle_blueprint_t* blueprint) const override;
+
+private:
+    void drawWing(float r);
 };
 
 #endif /* FLYINGENEMY_H */

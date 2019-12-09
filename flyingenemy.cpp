@@ -41,7 +41,7 @@ void flying_enemy_t::update(int millis) {
     if (dead) return;
 
     wing.update(millis);
-    
+
     // TODO Make the enemy follow the player instead
     accumulatedTime += millis;
     if (accumulatedTime > 1000) {
@@ -96,31 +96,26 @@ void flying_enemy_t::transformAndDraw() {
     if (dead) return;
     glPushMatrix();
     {
-        //        point3f p = controller->getPosition();
-        //        glTranslatef(p.x, p.y, p.z);
+        point3f p = controller->getPosition();
+        glTranslatef(p.x, p.y, p.z);
         drawAxis(radius);
         // considering that the front of the airplane is at +x and the back is at -x
         const float degreePerRadians = 180 / M_PI;
-        //        glRotatef(controller->getHorizontalAngle() * degreePerRadians, 0, 0, 1);
-        //        glRotatef(controller->getVerticalAngle() * degreePerRadians, 0, 1, 0);
-        //        glRotatef(horizontal * degreePerRadians, 1, 0, 0);
+        glRotatef(controller->getHorizontalAngle() * degreePerRadians, 0, 0, 1);
+        glRotatef(controller->getVerticalAngle() * degreePerRadians, 0, 1, 0);
+        glRotatef(horizontal * degreePerRadians, 1, 0, 0);
         const float s = 1.5f;
         // glutWireSphere(radius, 8, 8);
         glScalef(radius, radius, radius);
         glPushMatrix();
         {
-            propeller->transformAndDraw(0.7);
+            propeller->transformAndDraw(1.7);
         }
         glPopMatrix();
-        glPushMatrix();
-        {
-            glRotatef(-wing.getAngle(), 1, 0, 0);
-            glTranslated(0, 0, 1);
 
-            glScaled(1, 0.1f, 1);
-            glutSolidCube(1);
-        }
-        glPopMatrix();
+        drawWing(-wing.getAngle());
+        drawWing(180 + wing.getAngle());
+
         glScalef(s, s, s);
         drawAxis(radius);
         // glScalef(100, 100, 100);
@@ -145,10 +140,27 @@ void flying_enemy_t::transformAndDraw() {
     glPopMatrix();
 }
 
+void flying_enemy_t::drawWing(float r) {
+    glPushMatrix();
+    {
+        glRotatef(r, 1, 0, 0);
+        glTranslated(0, 0, 0.08f);
+
+        glScalef(5, 5, 5);
+        glRotatef(90, 1, 0, 0);
+        sWingModel->draw();
+    }
+    glPopMatrix();
+}
+
 void flying_enemy_t::init(wf_object_loader_t& loader) {
     loader.loadResOnly("mosquitoSemHelice");
     loader.scale(0.1f);
     sEnemyModel = loader.build();
+
+    loader.loadResOnly("asa");
+    loader.scale(0.1f);
+    sWingModel = loader.build();
 }
 
 void flying_enemy_t::setPosition(const point3f& p) {
