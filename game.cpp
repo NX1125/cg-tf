@@ -64,9 +64,9 @@ Game::Game(app_settings* settings) {
 
     miniMapAux = new circle_blueprint_t(16);
 
-    point3f p = player->getPosition();
+    // point3f p = player->getPosition();
 
-    player->setPosition(point3f(30, 30, 30));
+    // player->setPosition(point3f(30, 30, 30));
 
     // TODO Add reset listeners 
 
@@ -108,7 +108,7 @@ void Game::display() {
 
     float yOffset = 200;
 
-    glViewport(0, yOffset, 500, 500);
+    glViewport(0, height - 500, 500, 500);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -213,6 +213,8 @@ void Game::display() {
             break;
     }
 
+    //glEnable(GL_LIGHTING);
+
     drawWorld();
 
     if (currentBomb != NULL) {
@@ -236,29 +238,11 @@ void Game::display() {
         drawWorld();
     }
 
+    //glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
 
     drawHUD();
-
-    // The minimap need to fit in 1/4 of the frame at the bottom-right position.
-
-    int w = 500 / 4;
-    int h = 500 / 4;
-
-    const float padding = 10;
-
-    glViewport(500 - w - padding, yOffset + padding, w, h);
-
-    float r = arena->getRadius();
-
-    // Make the frame fit into NDC
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(-r, r, r, -r);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 
     drawMap();
 
@@ -291,10 +275,12 @@ void Game::drawHUD() {
     // Make the frame fit into NDC
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, width, height, 0);
+    gluOrtho2D(0, 500, 500, 0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    glViewport(0, height - 500, 500, 500);
 
     glPushMatrix();
     {
@@ -304,8 +290,7 @@ void Game::drawHUD() {
 
         const float padding = 10.0f;
 
-        // center it at screen:
-        glTranslatef(width - w - padding, padding + h, 0);
+        glTranslatef(500 - w - padding, padding + h, 0);
         // text with white color:
         glColor3f(1, 1, 1);
 
@@ -329,7 +314,7 @@ void Game::drawHUD() {
         measureText(text, &w, &h);
 
         // center it at screen:
-        glTranslatef((width - w) / 2, (height - h) / 2, 0);
+        glTranslatef((500 - w) / 2, (500 - h) / 2, 0);
         // text with white color:
         glColor3f(1, 1, 1);
 
@@ -338,6 +323,25 @@ void Game::drawHUD() {
 }
 
 void Game::drawMap() {
+    // The minimap need to fit in 1/4 of the frame at the bottom-right position.
+
+    int w = 500 / 4;
+    int h = 500 / 4;
+
+    const float padding = 10;
+
+    glViewport(500 - w - padding, height - 500 + padding, w, h);
+
+    float r = arena->getRadius();
+
+    // Make the frame fit into NDC
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-r, r, r, -r);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
     arena->drawMapElement(miniMapAux);
 
     // draw all of the ground enemies in orange (#FFA500)
