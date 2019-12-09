@@ -29,6 +29,8 @@ Game::Game(app_settings* settings) {
     takeoff_t* takeoff = new takeoff_t(start, end, arena->getHeight() / 5, 4000);
 
     player = new player_t(takeoff, settings->player->radius);
+    
+    addResetListener(player);
 
     arena->setAirstrip(new airstrip_t(start, end, player->getRadius() * 2));
 
@@ -575,7 +577,6 @@ void Game::reset() {
     // - Remover os projéteis
     // - Score
     // - Camera
-    // - 
 
     printf("Resetting game\n");
 

@@ -38,6 +38,11 @@ public:
 
     cannon_t(const vector3f& position);
 
+    void reset() {
+        horizontal = 0;
+        vertical = 0;
+    }
+    
     void setManager(projectile_manager_t* manager) {
         this->manager = manager;
     }

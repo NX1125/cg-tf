@@ -107,7 +107,7 @@ private:
 
 public:
 
-    airplane_movement_t();
+    airplane_movement_t(const point3f& p);
 
     /**
      * A helper method that converts the user input into an axis for the angles.
@@ -149,9 +149,34 @@ public:
 
     void setInitialConditions(const point3f& p, const vector3f& v);
 
+private:
+
+    float initialHorizontal;
+    float initialVertical;
+
+public:
+
     void setAngles(float horizontal, float vertical) {
         this->horizontal = horizontal;
         this->vertical = vertical;
+
+        initialHorizontal = horizontal;
+        initialVertical = vertical;
+    }
+
+    void reset() {
+        horizontal = initialHorizontal;
+        vertical = initialVertical;
+
+        left = 0;
+        right = 0;
+        up = 0;
+        down = 0;
+
+        horizontalVelocity = 0;
+        verticalVelocity = 0;
+
+        magnitude = initialMagnitude;
     }
 
     void setPosition(const point3f& position) {
@@ -161,8 +186,14 @@ public:
     float getMagnitude() const {
         return magnitude;
     }
+private:
 
-    void setMagnitude(float magnitude);
+    float initialMagnitude;
+
+public:
+
+
+    void setInitialMagnitude(float magnitude);
 
     float getHorizontalAngularVelocity() const {
         return -horizontalVelocity;

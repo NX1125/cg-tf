@@ -22,7 +22,7 @@ std::default_random_engine flying_enemy_t::sRandomMovement;
 
 flying_enemy_t::flying_enemy_t(point3f position, float radius) :
 radius(radius) {
-    controller = new airplane_movement_t();
+    controller = new airplane_movement_t(position);
     controller->setPosition(position);
 
     propeller = new propeller_t(vector3f(1, 0, 0));
@@ -31,7 +31,7 @@ radius(radius) {
 
 void flying_enemy_t::setInitialVelocity(float initialVelocity) {
     this->initialVelocity = initialVelocity;
-    controller->setMagnitude(initialVelocity);
+    controller->setInitialMagnitude(initialVelocity);
 }
 
 void flying_enemy_t::update(int millis) {

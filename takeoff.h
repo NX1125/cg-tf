@@ -91,8 +91,6 @@ private:
 
     float velocity;
 
-    float ground = 0;
-
 public:
 
     takeoff_t(const point3f& start, const point3f& end,

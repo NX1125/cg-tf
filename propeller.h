@@ -37,6 +37,11 @@ public:
     void setScaleFactor(float scale);
 
     static void init(wf_object_loader_t& loader);
+    
+    void reset() {
+        angle = 0;
+        angularVelocity = 0;
+    }
 };
 
 #endif /* PROPELLER_H */

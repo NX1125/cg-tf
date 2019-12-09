@@ -15,7 +15,7 @@ vector3f player_t::sBombDoor(0, 0, -1);
 player_t::player_t(takeoff_t* takeoff, float radius) :
 takeoff(takeoff), radius(radius) {
     position = takeoff->getStart();
-    controller = new airplane_movement_t();
+    controller = new airplane_movement_t(position);
     cannon = new cannon_t(vector3f(radius * 0.8f, 0, -radius * 0.2f));
 
     float x = 1.0f * radius;
@@ -170,7 +170,7 @@ void player_t::update(int millis) {
         mBehaviour = Behaviour::CONTROLLING;
 
         controller->setPosition(position);
-        controller->setMagnitude(takeoff->getFinalVelocity() * velocityFactor);
+        controller->setInitialMagnitude(takeoff->getFinalVelocity() * velocityFactor);
         controller->setAngles(takeoff->getHorizontalAngle(), 0);
     }
 

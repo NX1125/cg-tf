@@ -17,6 +17,7 @@
 #include "propeller.h"
 #include "minimapitem.h"
 #include "bomb.h"
+#include "resetlistener.h"
 
 enum Behaviour {
     ON_GROUND, TAKING_OFF, CONTROLLING, GAME_OVER
@@ -34,7 +35,7 @@ public:
     virtual void onBombThrow(bomb_t* b) = 0;
 };
 
-class player_t : public teleportable_t, public obstacle_t, public mini_map_item_t {
+class player_t : public teleportable_t, public obstacle_t, public mini_map_item_t, public reset_listener_t {
 private:
     static wf_object_t* sPlayerBodyModel;
     static float sPlayerBodyModelRadius;
@@ -206,6 +207,21 @@ public:
     }
 
     void drawMapElement(circle_blueprint_t* blueprint) const override;
+    
+    void reset() override {
+        position = takeoff->getStart();
+        mBehaviour = Behaviour::ON_GROUND;
+        
+        takeoff->reset();
+        controller->reset();
+        cannon->reset();
+        
+        propellerLeft->reset();
+        propellerRight->reset();
+        
+        dead = false;
+    }
+
 };
 
 #endif /* AIRPLANE_H */

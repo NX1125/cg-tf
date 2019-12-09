@@ -29,8 +29,10 @@ start(start), end(end), height(height), timeToComplete(timeToComplete) {
 
 void takeoff_t::reset() {
     position = start;
+    secondHalf = false;
     currentTime = 0;
     completed = false;
+    velocity = 0;
 }
 
 void takeoff_t::update(int time) {

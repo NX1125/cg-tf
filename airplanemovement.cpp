@@ -10,7 +10,7 @@
 #include <cmath>
 #include <cstdio>
 
-airplane_movement_t::airplane_movement_t() {
+airplane_movement_t::airplane_movement_t(const point3f& p) : position(p) {
 }
 
 void airplane_movement_t::clipZ(float height, float radius) {
@@ -20,7 +20,6 @@ void airplane_movement_t::clipZ(float height, float radius) {
         position.z = height - radius;
     }
 }
-
 
 void airplane_movement_t::keyPress(unsigned char key) {
     switch (key) {
@@ -96,9 +95,11 @@ void airplane_movement_t::setInputAxis(float dx, float dy) {
     verticalVelocity = dy * magnitude * verticalFactor;
 }
 
-void airplane_movement_t::setMagnitude(float magnitude) {
+void airplane_movement_t::setInitialMagnitude(float magnitude) {
     velocity *= magnitude / this->magnitude;
     this->magnitude = magnitude;
+
+    initialMagnitude = magnitude;
 }
 
 void airplane_movement_t::setInitialConditions(const point3f& p, const vector3f& v) {
