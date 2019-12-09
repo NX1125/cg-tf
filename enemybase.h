@@ -37,6 +37,10 @@ public:
 
     enemy_base_t(point3f position, float radius);
 
+    void reset() {
+        dead = false;
+    }
+    
     void transformAndDraw();
 
     static void init(wf_object_loader_t& loader);

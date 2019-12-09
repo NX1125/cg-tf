@@ -29,7 +29,7 @@ Game::Game(app_settings* settings) {
     takeoff_t* takeoff = new takeoff_t(start, end, arena->getHeight() / 5, 4000);
 
     player = new player_t(takeoff, settings->player->radius);
-    
+
     addResetListener(player);
 
     arena->setAirstrip(new airstrip_t(start, end, player->getRadius() * 2));
@@ -573,9 +573,12 @@ void Game::reset() {
     // Game
     // - Inimigos
     // - Casas
-    // - Remover os projéteis
+    for (enemy_base_t* base : bases) {
+        base->reset();
+    }
     manager->reset();
-    // - Score
+    score = 0;
+    scoreText = "Score: 0";
     // - Camera
 
     printf("Resetting game\n");
@@ -592,7 +595,7 @@ void Game::addResetListener(reset_listener_t * l) {
 
 void Game::onBaseDeath() {
     score++;
-    scoreText += "Score: ";
+    scoreText = string("Score: ");
     scoreText += std::to_string(score);
 
     if (score >= bases.size()) {
