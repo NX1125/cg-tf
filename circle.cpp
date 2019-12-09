@@ -45,18 +45,18 @@ void circle_blueprint_t::draw(bool opaque) {
             // makes all of the following points to
             // fan out of the center.
             glVertex2d(0, 0);
-            glTexCoord2f(0, 0);
+            glTexCoord2f(0.5f, 0.5f);
         }
         for (int i = 0; i < numOfPoints; i++) {
             const vector2d& v = points[i];
             glVertex2d(v.x, v.y);
-            glTexCoord2f(v.x, v.y);
+            glTexCoord2f(v.x / 2 + 1, v.y / 2 + 1);
         }
         if (opaque) {
             // go back to the first vector to connect the last points.
             const vector2d& v = points[0];
             glVertex2d(v.x, v.y);
-            glTexCoord2f(v.x, v.y);
+            glTexCoord2f(v.x / 2 + 1, v.y / 2 + 1);
         }
     }
     glEnd();

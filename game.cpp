@@ -570,8 +570,6 @@ void Game::keyReleased(unsigned char key, int x, int y) {
 }
 
 void Game::reset() {
-    // Game
-    // - Inimigos
     for (flying_enemy_t* f : enemies) {
         f->reset();
     }

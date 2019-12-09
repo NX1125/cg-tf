@@ -196,7 +196,7 @@ struct vector3f {
     }
 
     float length() const {
-        return sqrt(lengthSqr());
+        return sqrtf(lengthSqr());
     }
 
     void rotateX(float angle);
@@ -351,6 +351,14 @@ struct circle_blueprint_t {
     void draw(bool opaque);
 
     void draw(bool opaque, double r);
+
+    int getCount() const {
+        return numOfPoints;
+    }
+
+    vector2d getPoint(int i) const {
+        return points[i];
+    }
 };
 
 typedef struct circle* Circle;

@@ -50,6 +50,10 @@ private:
     
     wf_object_t* ground = NULL;
 
+    GLuint roofTexture = 0;
+    GLuint groundTexture = 0;
+    GLuint wallTexture = 0;
+    
 public:
 
     arena_t(float height, float radius, wf_object_loader_t& loader);
@@ -96,6 +100,10 @@ private:
      * Draws the ground on the current z of the matrix.
      */
     void drawGround();
+    
+    void drawWall(int i1, int i2);
+    
+    void drawWalls();
 };
 
 #endif /* ARENA_H */
