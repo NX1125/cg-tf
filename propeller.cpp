@@ -11,21 +11,32 @@
 #include "propeller.h"
 #include "cube.h"
 
+wf_object_t* propeller_t::sModel = NULL;
+
 propeller_t::propeller_t(vector3f offset) :
 offset(offset) {
 }
 
-void propeller_t::transformAndDraw() {
+void propeller_t::init(wf_object_loader_t& loader) {
+    sModel = loader.loadRes("helice");
+}
+
+void propeller_t::transformAndDraw(float s) const {
     glPushMatrix();
     {
         glTranslatef(offset.x, offset.y, offset.z);
-        glRotatef(angle * 180 / M_PI, 0.0f, 0.0f, 1.0f);
-        
+        glRotatef(90, 0.0f, 0.0f, 1);
+        glRotatef(angle * 180 / M_PI, 0.0f, 1.0f, 0.0f);
+        glScalef(s, s, s);
+
         // printf("angle = %f\n", angle);
 
-        // TODO Draw model
-        glScalef(10, 1, 1);
-        drawCube();
+        if (sModel == NULL) {
+            glScalef(10, 1, 1);
+            drawCube();
+        } else {
+            sModel->draw();
+        }
     }
     glPopMatrix();
 }

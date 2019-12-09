@@ -3,14 +3,19 @@
 #include "imageloader.h"
 
 void wf_object_t::draw() {
-    glEnable(GL_TEXTURE_2D);
-    float* k = arguments;
-    for (int i = 0; i < n; i++, k += 4) {
-        // printf("c(%f, %f, %f, %f)\n", k[0], k[1], k[2], k[3]);
-        commands[i].apply(k, &commands[i]);
+    glPushMatrix();
+    {
+        glScaled(s, s, s);
+        glEnable(GL_TEXTURE_2D);
+        float* k = arguments;
+        for (int i = 0; i < n; i++, k += 4) {
+            // printf("c(%f, %f, %f, %f)\n", k[0], k[1], k[2], k[3]);
+            commands[i].apply(k, &commands[i]);
+        }
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);
     }
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
 }
 
 wf_object_t* wf_object_loader_t::load(const char* filename) {
@@ -68,7 +73,9 @@ wf_object_t* wf_object_loader_t::build() {
 
     printf("%ld commands loaded\n", commands.size());
 
-    return new wf_object_t(cs, args, commands.size());
+    wf_object_t* obj = new wf_object_t(cs, args, commands.size());
+    obj->s = mScale;
+    return obj;
 }
 
 void wf_object_loader_t::loadMaterial(const char* filename) {
@@ -161,6 +168,12 @@ void wf_object_loader_t::loadMTL(char* line) {
     currentMaterial.commands[currentMaterial.n++] = c;
     int i = currentMaterial.n * 4;
     memcpy(currentMaterial.arguments + i, args, sizeof (args));
+}
+
+void wf_object_loader_t::normalize() {
+    float s = getMostDistantVertex().length();
+
+    scale(1.0f / s);
 }
 
 void wf_object_loader_t::loadOBJ(char* line) {
@@ -448,19 +461,12 @@ void wf_object_t::tex(const GLfloat* coords, WFCommand* data) {
 }
 
 void wf_object_loader_t::scale(float s) {
-    int n = vertices.size() / 4;
-
-    for (int i = 0, k = 0; i < n; i++) {
-        vertices[k++] *= s;
-        vertices[k++] *= s;
-        vertices[k++] *= s;
-        k++;
-    }
+    mScale = s;
 }
 
 vector3f wf_object_loader_t::getMostDistantVertex() const {
     vector3f p(0, 0, 0);
-    float current = INFINITY;
+    float current = 0;
 
     int n = vertices.size() / 4;
 

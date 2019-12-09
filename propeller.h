@@ -10,10 +10,12 @@
 #define PROPELLER_H
 
 #include "shapes.h"
-
+#include "wfobj.h"
 
 class propeller_t {
 private:
+
+    static wf_object_t* sModel;
 
     float angle = 0;
 
@@ -26,13 +28,15 @@ private:
 public:
     propeller_t(vector3f offset);
 
-    void transformAndDraw();
+    void transformAndDraw(float s)const;
 
     void update(int millis);
-    
+
     void setMagnitude(float v);
 
     void setScaleFactor(float scale);
+
+    static void init(wf_object_loader_t& loader);
 };
 
 #endif /* PROPELLER_H */

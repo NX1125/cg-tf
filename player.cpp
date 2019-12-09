@@ -39,10 +39,7 @@ void player_t::setManager(projectile_manager_t* manager) {
 
 void player_t::sInit(wf_object_loader_t& loader) {
     loader.loadResOnly("trenoSemHelice");
-
-    // This is to find the most distant point to the origin of the model
-    sPlayerBodyModelRadius = loader.getMostDistantVertex().length();
-    loader.scale(1.0f / sPlayerBodyModelRadius);
+    loader.normalize();
     sPlayerBodyModel = sPlayerBodyModel = loader.build();
 }
 
@@ -270,8 +267,8 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             glPushMatrix();
             {
                 glRotatef(90, 0, 1, 0);
-                propellerLeft->transformAndDraw();
-                propellerRight->transformAndDraw();
+                propellerLeft->transformAndDraw(1.0f);
+                propellerRight->transformAndDraw(1.0f);
             }
             glPopMatrix();
 
@@ -279,7 +276,7 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             glScalef(radius, radius, radius);
             drawAxis(radius);
             const float s = 3;
-             glScalef(s,s,s);
+            // glScalef(s,s,s);
 
             GLfloat color[] = {1, 1, 1, 1};
 

@@ -70,6 +70,8 @@ private:
     float* arguments;
 
     int n;
+    
+    float s = 1;
 
     wf_object_t(WFCommand* commands, float* arguments, int n) :
     commands(commands), arguments(arguments), n(n) {
@@ -128,6 +130,8 @@ private:
     file_path* filepath = NULL;
 
     vector<string*> garbage;
+    
+    float mScale = 1;
 
 public:
     wf_object_t* load(const char* filename);
@@ -168,11 +172,13 @@ private:
     }
 
     void forEachLine(const char* filename, void (*)(char*, wf_object_loader_t&));
-
+    
 public:
     vector3f getMostDistantVertex() const;
 
     void scale(float s);
+
+    void normalize();
 
     wf_object_t* build();
 };

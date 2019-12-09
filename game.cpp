@@ -102,6 +102,7 @@ void Game::loadModels(wf_object_loader_t& loader) {
     enemy_base_t::init(loader);
     flying_enemy_t::init(loader);
     cannon_t::init(loader);
+    propeller_t::init(loader);
 
     loadCube(loader);
 }
@@ -275,8 +276,6 @@ void Game::display() {
 }
 
 void Game::drawWorld() {
-    cannon_t::draw0();
-
     GLfloat blue[] = {0, 0, 0.5f, 1.0f};
     glMaterialfv(GL_FRONT, GL_AMBIENT, blue);
 
@@ -290,9 +289,9 @@ void Game::drawWorld() {
             );
 
     arena->draw();
-    for (enemy_base_t* base : bases) {
-        base->transformAndDraw();
-    }
+//    for (enemy_base_t* base : bases) {
+//        base->transformAndDraw();
+//    }
     for (flying_enemy_t* enemy : enemies) {
         enemy->transformAndDraw();
     }

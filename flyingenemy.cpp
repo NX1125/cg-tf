@@ -9,6 +9,7 @@
 #include <stddef.h>
 #include <math.h>
 #include <GL/gl.h>
+#include <GL/freeglut_std.h>
 
 #include "flyingenemy.h"
 #include "shapes.h"
@@ -24,7 +25,8 @@ radius(radius) {
     controller = new airplane_movement_t();
     controller->setPosition(position);
 
-    propeller = new propeller_t(vector3f(0, 0, radius * 1.1f));
+    propeller = new propeller_t(vector3f(1, 0, 0));
+    propeller->setScaleFactor(0.05f / radius);
 }
 
 void flying_enemy_t::setInitialVelocity(float initialVelocity) {
@@ -99,27 +101,30 @@ void flying_enemy_t::transformAndDraw() {
         glRotatef(controller->getHorizontalAngle() * degreePerRadians, 0, 0, 1);
         glRotatef(controller->getVerticalAngle() * degreePerRadians, 0, 1, 0);
         glRotatef(horizontal * degreePerRadians, 1, 0, 0);
+        const float s = 1.5f;
+        // glutWireSphere(radius, 8, 8);
+        glScalef(radius, radius, radius);
         glPushMatrix();
         {
-            glRotatef(90, 0, 1, 0);
-            propeller->transformAndDraw();
+            propeller->transformAndDraw(0.7);
         }
         glPopMatrix();
-        glScalef(radius, radius, radius);
+        glScalef(s, s, s);
         drawAxis(radius);
         // glScalef(100, 100, 100);
 
-        glPushMatrix();
-        {
-            glTranslatef(sCannonOffset.x, sCannonOffset.y, sCannonOffset.z);
-            glScalef(2 / radius, 2 / radius, 2 / radius);
-            drawCube();
-        }
-        glPopMatrix();
+        //        glPushMatrix();
+        //        {
+        //            glTranslatef(sCannonOffset.x, sCannonOffset.y, sCannonOffset.z);
+        //            glScalef(2 / radius, 2 / radius, 2 / radius);
+        //            drawCube();
+        //        }
+        //        glPopMatrix();
 
         glColor3f(1, 1, 1);
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
+            // glutSolidSphere(2, 8, 8);
         } else {
             glColor3f(1, 0, 0);
             drawCube();
@@ -129,7 +134,9 @@ void flying_enemy_t::transformAndDraw() {
 }
 
 void flying_enemy_t::init(wf_object_loader_t& loader) {
-    sEnemyModel = loader.loadRes("mosquitoSemHelice");
+    loader.loadResOnly("mosquitoSemHelice");
+    loader.scale(0.1f);
+    sEnemyModel = loader.build();
 }
 
 void flying_enemy_t::setPosition(const point3f& p) {
