@@ -27,6 +27,9 @@ takeoff(takeoff), radius(radius) {
     propellerRight->setScaleFactor(factor);
 
     cockpitOffset = vector3f(radius, 0, radius);
+
+    horizontal = takeoff->getHorizontalAngle();
+    vertical = takeoff->getVerticalAngle();
 }
 
 void player_t::setManager(projectile_manager_t* manager) {
@@ -197,13 +200,42 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
     {
         if (aim) {
             point3f p = position;
-            vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+
+            vector3f v = cannon->getOffset();
+
+            v.rotateX(horizontalAngularVelocityDrawing);
+            v.rotateY(vertical);
+            v.rotateZ(horizontal);
+
+            glPushMatrix();
+            {
+                glTranslatef(p.x + v.x, p.y + v.y, p.z + v.z);
+                glutSolidSphere(2, 8, 8);
+            }
+            glPopMatrix();
+
+            v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
 
             v.rotateX(horizontalAngularVelocityDrawing);
             v.rotateY(vertical);
             v.rotateZ(horizontal);
 
             p += v;
+
+            glPushMatrix();
+            {
+                glTranslatef(p.x, p.y, p.z);
+                glutSolidSphere(2, 8, 8);
+            }
+            glPopMatrix();
+
+            v = cannon->getDirection();
+
+            v.rotateX(horizontalAngularVelocityDrawing);
+            v.rotateY(vertical);
+            v.rotateZ(horizontal);
+
+            p += v * 5;
 
             glPushMatrix();
             {
@@ -310,10 +342,17 @@ void player_t::bomb() {
 }
 
 void player_t::fire() {
-    printf("The player just fired\n");
-
     point3f p = position;
-    vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+
+    vector3f v = cannon->getOffset();
+
+    v.rotateX(horizontalAngularVelocityDrawing);
+    v.rotateY(vertical);
+    v.rotateZ(horizontal);
+
+    point3f p1 = p + v;
+
+    v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
 
     v.rotateX(horizontalAngularVelocityDrawing);
     v.rotateY(vertical);
@@ -321,14 +360,12 @@ void player_t::fire() {
 
     p += v;
 
-    v = cannon->getDirection();
+    vector3f v2 = p - p1;
 
-    v.rotateX(horizontalAngularVelocityDrawing);
-    v.rotateY(vertical);
-    v.rotateZ(horizontal);
+    v2.normalize();
 
     bullet_t* bullet = new bullet_t(p,
-            v * (bulletVelocityFactor * controller->getMagnitude()), false);
+            v2 * (bulletVelocityFactor * controller->getMagnitude()), false);
     bullet->setRadius(radius / 16);
     manager->addProjectile(bullet);
 }

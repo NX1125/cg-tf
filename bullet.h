@@ -9,9 +9,12 @@
 #define BULLET_H
 
 #include "projectile.h"
+#include "wfobj.h"
 
 class bullet_t : public projectile_t {
 private:
+    
+    static wf_object_t* sModel;
 
     bool enemy;
 
@@ -35,6 +38,8 @@ public:
     float getRadius() const override {
         return radius;
     }
+    
+    static void init(wf_object_loader_t& loader);
 };
 
 #endif /* BULLET_H */

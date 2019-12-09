@@ -10,15 +10,21 @@
 #include "flyingenemy.h"
 #include "player.h"
 
+wf_object_t* bullet_t::sModel = NULL;
+
 bullet_t::bullet_t(const point3f& offset, const vector3f& velocity, bool enemy) :
 projectile_t(offset, velocity), enemy(enemy) {
 }
 
 void bullet_t::draw() const {
     // TODO Draw bullet model
-//    glRotatef(horizontal, 0, 0, 1);
-//    glRotatef(vertical, 1, 0, 0);
-    drawCube();
+    //    glRotatef(horizontal, 0, 0, 1);
+    //    glRotatef(vertical, 1, 0, 0);
+    if (sModel != NULL) {
+        sModel->draw();
+    } else {
+        drawCube();
+    }
 }
 
 void bullet_t::hit(obstacle_t* other) {
@@ -36,3 +42,8 @@ void bullet_t::hit(obstacle_t* other) {
         }
     }
 }
+
+void bullet_t::init(wf_object_loader_t& loader) {
+    sModel = loader.loadRes("duende");
+}
+

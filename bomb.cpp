@@ -16,7 +16,7 @@ float bomb_t::sGravityAcceleration = -10;
 wf_object_t* bomb_t::sBombModel = NULL;
 
 void bomb_t::init(wf_object_loader_t& loader) {
-    // sBombModel = loader.loadRes("bomb");
+     sBombModel = loader.loadRes("presente");
 }
 
 bomb_t::bomb_t(const point3f& offset, const vector3f& velocity) :
@@ -43,6 +43,10 @@ void bomb_t::setGravityAcceleration(float acc) {
 
 void bomb_t::draw() const {
     // TODO Draw bomb model
-    drawCube();
+    if (sBombModel == NULL) {
+        drawCube();
+    } else {
+        sBombModel->draw();
+    }
 }
 

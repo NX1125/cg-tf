@@ -47,7 +47,7 @@ vector3f cannon_t::getDirection() const {
 vector3f cannon_t::getDirection(float h, float v) const {
     float r;
     float z;
-
+    
     const float dr = M_PI / 180.0f;
 
     sincosf(vertical * dr + v, &z, &r);
