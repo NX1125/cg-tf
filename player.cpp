@@ -18,8 +18,12 @@ takeoff(takeoff), radius(radius) {
     controller = new airplane_movement_t();
     cannon = new cannon_t(vector3f(radius * 0.8f, 0, -radius * 0.2f));
 
-    propellerLeft = new propeller_t(vector3f(0, radius, radius));
-    propellerRight = new propeller_t(vector3f(0, -radius, radius));
+    float x = 1.0f * radius;
+    float y = 0.6f * radius;
+    float z = -0.19f * radius;
+    
+    propellerLeft = new propeller_t(vector3f(x, y, z));
+    propellerRight = new propeller_t(vector3f(x, -y, z));
 
     float factor = 0.5f / radius;
 
@@ -267,9 +271,9 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
         if (body) {
             glPushMatrix();
             {
-                glRotatef(90, 0, 1, 0);
-                propellerLeft->transformAndDraw(1.0f);
-                propellerRight->transformAndDraw(1.0f);
+                // glRotatef(90, 0, 1, 0);
+                propellerLeft->transformAndDraw(radius);
+                propellerRight->transformAndDraw(radius);
             }
             glPopMatrix();
 

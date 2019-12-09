@@ -31,6 +31,8 @@ void propeller_t::transformAndDraw(float s) const {
 
         // printf("angle = %f\n", angle);
 
+        // drawAxis(1);
+        
         if (sModel == NULL) {
             glScalef(10, 1, 1);
             drawCube();
