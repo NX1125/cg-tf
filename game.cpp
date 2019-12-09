@@ -98,6 +98,8 @@ void Game::createEnemies(vector<simple_svg_circle*>& enemies, float height, floa
 void Game::loadModels(wf_object_loader_t& loader) {
     player_t::sInit(loader);
     bullet_t::init(loader);
+    enemy_base_t::init(loader);
+    flying_enemy_t::init(loader);
 
     loadCube(loader);
 }

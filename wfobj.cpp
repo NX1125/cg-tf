@@ -9,6 +9,7 @@ void wf_object_t::draw() {
         // printf("c(%f, %f, %f, %f)\n", k[0], k[1], k[2], k[3]);
         commands[i].apply(k, &commands[i]);
     }
+   glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
 }
 
@@ -411,6 +412,7 @@ void wf_object_t::ambient(const GLfloat* coords, WFCommand* data) {
 
 void wf_object_t::diffuse(const GLfloat* coords, WFCommand* data) {
     // glMaterialfv(GL_FRONT, GL_DIFFUSE, coords);
+     glColor3fv(coords);
 }
 
 void wf_object_t::specular(const GLfloat* coords, WFCommand* data) {

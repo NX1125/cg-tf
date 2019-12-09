@@ -56,7 +56,7 @@ public:
 
     void transformAndDraw();
 
-    static void init(wf_object_loader_t* loader);
+    static void init(wf_object_loader_t& loader);
 
     point3f getPosition() const override;
 

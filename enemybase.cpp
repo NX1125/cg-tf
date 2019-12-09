@@ -29,11 +29,13 @@ void enemy_base_t::transformAndDraw() {
         glScalef(radius, radius, radius);
         // glScalef(100, 100, 100);
 
+        glColor3f(1, 1, 1);
         if (sEnemyModel != NULL) {
+            glRotatef(90, 1, 0, 0);
             sEnemyModel->draw();
         } else {
             // draw all of the ground enemies in orange (#FFA500)
-            glColor3f(0xFF / 255.0, 0xA5 / 255.0, 0x00 / 255.0);
+            // glColor3f(0xFF / 255.0, 0xA5 / 255.0, 0x00 / 255.0);
             drawCube();
         }
     }
@@ -41,7 +43,7 @@ void enemy_base_t::transformAndDraw() {
 }
 
 void enemy_base_t::init(wf_object_loader_t& loader) {
-    sEnemyModel = loader.loadRes("enemy");
+    sEnemyModel = loader.loadRes("casa");
 }
 
 void enemy_base_t::drawMapElement(circle_blueprint_t* blueprint) const {

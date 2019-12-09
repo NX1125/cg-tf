@@ -196,6 +196,7 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
     }
     // TODO Add beam of light from the player when it is night mode
 
+    // glDisable(GL_CULL_FACE);
     glPushMatrix();
     {
         if (aim) {
@@ -277,7 +278,7 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
             glRotatef(90, 1, 0, 0);
             glScalef(radius, radius, radius);
             drawAxis(radius);
-            // glScalef(100, 100, 100);
+             glScalef(2,2,2);
             //
             GLfloat color[] = {1, 1, 1, 1};
             //

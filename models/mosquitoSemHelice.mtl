@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd texturas/bege.bmp
+map_Kd bege.bmp
 
 newmtl corpo_cinza
 Ns 96.078431
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd texturas/cinza.bmp
+map_Kd cinza.bmp
 
 newmtl corpo_preto
 Ns 96.078431
@@ -32,7 +32,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd texturas/preto.bmp
+map_Kd preto.bmp
 
 newmtl olhos
 Ns 96.078431
@@ -43,4 +43,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd texturas/azul.bmp
+map_Kd azul.bmp

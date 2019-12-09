@@ -117,6 +117,7 @@ void flying_enemy_t::transformAndDraw() {
         }
         glPopMatrix();
 
+        glColor3f(1, 1, 1);
         if (sEnemyModel != NULL) {
             sEnemyModel->draw();
         } else {
@@ -127,8 +128,8 @@ void flying_enemy_t::transformAndDraw() {
     glPopMatrix();
 }
 
-void flying_enemy_t::init(wf_object_loader_t* loader) {
-    // sEnemyModel = loader->loadRes("enemy");
+void flying_enemy_t::init(wf_object_loader_t& loader) {
+    sEnemyModel = loader.loadRes("mosquitoSemHelice");
 }
 
 void flying_enemy_t::setPosition(const point3f& p) {
