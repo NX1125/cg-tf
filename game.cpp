@@ -18,9 +18,11 @@ Game::Game(app_settings* settings) {
     arena = new arena_t(settings->player->radius * 2 * 8, settings->arena->radius, loader);
 
     simple_svg_line* airstrip = settings->airstrip;
+    
+    float t = settings->player->radius * 0.5f;
 
-    point3f start(airstrip->x1, airstrip->y1, 0);
-    point3f end(airstrip->x2, airstrip->y2, 0);
+    point3f start(airstrip->x1, airstrip->y1, t);
+    point3f end(airstrip->x2, airstrip->y2, t);
 
     takeoff_t* takeoff = new takeoff_t(start, end, arena->getHeight() / 5, 4000);
 
@@ -357,7 +359,7 @@ void Game::drawMap() {
     // Make the frame fit into NDC
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(-r, r, r, -r);
+    gluOrtho2D(r, -r, r, -r);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

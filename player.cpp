@@ -26,7 +26,7 @@ takeoff(takeoff), radius(radius) {
     propellerLeft->setScaleFactor(factor);
     propellerRight->setScaleFactor(factor);
 
-    cockpitOffset = vector3f(radius * 0.1f, 0, radius * 0.1f);
+    cockpitOffset = vector3f(radius * 0.4f, 0, 0 );
 
     horizontal = takeoff->getHorizontalAngle();
     vertical = takeoff->getVerticalAngle();
@@ -322,7 +322,7 @@ void player_t::clipZ(float height) {
     if (position.z < radius) {
         // printf("The player is hitting the ground!\n");
         position.z = radius;
-        kill();
+        // kill();
     } else if (position.z > height - radius) {
         // printf("The player is hitting the roof!\n");
         position.z = height - radius;

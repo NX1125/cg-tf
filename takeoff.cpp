@@ -88,7 +88,7 @@ void takeoff_t::setGround(float k) {
 void takeoff_t::setTakeoff(float k, float distance) {
     setGround(k);
     float k2 = (k - 0.5f) / 0.5f;
-    position.z = getTakeoffHeight(k2);
+    position.z += getTakeoffHeight(k2);
     float r = distance - length * 0.5f;
 
     // The vertical angle is a bit complicated, since it uses the tangent of a
