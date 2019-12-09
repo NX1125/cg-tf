@@ -63,7 +63,7 @@ private:
     projectile_manager_t* manager;
 
     unsigned int score = 0;
-    string scoreText = string("0");
+    string scoreText = string("Score: 0");
 
     time_t timeToEnemyFire;
 

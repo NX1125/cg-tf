@@ -1,4 +1,6 @@
 
+#include <algorithm>
+
 #include "game.h"
 #include "player.h"
 #include "cube.h"
@@ -18,7 +20,7 @@ Game::Game(app_settings* settings) {
     arena = new arena_t(settings->player->radius * 2 * 8, settings->arena->radius, loader);
 
     simple_svg_line* airstrip = settings->airstrip;
-    
+
     float t = settings->player->radius * 0.5f;
 
     point3f start(airstrip->x1, airstrip->y1, t);
@@ -307,16 +309,25 @@ void Game::drawHUD() {
     glPushMatrix();
     {
         int w, h;
-
-        measureText(scoreText.c_str(), &w, &h);
+        int w2, h2;
 
         const float padding = 10.0f;
 
-        glTranslatef(500 - w - padding, padding + h, 0);
         // text with white color:
         glColor3f(1, 1, 1);
 
+        string missing("Faltam: ");
+        missing += std::to_string(bases.size() - score);
+
+        measureText(scoreText.c_str(), &w, &h);
+        measureText(missing.c_str(), &w2, &h2);
+
+        glTranslatef(500 - padding - max(w2, w), 0, 0);
+
+        glTranslatef(0, padding + h, 0);
         drawText(scoreText.c_str());
+        glTranslatef(0, padding + h, 0);
+        drawText(missing.c_str());
     }
     glPopMatrix();
 
@@ -557,7 +568,17 @@ void Game::keyReleased(unsigned char key, int x, int y) {
 }
 
 void Game::reset() {
+    // Game
+    // - Jogador
+    // - Inimigos
+    // - Casas
+    // - Remover os projéteis
+    // - Score
+    // - Camera
+    // - 
+
     printf("Resetting game\n");
+
     printf("Resetting listeners");
     for (reset_listener_t* l : sResetListeners) {
         l->reset();
@@ -570,7 +591,8 @@ void Game::addResetListener(reset_listener_t * l) {
 
 void Game::onBaseDeath() {
     score++;
-    scoreText = std::to_string(score);
+    scoreText += "Score: ";
+    scoreText += std::to_string(score);
 
     if (score >= bases.size()) {
         player->won();
