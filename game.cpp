@@ -572,7 +572,9 @@ void Game::keyReleased(unsigned char key, int x, int y) {
 void Game::reset() {
     // Game
     // - Inimigos
-    // - Casas
+    for (flying_enemy_t* f : enemies) {
+        f->reset();
+    }
     for (enemy_base_t* base : bases) {
         base->reset();
     }

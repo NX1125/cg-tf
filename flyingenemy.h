@@ -43,10 +43,22 @@ private:
     float horizontal = 0;
 
     propeller_t* propeller = NULL;
+    
+    point3f initialPosition;
 
 public:
 
     flying_enemy_t(point3f position, float radius);
+
+    void reset() {
+        dead = false;
+
+        controller->reset();
+        controller->setPosition(initialPosition);
+        accumulatedTime = 0;
+        behaviour = 0;
+        propeller->reset();
+    }
 
     void setInitialVelocity(float initialVelocity);
 
