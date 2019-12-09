@@ -9,6 +9,8 @@
 #ifndef AIRSTRIP_H
 #define AIRSTRIP_H
 
+#include <ctime>
+
 #include "shapes.h"
 #include "minimapitem.h"
 

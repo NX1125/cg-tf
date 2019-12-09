@@ -32,6 +32,9 @@ private:
     
     projectile_manager_t* manager = NULL;
     
+    float length = 10;
+    float width = 5;
+    
 public:
     
     cannon_t(const vector3f& position);
@@ -46,13 +49,20 @@ public:
     vector3f getDirection();
     
     float getLength() const {
-        return 10;
+        return length;
     }
 
     vector3f getOffset() const {
         return offset;
     }
 
+    float getWidth() const {
+        return width;
+    }
+
+    float getAim() const {
+        return width / 2;
+    }
 };
 
 #endif /* CANNON_H */

@@ -23,14 +23,14 @@ void arena_t::draw() {
 void arena_t::drawGround() {
     GLfloat color[] = {0x66 / 255.0f, 0x3D / 255.0f, 0x14 / 255.0f, 1.0f}; // brown
     
-//    glColor4fv(color);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color);
+    glColor4fv(color);
+//    glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
+//    glMaterialfv(GL_FRONT, GL_SPECULAR, color);
     
     // to draw the ground, we just need to draw the circle itself
-//     blueprint->draw(true);
-    glRotatef(90, 1,0,0);
-    ground->draw();
+     blueprint->draw(true);
+    //    glRotatef(90, 1,0,0);
+    //    ground->draw();
 }
 
 void arena_t::drawRoof() {

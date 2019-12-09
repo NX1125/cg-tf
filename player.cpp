@@ -69,8 +69,8 @@ void player_t::cannonView() {
 
     ep += v;
 
-    gluLookAt(p.x, p.y, p.z,
-            ep.x, ep.y, ep.z,
+    gluLookAt(p.x, p.y, p.z + cannon->getWidth(),
+            ep.x, ep.y, ep.z + cannon->getAim(),
             up.x, up.y, up.z);
 }
 
@@ -195,63 +195,68 @@ void player_t::draw(bool cockpit, bool gun, bool body, bool aim) {
 
     glPushMatrix();
     {
-//        if (aim) {
-//            point3f p = position;
-//            vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
-//
-//            v.rotateX(horizontalAngularVelocityDrawing);
-//            v.rotateY(vertical);
-//            v.rotateZ(horizontal);
-//
-//            p += v;
-//
-//            glPushMatrix();
-//            {
-//                glTranslatef(p.x, p.y, p.z);
-//                glutSolidSphere(2, 8, 8);
-//            }
-//            glPopMatrix();
-//        }
-//
+        if (aim) {
+            point3f p = position;
+            vector3f v = cannon->getOffset() + cannon->getDirection() * cannon->getLength();
+
+            v.rotateX(horizontalAngularVelocityDrawing);
+            v.rotateY(vertical);
+            v.rotateZ(horizontal);
+
+            p += v;
+
+            glPushMatrix();
+            {
+                glTranslatef(p.x, p.y, p.z);
+                glutSolidSphere(2, 8, 8);
+            }
+            glPopMatrix();
+        }
+
         glTranslatef(position.x, position.y, position.z);
-//
-//        drawAxis(radius);
-//        // considering that the front of the airplane is at +x and the back is at -x
-//        const float degreePerRadians = 180 / M_PI;
-//        glRotatef(horizontal * degreePerRadians, 0, 0, 1);
-//        glRotatef(vertical * degreePerRadians, 0, 1, 0);
-//        glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
-//        if (gun && aim) {
-//            cannon->draw();
-//        }
-//        // cockpit
-//        if (cockpit) {
-//            glPushMatrix();
-//            {
-//                glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
-//                // drawBox();
-//            }
-//            glPopMatrix();
-//        }
+
+        drawAxis(radius);
+        // considering that the front of the airplane is at +x and the back is at -x
+        const float degreePerRadians = 180 / M_PI;
+        glRotatef(horizontal * degreePerRadians, 0, 0, 1);
+        glRotatef(vertical * degreePerRadians, 0, 1, 0);
+        glRotatef(horizontalAngularVelocityDrawing * degreePerRadians, 1, 0, 0);
+        if (gun) {
+            cannon->draw();
+        }
+        // cockpit
+        if (cockpit) {
+            glPushMatrix();
+            {
+                glTranslatef(cockpitOffset.x, cockpitOffset.y, cockpitOffset.z);
+                // drawBox();
+            }
+            glPopMatrix();
+        }
         if (body) {
-//            propellerLeft->transformAndDraw();
-//            propellerRight->transformAndDraw();
-//
+            glPushMatrix();
+            {
+                glRotatef(90, 0, 1, 0);
+                propellerLeft->transformAndDraw();
+                propellerRight->transformAndDraw();
+            }
+            glPopMatrix();
+            //
             glRotatef(90, 1, 0, 0);
             glScalef(radius, radius, radius);
-//            drawAxis(radius);
-//            // glScalef(100, 100, 100);
-//
+            drawAxis(radius);
+            // glScalef(100, 100, 100);
+            //
             GLfloat color[] = {0, 0.5f, 0, 1};
-//
-//            glColor3fv(color);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
-             glMaterialfv(GL_FRONT, GL_SPECULAR, color);
-//             glMaterialf(GL_FRONT, GL_SHININESS, 50.0f);
+            //
+            glColor3fv(color);
+            //            glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
+            //             glMaterialfv(GL_FRONT, GL_SPECULAR, color);
+            //             glMaterialf(GL_FRONT, GL_SHININESS, 50.0f);
 
-            glutSolidSphere(2, 32, 32);
-            //            drawCube();
-            //             sPlayerBodyModel->draw();
+            //            glutSolidSphere(2, 32, 32);
+            //                        drawCube();
+            sPlayerBodyModel->draw();
         }
     }
     glPopMatrix();
